@@ -458,9 +458,10 @@ public class PlayerController : MonoBehaviourPun
     public void PlayerTransferDamage(float damage)
     {
         if (isDead) return;
-
+        
         //animation
-        playerAnimator.SetTrigger("ishit");
+        if (playerAnimator != null)
+            playerAnimator.SetTrigger("ishit");
 
         if (playerCurHp <= 0f)
         {

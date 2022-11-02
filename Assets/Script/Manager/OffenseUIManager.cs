@@ -277,7 +277,6 @@ public class OffenseUIManager : MonoBehaviourPun
 
     private void GameEndControll()
     {
-        Debug.Log(GameManager.INSTANCE.ISTIMEOVER);
 
         if (GameManager.INSTANCE.ISDEAD|| GameManager.INSTANCE.ISTIMEOVER)
         {

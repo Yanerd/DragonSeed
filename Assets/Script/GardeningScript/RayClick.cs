@@ -147,7 +147,7 @@ public class RayClick : MonoBehaviour
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            Debug.DrawRay(ray.origin, ray.direction * 1000, Color.red);
+            Debug.DrawRay(ray.origin, ray.direction * 1000, Color.gray);
             if (Physics.Raycast(ray, out hit, 1000))
             {
                 if (hit.transform.tag=="well")

@@ -7,6 +7,7 @@ using UnityEditor;
 using TMPro;
 using System.Threading;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 
 public class DefenseBattleUIManager : MonoBehaviour
@@ -34,12 +35,6 @@ public class DefenseBattleUIManager : MonoBehaviour
     // Stamina Slider
     [SerializeField] Slider stamina_Slider;
     #endregion
-
-    // RaycastHit
-    RaycastHit hit;
-
-
-
 
     Transform camTransfrom = null;
 
@@ -77,12 +72,7 @@ public class DefenseBattleUIManager : MonoBehaviour
         {
             GameManager.INSTANCE.TimeOut();
         }
-
-        if (Physics.Raycast(this.transform.position, this.transform.forward, out hit))
-        {
-            Debug.Log("레이캐스트 발사!");
-        }
-
+       
     }
 
 
@@ -95,18 +85,23 @@ public class DefenseBattleUIManager : MonoBehaviour
         {
             defenseEndUI.SetActive(true);
         }
-        
-
 
         // 플레이 타임 텍스트로 받아오기
         playTimeText.text = ((int)GameManager.INSTANCE.GAMETIME).ToString();
 
+        //if(GameManager.INSTANCE.ISTIMEOVER) 
+       
         if (Input.GetMouseButtonDown(0))
         {
-            SkillCheck();
+            //SkillCheck();
             StaminaSliderCheck();
         }
-        
+
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            OnBackButton();
+        }
+
         stamina_Slider.value += sliderRechargeTime;
     }
 
@@ -132,7 +127,7 @@ public class DefenseBattleUIManager : MonoBehaviour
     IEnumerator CheckSkill(Vector3 pos, Quaternion rotation, Transform tr)
     {
         GameObject skill = ObjectPoolingManager.inst.Instantiate(attackSkillPrefab, pos + new Vector3(0, 0.5f, 0), Quaternion.identity, tr);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         ObjectPoolingManager.inst.Destroy(skill);
     }
     #endregion
@@ -159,17 +154,29 @@ public class DefenseBattleUIManager : MonoBehaviour
     }
     #endregion
 
+    Coroutine instiateCoroutine;
+
     public void OnBackButton()
     {
         Time.timeScale = 1f;
-        //SceneManager.LoadScene("2_GardenningScene");
-        Photon.Pun.PhotonNetwork.LoadLevel("2_GardenningScene");
-        Photon.Pun.PhotonNetwork.Disconnect();
-        SaveLoadManager.INSTANCE.Load();
+
+        GameManager.INSTANCE.SCENENUM = 1;
+
+        PhotonNetwork.Disconnect();
+
+        SceneManager.LoadScene("2_GardenningScene");
+
         GameManager.INSTANCE.Initializing();
+
+        instiateCoroutine = StartCoroutine(GoBackSceneInstantiate());
+    }
+    IEnumerator GoBackSceneInstantiate()
+    {
+        Debug.Log("씬 전환중");
+
+        yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "2_GardenningScene");
     }
 
-  
 
 
 }
