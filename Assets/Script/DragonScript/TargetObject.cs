@@ -30,7 +30,7 @@ public class TargetObject : MonoBehaviour
         timer += Time.deltaTime;
 
         // 드래곤이 일정시간동안 오브젝트를 찾지 못했을 때 재생성
-        if (timer > 4f)
+        if (timer > 1f)
         {
             timer = 0f;
             CreatNewPosition();
@@ -43,8 +43,8 @@ public class TargetObject : MonoBehaviour
         if (dragon==null) { Destroy(this.gameObject); }
 
         // 랜덤한 위치값을 계속 준다
-        RandXpos = Random.Range(-2.5f, 3.5f);
-        RandZpos = Random.Range(-2.5f, 3.5f);
+        RandXpos = Random.Range(-(float)DefenseUIManager.INSTANCE.MapState/2f, (float)DefenseUIManager.INSTANCE.MapState / 2f);
+        RandZpos = Random.Range(-(float)DefenseUIManager.INSTANCE.MapState / 2f, (float)DefenseUIManager.INSTANCE.MapState / 2f);
 
         // 드래곤의 포지션
         if (dragon != null)
@@ -53,7 +53,7 @@ public class TargetObject : MonoBehaviour
 
             // 오브젝트의 새로운 랜덤 생성 위치값
             Vector3 RandPos = new Vector3(RandXpos, 0f, RandZpos);
-            newPos = dragonPos + RandPos;
+            newPos = Vector3.one * ((float)DefenseUIManager.INSTANCE.MapState / 2f) + RandPos;
         }
 
         // 오브젝트의 위치는 새로운 위치

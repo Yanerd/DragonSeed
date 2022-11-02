@@ -152,7 +152,7 @@ public class RayClick : MonoBehaviour
             {
                 if (hit.transform.tag=="well")
                 {
-                    hit.transform.GetComponent<WellBar>().FillValue = hit.transform.GetComponent<WellBar>().fillIdex.value;
+                    hit.transform.GetComponent<WellBar>().FillValue = hit.transform.GetComponent<WellBar>().wellBar.value;
                     if (wellClick==false&& hit.transform.GetComponent<WellBar>().FillValue > 0)
                     {
                         hit.transform.gameObject.GetComponent<WellBar>().DisapearWaterCount();

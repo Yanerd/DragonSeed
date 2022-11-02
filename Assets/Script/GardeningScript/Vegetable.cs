@@ -21,51 +21,42 @@ public class Vegetable : MonoBehaviour
     [SerializeField] public bool onWater=false;
     [SerializeField] bool GrownDragon;
 
-    [SerializeField] Slider growthBar = null;
-    [SerializeField] Slider waterCountBar = null;
-
     [SerializeField] VegetableData vegetableData;
+    [SerializeField] Slider growBar;
+    [SerializeField] Slider CountBar;
     int  WaterCount;
     float GrowthTime;
     float OnSearchTime;
     float LooseTime;
     int PurchasePrice;
 
-    Camera myCamera;
-
-
     [SerializeField] public float GrowthValue;
     [SerializeField] public int CountValue;
 
-    bool instCheck = false;
-
-    Slider growBar;
-    Slider CountBar;
     private void Awake()
     {
+        
+    }
+
+
+    private void Start()
+    {
+        Initializing();
+
+        CountBar.maxValue = WaterCount;
+        CountBar.minValue = 0;
+        CountBar.value = 0;
+
         if (GameManager.INSTANCE.SCENENUM == 1)
         {
-            Initializing();
-
-            myCamera = Camera.main;
-
-            Vector3 sliderPos = myCamera.WorldToScreenPoint(this.transform.position + new Vector3(0, 0.5f, 0));
-            Vector3 CountPos = myCamera.WorldToScreenPoint(this.transform.position + new Vector3(0, 0.4f, 0));
-
-            if (!GameManager.INSTANCE.ISGAMEIN)
+            //슬라이더를 찾아서 게임인이 될 경우 끈다.
+            if (GameManager.INSTANCE.ISGAMEIN)
             {
-                growBar = Instantiate(growthBar, sliderPos, Quaternion.identity, GameObject.Find("DefenseUI").transform);
-                CountBar = Instantiate(waterCountBar, CountPos, Quaternion.identity, GameObject.Find("DefenseUI").transform);
-                CountBar.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.cyan;
+                growBar.gameObject.SetActive(false);
+                CountBar.gameObject.SetActive(false);
             }
 
-            //growBar.maxValue = 1;
-            //growBar.minValue = 0;
-            //growBar.value = 0;
 
-            CountBar.maxValue = WaterCount;
-            CountBar.minValue = 0;
-            CountBar.value = 0;
             DefenseUIManager.INSTANCE.SliderBarList.Add(growBar);
             DefenseUIManager.INSTANCE.SliderBarList.Add(CountBar);
         }
@@ -92,6 +83,9 @@ public class Vegetable : MonoBehaviour
     public void StartGrowth()
     {
         if (CountBar.value == WaterCount) return;
+        
+        Debug.Log("물 들어옴");
+        Debug.Log(CountBar.maxValue);
 
         CountValue += 1;
         CountBar.value = CountValue;
@@ -165,6 +159,8 @@ public class Vegetable : MonoBehaviour
 
         if (GrownDragon == false)
         {
+            growBar.gameObject.SetActive(false);
+            CountBar.gameObject.SetActive(false);   
             InstantiateDragon();
         }
     }
