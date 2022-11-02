@@ -8,6 +8,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using Photon.Realtime;
 
+
 public class PhotonManager : MonoSingleTon<PhotonManager>
 {
     public bool INABLE { get; set; }
@@ -437,8 +438,9 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
         base.OnPlayerLeftRoom(otherPlayer);
 
         //scene changed
-        GameManager.INSTANCE.SCENENUM = 1;
+            
         PhotonNetwork.LoadLevel("2_GardenningScene");
+       
 
         GameManager.INSTANCE.Initializing();
 
@@ -475,6 +477,12 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
             }
         }
     }
+
+    public void EndGame()
+    {
+        StartCoroutine(Downtrans(searchRoomPage));
+    }
+
     #endregion
 
     #region Change CameraView Coroutine
@@ -525,6 +533,7 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
         Debug.Log("씬 전환중");
 
         yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "2_GardenningScene");
+        PhotonNetwork.Disconnect();
 
         Debug.Log("생성");
         SaveLoadManager.INSTANCE.Load();
@@ -535,11 +544,11 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
 
         yield return new WaitUntil(() => (SceneManager.GetActiveScene().name == "3_OffenceScene"));
         
-        yield return StartCoroutine(CreateCam("CameraArm"));
+        yield return StartCoroutine(CreateCam("O_CameraArm"));
 
         yield return StartCoroutine(CreateOffenseUI());
         Debug.Log("플레이어 생성");
-        PhotonNetwork.Instantiate("Farmer", new Vector3(0f, 1f, 0f), Quaternion.identity);
+        PhotonNetwork.Instantiate("O_Farmer", new Vector3(0f, 1f, 0f), Quaternion.identity);
     }
 
     IEnumerator dragonInstantiate()
@@ -549,7 +558,7 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
         yield return new WaitUntil(() => (SceneManager.GetActiveScene().name == "3_OffenceScene"));
 
 
-        yield return StartCoroutine(CreateCam("DEFMainCamera"));
+        yield return StartCoroutine(CreateCam("O_DEFMainCamera"));
 
         yield return StartCoroutine(CreateDefenseUI());
 
@@ -576,7 +585,7 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
         GameObject OffenseUIManager;
         GameObject instOffenseUIManager;
 
-        OffenseUIManager = Resources.Load<GameObject>("OffenseUIManager");
+        OffenseUIManager = Resources.Load<GameObject>("O_OffenseUIManager");
         instOffenseUIManager = Instantiate(OffenseUIManager, OffenseUIManager.transform.position, Quaternion.identity);
 
         Debug.Log("UI 생성 완료");
@@ -589,7 +598,7 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
         GameObject DefenseBattleUIManager;
         GameObject instDefenseBattleUIManager;
 
-        DefenseBattleUIManager = Resources.Load<GameObject>("DefenseBattleUIManager");
+        DefenseBattleUIManager = Resources.Load<GameObject>("O_DefenseBattleUIManager");
         instDefenseBattleUIManager = Instantiate(DefenseBattleUIManager, DefenseBattleUIManager.transform.position, Quaternion.identity);
 
         yield break;

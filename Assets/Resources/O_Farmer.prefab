@@ -959,6 +959,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7178c16659d60643914d635806a62cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testMode: 0
   playerEvent: {fileID: 0}
   playerMaxHp: 500
   playerSpeed: 0.4

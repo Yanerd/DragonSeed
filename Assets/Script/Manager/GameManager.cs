@@ -58,6 +58,11 @@ public class GameManager : MonoSingleTon<GameManager>
         Initializing();
     }
 
+    private void Update()
+    {
+        Debug.Log(GameManager.INSTANCE.SCENENUM);
+    }
+
     public void Initializing() //init function
     {
         //player state
@@ -102,7 +107,7 @@ public class GameManager : MonoSingleTon<GameManager>
             GameManager.INSTANCE.GAMETIME += Time.deltaTime;
 
             //invader is win
-            if (GameManager.INSTANCE.GAMETIME > 60f)//->game time limit
+            if (GameManager.INSTANCE.GAMETIME > 10f)//->game time limit
             {
                 CoinRavish();
                 Time.timeScale = 0f;

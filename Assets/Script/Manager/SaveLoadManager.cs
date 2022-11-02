@@ -188,7 +188,7 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
 
     public void Init(string name, Vector3 pos)
     {
-        GameObject obj = Resources.Load<GameObject>($"Prefebs/{name}");
+        GameObject obj = Resources.Load<GameObject>(name);
         GameObject instObject = null;
 
         if (GameManager.INSTANCE.ISGAMEIN == true)

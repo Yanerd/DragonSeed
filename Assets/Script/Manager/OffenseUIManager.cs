@@ -5,9 +5,11 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 using TMPro;
+using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 
-public class OffenseUIManager : MonoBehaviour
+public class OffenseUIManager : MonoBehaviourPun
 {
 
     //camera components
@@ -77,7 +79,9 @@ public class OffenseUIManager : MonoBehaviour
             hpFollowSlider = GameObject.Find("HpFollowSlider").GetComponent<Slider>();
             if (playerUI != null)
             {
-               StopCoroutine(exceptionCoroutine);
+                if(exceptionCoroutine != null)
+                    StopCoroutine(exceptionCoroutine);
+
                 yield break;
             }
             yield return null;
@@ -120,7 +124,7 @@ public class OffenseUIManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log(GameManager.INSTANCE.WANTINVASION);
+        GameManager.INSTANCE.TimerStart();
         // Offense End UI
         offenseEndUI.SetActive(false);
        
@@ -273,9 +277,11 @@ public class OffenseUIManager : MonoBehaviour
 
     private void GameEndControll()
     {
+        Debug.Log(GameManager.INSTANCE.ISTIMEOVER);
 
-        if (GameManager.INSTANCE.ISDEAD)
+        if (GameManager.INSTANCE.ISDEAD|| GameManager.INSTANCE.ISTIMEOVER)
         {
+            Debug.Log("죽었거나 타임오버");
             // 마우스 커서 활성화
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
@@ -302,15 +308,36 @@ public class OffenseUIManager : MonoBehaviour
             // 나중에 착착 한 줄씩 점수 뜨는 효과 넣기
 
         }
+
+
     }
+
+    Coroutine instiateCoroutine;
 
     // 버튼 누를때는 마우스 커서 활성화 필요
     public void OnBackButton()
     {
         Time.timeScale = 1f;
-        Photon.Pun.PhotonNetwork.LoadLevel("2_DefenseScene");
-        Photon.Pun.PhotonNetwork.Disconnect();
+
+        GameManager.INSTANCE.SCENENUM = 1;
+
+        PhotonNetwork.Disconnect();
+
+        SceneManager.LoadScene("2_GardenningScene");
+
+        GameManager.INSTANCE.Initializing();
+
+        instiateCoroutine = StartCoroutine(GoBackSceneInstantiate());
     }
+    IEnumerator GoBackSceneInstantiate()
+    {
+        Debug.Log("씬 전환중");
+
+        yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "2_GardenningScene");
+    }
+
+
+
 }
 
 

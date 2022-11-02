@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEditor;
 using TMPro;
 using System.Threading;
+using UnityEngine.SceneManagement;
 
 
 public class DefenseBattleUIManager : MonoBehaviour
@@ -45,7 +46,7 @@ public class DefenseBattleUIManager : MonoBehaviour
 
     private void Awake()
     {
-        camTransfrom = GameObject.Find("DEFMainCamera(Clone)").GetComponent<Transform>();
+        camTransfrom = GameObject.Find("O_DEFMainCamera(Clone)").GetComponent<Transform>();
         camTransfrom.position = new Vector3(-2.72f, 4.25f, -2.72f);
         camTransfrom.rotation = Quaternion.Euler(30, 45, 0);
 
@@ -161,9 +162,15 @@ public class DefenseBattleUIManager : MonoBehaviour
     public void OnBackButton()
     {
         Time.timeScale = 1f;
-        Photon.Pun.PhotonNetwork.LoadLevel("2_DefenseScene");
+        //SceneManager.LoadScene("2_GardenningScene");
+        Photon.Pun.PhotonNetwork.LoadLevel("2_GardenningScene");
         Photon.Pun.PhotonNetwork.Disconnect();
+        SaveLoadManager.INSTANCE.Load();
+        GameManager.INSTANCE.Initializing();
     }
+
+  
+
 
 }
 

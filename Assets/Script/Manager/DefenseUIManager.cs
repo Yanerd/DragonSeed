@@ -202,10 +202,8 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
         {
             Destroy(this.gameObject);
         }
+
         DontDestroyOnLoad(this.gameObject);
-        //test
-        //testCount = GameObject.Find("PotatoSeedCount");
-        //Debug.Log(testCount.GetComponent<TextMeshProUGUI>().text= "10");
 
         //MapState = 5;
         Gold = 5000;
@@ -225,6 +223,14 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
         //Back to the Defense Scene transform initializing Scroll
         VegetableMenuOriginPos = VegetableScroll.gameObject.transform.position;
         BuildingMenuOriginPos = BuildingScroll.transform.position;
+
+        if (GameManager.INSTANCE.SCENENUM != 0)
+        {
+            Debug.Log(this.gameObject.name);
+            PhotonManager.INSTANCE.EndGame();
+
+            SaveLoadManager.INSTANCE.Load();
+        }
 
     }
 

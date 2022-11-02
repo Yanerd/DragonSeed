@@ -144,11 +144,11 @@ public class PlayerController : MonoBehaviourPun
                 {
                     if (testMode == true)
                     {
-                        camTransfrom = GameObject.Find("CameraArm").GetComponent<Transform>();
+                        camTransfrom = GameObject.Find("O_CameraArm").GetComponent<Transform>();
                     }
                     else
                     {
-                        camTransfrom = GameObject.Find("CameraArm(Clone)").GetComponent<Transform>();
+                        camTransfrom = GameObject.Find("O_CameraArm(Clone)").GetComponent<Transform>();
                     }
 
                     weaponCollider = GameObject.Find("WeaponCollider");
@@ -175,6 +175,7 @@ public class PlayerController : MonoBehaviourPun
 
         if (testMode || photonView.IsMine)
         {
+            Debug.Log("카메라 위치 바꾸렴");
             CamTransFormControll();
             InputControll();
         }
@@ -222,6 +223,7 @@ public class PlayerController : MonoBehaviourPun
 
     private void CamTransFormControll()//camera transform controll
     {
+        Debug.Log("카메라 위치 이동");
         if (camTransfrom == null) StartCoroutine(FindCamera());
 
         //camTransfrom.position = playerTransform.position - camToPlayerVec;
