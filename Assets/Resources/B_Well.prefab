@@ -354,11 +354,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2750325269604194935}
-  - component: {fileID: 291101721134999559}
-  - component: {fileID: 3166046331259180967}
   - component: {fileID: 6717068717850134188}
   - component: {fileID: -437142418220405226}
   - component: {fileID: -9131217881732694661}
+  - component: {fileID: 6231038582985073286}
   m_Layer: 8
   m_Name: B_Well
   m_TagString: well
@@ -380,38 +379,10 @@ Transform:
   m_Children:
   - {fileID: 2750325269578298743}
   - {fileID: 4768488991923717736}
+  - {fileID: 2883492101672498387}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &291101721134999559
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2750325269604194932}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.8, y: 0.8, z: 0.8}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &3166046331259180967
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2750325269604194932}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
 --- !u!114 &6717068717850134188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -468,6 +439,20 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!136 &6231038582985073286
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2750325269604194932}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.35
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.2, z: 0}
 --- !u!1 &2750325269929648895
 GameObject:
   m_ObjectHideFlags: 0
@@ -510,7 +495,6 @@ GameObject:
   - component: {fileID: 2750325270067098522}
   - component: {fileID: 2750325270067098527}
   - component: {fileID: 2750325270067098524}
-  - component: {fileID: 2750325270067098525}
   m_Layer: 8
   m_Name: water
   m_TagString: Untagged
@@ -583,20 +567,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &2750325270067098525
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2750325270067098523}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!1 &2750325270527933483
 GameObject:
   m_ObjectHideFlags: 0
@@ -883,6 +853,68 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &8987258803518001115
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2883492101672498387}
+  - component: {fileID: 332988209892302392}
+  - component: {fileID: 1032296243796315758}
+  m_Layer: 8
+  m_Name: WellCollider
+  m_TagString: well
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2883492101672498387
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8987258803518001115}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.115, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2750325269604194935}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &332988209892302392
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8987258803518001115}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.1, y: 0.1, z: 0.1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &1032296243796315758
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8987258803518001115}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1001 &2750325268585452322
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -958,7 +990,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325268585878488 stripped
 Transform:
@@ -1040,7 +1073,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325268646721512 stripped
 Transform:
@@ -1122,7 +1156,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325268660268407 stripped
 Transform:
@@ -1204,7 +1239,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325268810291155 stripped
 Transform:
@@ -1286,7 +1322,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325268930617614 stripped
 Transform:
@@ -1368,7 +1405,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325268982950367 stripped
 Transform:
@@ -1450,7 +1488,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325268992823580 stripped
 Transform:
@@ -1532,7 +1571,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269023281812 stripped
 Transform:
@@ -1614,7 +1654,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269066962895 stripped
 Transform:
@@ -1696,7 +1737,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269083490563 stripped
 Transform:
@@ -1778,7 +1820,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269109545088 stripped
 Transform:
@@ -1860,7 +1903,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269218396236 stripped
 Transform:
@@ -1942,7 +1986,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269259401592 stripped
 Transform:
@@ -2024,7 +2069,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269263073751 stripped
 Transform:
@@ -2106,7 +2152,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269270321806 stripped
 Transform:
@@ -2188,7 +2235,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269278861945 stripped
 Transform:
@@ -2270,7 +2318,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269279807428 stripped
 Transform:
@@ -2352,7 +2401,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269298856645 stripped
 Transform:
@@ -2434,7 +2484,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269361212486 stripped
 Transform:
@@ -2516,7 +2567,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269361458167 stripped
 Transform:
@@ -2598,7 +2650,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269413961775 stripped
 Transform:
@@ -2680,7 +2733,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269439364287 stripped
 Transform:
@@ -2762,7 +2816,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269441769965 stripped
 Transform:
@@ -2844,7 +2899,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269449570786 stripped
 Transform:
@@ -2926,7 +2982,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269483659935 stripped
 Transform:
@@ -3008,7 +3065,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269486604241 stripped
 Transform:
@@ -3090,7 +3148,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269578749984 stripped
 Transform:
@@ -3172,7 +3231,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269578595799 stripped
 Transform:
@@ -3254,7 +3314,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269586739099 stripped
 Transform:
@@ -3336,7 +3397,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269651079273 stripped
 Transform:
@@ -3418,7 +3480,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269657196148 stripped
 Transform:
@@ -3500,7 +3563,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269699105038 stripped
 Transform:
@@ -3582,7 +3646,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269706167703 stripped
 Transform:
@@ -3664,7 +3729,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269715038329 stripped
 Transform:
@@ -3746,7 +3812,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269737062352 stripped
 Transform:
@@ -3828,7 +3895,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269782249201 stripped
 Transform:
@@ -3910,7 +3978,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269854298223 stripped
 Transform:
@@ -3992,7 +4061,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269876677156 stripped
 Transform:
@@ -4074,7 +4144,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269948137835 stripped
 Transform:
@@ -4156,7 +4227,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325269966840225 stripped
 Transform:
@@ -4238,7 +4310,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325270054937188 stripped
 Transform:
@@ -4320,7 +4393,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325270130282555 stripped
 Transform:
@@ -4402,7 +4476,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325270156234733 stripped
 Transform:
@@ -4484,7 +4559,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325270165384000 stripped
 Transform:
@@ -4566,7 +4642,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325270197339038 stripped
 Transform:
@@ -4648,7 +4725,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325270269347562 stripped
 Transform:
@@ -4730,7 +4808,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325270298507496 stripped
 Transform:
@@ -4812,7 +4891,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325270402584384 stripped
 Transform:
@@ -4894,7 +4974,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4037498104101427817, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 200bc4a4ce6e64dda8eb1c580b39edd8, type: 3}
 --- !u!4 &2750325270471921302 stripped
 Transform:

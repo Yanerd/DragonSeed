@@ -118,8 +118,9 @@ public class PlayerController : MonoBehaviourPun
             //move position value
             newPosition = this.transform.position;
 
-            //player state
-            playerCurHp = playerMaxHp;
+            ////player state
+            //playerCurHp = playerMaxHp;
+            //Debug.Log($"이니셜 체력 : {playerCurHp}");
 
             //state value
             curState = STATE.NONE;
@@ -131,6 +132,8 @@ public class PlayerController : MonoBehaviourPun
             ChangeState(STATE.IDLE);
             #endregion
         }
+        playerCurHp = playerMaxHp;
+        Debug.Log($"이니셜 체력 : {playerCurHp}");
     }
 
     IEnumerator FindCamera()
@@ -171,6 +174,8 @@ public class PlayerController : MonoBehaviourPun
 
     private void Update()
     {
+        Debug.Log(playerCurHp);
+
         if (GameManager.INSTANCE.ISDEAD || GameManager.INSTANCE.ISTIMEOVER) return;
 
         if (testMode || photonView.IsMine)
@@ -179,6 +184,9 @@ public class PlayerController : MonoBehaviourPun
             CamTransFormControll();
             InputControll();
         }
+
+        
+
     }
 
     #region Position Controll
@@ -413,8 +421,18 @@ public class PlayerController : MonoBehaviourPun
     }
     IEnumerator STATE_DIE()
     {
+        
         GameManager.INSTANCE.ISDEAD = true;
-        playerAnimator.SetTrigger("isdead");
+
+        if (playerAnimator!=null)
+            playerAnimator.SetTrigger("isdead");
+
+        yield return new WaitForSeconds(1.2f);
+
+        Debug.Log("타임스탑");
+
+        Time.timeScale = 0;
+
         yield return null;
     }
     //###############################################################################//
@@ -450,7 +468,7 @@ public class PlayerController : MonoBehaviourPun
         else
         {
             Debug.Log("데미지 받음");
-            photonView.RPC("PlayerTransferDamage", RpcTarget.All, damage);
+            photonView.RPC("PlayerTransferDamage", RpcTarget.Others, damage);
         }
     }
 
@@ -469,6 +487,7 @@ public class PlayerController : MonoBehaviourPun
             playerCurHp = 0f;
             isDead = true;
             ChangeState(STATE.DIE);
+            return;
         }
 
         playerCurHp -= damage;

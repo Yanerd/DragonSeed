@@ -35,6 +35,9 @@ public class GameManager : MonoSingleTon<GameManager>
     public bool ISTIMEOVER { get; set; }
     #endregion
 
+    //게임 정상종료 확인 변수
+    public bool GameEndCorrect { get; set; }
+
     #region Dragon List
 
     public List<GameObject> potatoDragonList = new List<GameObject>();
@@ -57,12 +60,6 @@ public class GameManager : MonoSingleTon<GameManager>
         GameManager.INSTANCE.SCENENUM = 0;
         Initializing();
     }
-
-    private void Update()
-    {
-        Debug.Log(GameManager.INSTANCE.SCENENUM);
-    }
-
     public void Initializing() //init function
     {
         //player state
@@ -89,6 +86,11 @@ public class GameManager : MonoSingleTon<GameManager>
         GameManager.INSTANCE.GAMETIME = 0;
         GameManager.INSTANCE.STEALCOIN = 0;
         GameManager.INSTANCE.ISTIMEOVER = false;
+
+        GameManager.INSTANCE.TimerClear();
+
+        //
+        GameEndCorrect = false;
     }
 
     public void TimerClear()
@@ -113,7 +115,7 @@ public class GameManager : MonoSingleTon<GameManager>
             GameManager.INSTANCE.GAMETIME += Time.deltaTime;
 
             //invader is win
-            if (GameManager.INSTANCE.GAMETIME > 10f)//->game time limit
+            if (GameManager.INSTANCE.GAMETIME > 20f)//->game time limit
             {
                 CoinRavish();
                 Time.timeScale = 0f;
@@ -121,6 +123,9 @@ public class GameManager : MonoSingleTon<GameManager>
 
                 yield break;
             }
+
+            if (GameManager.INSTANCE.ISDEAD)
+                yield break;
 
             yield return null;
         }

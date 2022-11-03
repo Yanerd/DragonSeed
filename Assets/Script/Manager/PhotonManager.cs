@@ -132,9 +132,6 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
             photonUI.SetActive(false);
         }
 
-
-        if(roomObjList != null)
-            Debug.Log($"방 개수 : {roomObjList.Count}");
     }
 
     public void SendMyData()
@@ -455,11 +452,10 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
     {
         base.OnPlayerLeftRoom(otherPlayer);
 
+        if (GameManager.INSTANCE.GameEndCorrect)
+            return;
+
         //scene changed
-        Debug.Log("나간거 확인!");
-        Debug.Log("나간거 확인!");
-        Debug.Log("나간거 확인!");
-        Debug.Log("나간거 확인!");
         PhotonNetwork.Disconnect();
 
         GameManager.INSTANCE.SCENENUM = 1;
@@ -467,12 +463,11 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
 
         GameManager.INSTANCE.Initializing();
 
-        GameManager.INSTANCE.TimerClear();
-
         instiateCoroutine = StartCoroutine(GoBackSceneInstantiate());
 
     }
     #endregion
+
 
     #region Page Up&Down Coroutine
     IEnumerator Uptrans(GameObject page)

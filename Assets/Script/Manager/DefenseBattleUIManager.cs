@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 using Photon.Pun;
 
 
-public class DefenseBattleUIManager : MonoBehaviour
+public class DefenseBattleUIManager : MonoBehaviourPun
 {
 
     //DefenseEndUI
@@ -157,6 +157,7 @@ public class DefenseBattleUIManager : MonoBehaviour
         Time.timeScale = 1f;
 
         GameManager.INSTANCE.SCENENUM = 1;
+        SendGameEnd();
 
         PhotonNetwork.Disconnect();
 
@@ -166,6 +167,18 @@ public class DefenseBattleUIManager : MonoBehaviour
 
         instiateCoroutine = StartCoroutine(GoBackSceneInstantiate());
     }
+
+
+    [PunRPC]
+    public void SendGameEnd()
+    {
+        photonView.RPC("GetGameEnd", RpcTarget.All, true);
+    }
+    public void GetGameEnd(bool flag)
+    {
+        GameManager.INSTANCE.GameEndCorrect = flag;
+    }
+
     IEnumerator GoBackSceneInstantiate()
     {
         Debug.Log("¾À ÀüÈ¯Áß");

@@ -72,6 +72,7 @@ public class Dragon : MonoBehaviourPun
 
     bool IsDeath { get { return (curHP <= 0); } } // 죽었는지 체크
 
+    IEnumerator enumerator;
 
     void initialing()
     {
@@ -97,21 +98,23 @@ public class Dragon : MonoBehaviourPun
 
 
         
-            // 체력 초기화
-            curHP = maxHP;
+        // 체력 초기화
+        curHP = maxHP;
 
-            myAnimation = GetComponent<Animator>();
+        myAnimation = GetComponent<Animator>();
 
-            //player find
-            targetPlayer = FindObjectOfType<PlayerController>();
+        enumerator = FindPlayerObject();
 
-            // 이펙트 찾아오기
-            markObj = Instantiate(Eff_ExclamationMark, this.transform);
-            hitObj = Instantiate(Eff_Hit, this.transform);///////////////////////////////
-            Eff_ExclamationMark.SetActive(false);
-            Eff_Hit.SetActive(false);
-            Face.SetActive(true);
-            Hit_Face.SetActive(false);
+        //player find
+        StartCoroutine(enumerator);
+
+        // 이펙트 찾아오기
+        markObj = Instantiate(Eff_ExclamationMark, this.transform);
+        hitObj = Instantiate(Eff_Hit, this.transform);///////////////////////////////
+        Eff_ExclamationMark.SetActive(false);
+        Eff_Hit.SetActive(false);
+        Face.SetActive(true);
+        Hit_Face.SetActive(false);
 
         if (testMode == false)
         {
@@ -123,7 +126,25 @@ public class Dragon : MonoBehaviourPun
 
     }
 
+    IEnumerator FindPlayerObject()
+    {
+        while (true)
+        {
+            targetPlayer = FindObjectOfType<PlayerController>();
+            Debug.Log("졸라찾기");
+            if (targetPlayer != null)
+            {
+                if (targetPlayer.name == "O_Farmer(Clone)")
+                {
+                    Debug.Log($"졸라 찾았음{targetPlayer.name}");
 
+                    StopCoroutine(enumerator    );
+                    yield break;
+                }
+            }
+            yield return null;
+        }
+    }
 
 
 
@@ -132,7 +153,6 @@ public class Dragon : MonoBehaviourPun
 
     private void Start()
     {
-        
         // 드래곤이 생성되면 IDLE 상태를 2초정도 지속 후 MOVE 상태로 이동
         StartCoroutine(IDLE_ST());
         
@@ -562,13 +582,6 @@ public class Dragon : MonoBehaviourPun
 
 
 
-
-
-
-
-
-
-
     // ATTACK
 
     IEnumerator ATTACK_ST()
@@ -589,7 +602,7 @@ public class Dragon : MonoBehaviourPun
 
             //targetPlayer.GetComponent<Player>().PlayerTransferDamage(AttackPower);
             // 플레이어가 추적 범위 내, 공격범위 밖일 때
-            if ((targetPlayer == null) || (TargetPlayerToDragon > TrackingRange))
+            if (GameManager.INSTANCE.ISDEAD || (TargetPlayerToDragon > TrackingRange))
             {
                 nextState(STATE.MOVE);
                 break;

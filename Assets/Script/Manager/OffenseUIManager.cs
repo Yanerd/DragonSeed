@@ -319,15 +319,28 @@ public class OffenseUIManager : MonoBehaviourPun
         Time.timeScale = 1f;
 
         GameManager.INSTANCE.SCENENUM = 1;
-
-        PhotonNetwork.Disconnect();
+        SendGameEnd();
 
         SceneManager.LoadScene("2_GardenningScene");
+
+        PhotonNetwork.Disconnect();
 
         GameManager.INSTANCE.Initializing();
 
         instiateCoroutine = StartCoroutine(GoBackSceneInstantiate());
     }
+
+    [PunRPC]
+    public void SendGameEnd()
+    {
+        photonView.RPC("GetGameEnd", RpcTarget.All, true);
+    }
+    public void GetGameEnd(bool flag)
+    {
+        GameManager.INSTANCE.GameEndCorrect = flag;
+    }
+
+
     IEnumerator GoBackSceneInstantiate()
     {
         Debug.Log("¾À ÀüÈ¯Áß");

@@ -61,7 +61,6 @@ public class ObjectPoolingManager : MonoBehaviour
             instance.transform.rotation = rotation;
             list.RemoveAt(0);
         }
-
         if (instance != null)
         {
             instance.gameObject.SetActive(true);
