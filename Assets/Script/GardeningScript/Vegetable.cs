@@ -24,6 +24,9 @@ public class Vegetable : MonoBehaviour
     [SerializeField] VegetableData vegetableData;
     [SerializeField] Slider growBar;
     [SerializeField] Slider CountBar;
+    [SerializeField] Canvas Canvas;
+
+
     int  WaterCount;
     float GrowthTime;
     float OnSearchTime;
@@ -49,17 +52,18 @@ public class Vegetable : MonoBehaviour
 
         if (GameManager.INSTANCE.SCENENUM == 1)
         {
-            //슬라이더를 찾아서 게임인이 될 경우 끈다.
-            if (GameManager.INSTANCE.ISGAMEIN)
-            {
-                growBar.gameObject.SetActive(false);
-                CountBar.gameObject.SetActive(false);
-            }
-
-
             DefenseUIManager.INSTANCE.SliderBarList.Add(growBar);
             DefenseUIManager.INSTANCE.SliderBarList.Add(CountBar);
         }
+
+        if (GameManager.INSTANCE.ISGAMEIN)
+        {
+            growBar.gameObject.SetActive(false);
+            CountBar.gameObject.SetActive(false);
+        }
+
+
+
     }
 
     void Initializing()

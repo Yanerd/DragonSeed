@@ -66,12 +66,6 @@ public class DefenseBattleUIManager : MonoBehaviour
         defenseEndUI.SetActive(false);
 
         GameManager.INSTANCE.TimerStart();
-
-        // 만약 게임 오버 상태일 경우 시간 멈춤
-        if (GameManager.INSTANCE.ISDEAD == true)
-        {
-            GameManager.INSTANCE.TimeOut();
-        }
        
     }
 
@@ -83,6 +77,8 @@ public class DefenseBattleUIManager : MonoBehaviour
     {
         if (GameManager.INSTANCE.ISDEAD || GameManager.INSTANCE.ISTIMEOVER)
         {
+            Debug.Log("게임 끝남");
+            GameManager.INSTANCE.TimeOut();
             defenseEndUI.SetActive(true);
         }
 
@@ -175,6 +171,9 @@ public class DefenseBattleUIManager : MonoBehaviour
         Debug.Log("씬 전환중");
 
         yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "2_GardenningScene");
+        StopCoroutine(instiateCoroutine);
+        instiateCoroutine = null;
+        yield break;
     }
 
 

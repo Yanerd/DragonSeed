@@ -14,6 +14,7 @@ public class WellBar : MonoBehaviour
 
 
     [SerializeField] public Slider wellBar;
+    [SerializeField] Canvas canvas;
 
     bool instCheck=false;
     bool WaterCheck = false;
@@ -26,7 +27,7 @@ public class WellBar : MonoBehaviour
     }
     private void Start()
     {
-        if (!GameManager.INSTANCE.ISGAMEIN)
+        if (GameManager.INSTANCE.ISGAMEIN)
         {
             wellBar.gameObject.SetActive(false);
         }

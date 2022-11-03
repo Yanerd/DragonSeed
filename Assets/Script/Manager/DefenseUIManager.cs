@@ -261,6 +261,16 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
             wellCount = 10;
         }
 
+        if(GameManager.INSTANCE.ISGAMEIN)
+        {
+            Debug.Log("유아이 사라져 제발");
+            for (int i = 0; i < SliderBarList.Count; i++)
+            {
+                SliderBarList[i].gameObject.SetActive(false);
+            }
+        }
+        
+
     }
 
     //Value Reset 

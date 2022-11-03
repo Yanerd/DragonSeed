@@ -427,7 +427,8 @@ MonoBehaviour:
   water: {fileID: 2750325270067098522}
   FillValue: 4
   lerpSensive: 0.3
-  wellBar: {fileID: 2252774642170279588, guid: e89bb0bd2f3f23045a97e7e9bb08e103, type: 3}
+  wellBar: {fileID: 3435302788809830144}
+  canvas: {fileID: 0}
 --- !u!114 &-437142418220405226
 MonoBehaviour:
   m_ObjectHideFlags: 0

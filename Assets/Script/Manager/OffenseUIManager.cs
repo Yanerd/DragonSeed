@@ -333,6 +333,9 @@ public class OffenseUIManager : MonoBehaviourPun
         Debug.Log("¾À ÀüÈ¯Áß");
 
         yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "2_GardenningScene");
+        StopCoroutine(instiateCoroutine);
+        instiateCoroutine = null;
+        yield break;
     }
 
 

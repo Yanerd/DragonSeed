@@ -37,6 +37,8 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
     [SerializeField] GameObject roomPrefab = null;
     [SerializeField] GameObject emptyRoomPrefab = null;
 
+    List<RoomInfo> testRoomList = null;
+
     public void OnIPButton()
     {
         invasionPermitButton.interactable = true;
@@ -88,6 +90,7 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
     {
         ISMASTER = PhotonNetwork.IsMasterClient;
 
+        //meta trand connetion enable
         testName = MetaTrendAPIHandler.INSTANCE.USERNAME;
         if (testName == null)
         {
@@ -97,7 +100,6 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
         {
             INABLE = true;
         }
-
 
         connectInfo.text = PhotonNetwork.NetworkClientState.ToString();
 
@@ -129,6 +131,10 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
         {
             photonUI.SetActive(false);
         }
+
+
+        if(roomObjList != null)
+            Debug.Log($"방 개수 : {roomObjList.Count}");
     }
 
     public void SendMyData()
@@ -210,6 +216,16 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
     }
     public void OnGoOffenseButton()//go to search room for invasion 
     {
+        //roomlist clear
+        if (roomObjList != null)
+        {
+            for (int j = 0; j < roomObjList.Count; j++)
+            {
+                Destroy(roomObjList[j]);
+            }
+            roomObjList.Clear();
+        }
+
         GameManager.INSTANCE.WANTINVASION = (GameManager.INSTANCE.WANTINVASION == false);
 
         if (GameManager.INSTANCE.WANTINVASION)
@@ -353,6 +369,8 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)//update room obj info changed
     {
+        Debug.Log("방 업데이트");
+
         base.OnRoomListUpdate(roomList);
 
         if (roomList.Count != 0 && roomObjList.Count != 0)//someting changed
@@ -438,13 +456,21 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
         base.OnPlayerLeftRoom(otherPlayer);
 
         //scene changed
-            
+        Debug.Log("나간거 확인!");
+        Debug.Log("나간거 확인!");
+        Debug.Log("나간거 확인!");
+        Debug.Log("나간거 확인!");
+        PhotonNetwork.Disconnect();
+
+        GameManager.INSTANCE.SCENENUM = 1;
         PhotonNetwork.LoadLevel("2_GardenningScene");
-       
 
         GameManager.INSTANCE.Initializing();
 
+        GameManager.INSTANCE.TimerClear();
+
         instiateCoroutine = StartCoroutine(GoBackSceneInstantiate());
+
     }
     #endregion
 
@@ -531,12 +557,10 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
     {
 
         Debug.Log("씬 전환중");
-
         yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "2_GardenningScene");
-        PhotonNetwork.Disconnect();
-
-        Debug.Log("생성");
-        SaveLoadManager.INSTANCE.Load();
+        StopCoroutine(instiateCoroutine);
+        instiateCoroutine = null;
+        yield break;
     }
     IEnumerator playerInstantiate()
     {

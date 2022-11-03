@@ -356,6 +356,7 @@ MonoBehaviour:
   vegetableData: {fileID: 11400000, guid: a28ebbc83598f0d4ebb87bfebdefbdc2, type: 2}
   growBar: {fileID: 3252925740891768095}
   CountBar: {fileID: 3077248561161438079}
+  Canvas: {fileID: 0}
   GrowthValue: 0
   CountValue: 0
 --- !u!114 &9027481813163587336

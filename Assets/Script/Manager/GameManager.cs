@@ -45,7 +45,7 @@ public class GameManager : MonoSingleTon<GameManager>
 
     #endregion
 
-    Coroutine timerCoroutine = null;
+    public Coroutine timerCoroutine = null;
 
     private void Awake()
     {
@@ -89,6 +89,12 @@ public class GameManager : MonoSingleTon<GameManager>
         GameManager.INSTANCE.GAMETIME = 0;
         GameManager.INSTANCE.STEALCOIN = 0;
         GameManager.INSTANCE.ISTIMEOVER = false;
+    }
+
+    public void TimerClear()
+    {
+        StopCoroutine(timerCoroutine);
+        timerCoroutine = null;
     }
 
     public void TimerStart()

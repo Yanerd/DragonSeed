@@ -1153,7 +1153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e6240a3a8595e147865c5458c7289ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defenseEndUI: {fileID: 0}
+  defenseEndUI: {fileID: 1732040735893513186}
   defenseUserAttackPower: 0
   defenseUserMaxAttackPower: 10
   attackSkillPrefab: {fileID: 7055054789107661065, guid: 52918add49ca02149afce7ab1b5ef565, type: 3}
