@@ -95,6 +95,9 @@ public class GameManager : MonoSingleTon<GameManager>
 
     public void TimerClear()
     {
+        if (timerCoroutine == null)
+            return;
+
         StopCoroutine(timerCoroutine);
         timerCoroutine = null;
     }
