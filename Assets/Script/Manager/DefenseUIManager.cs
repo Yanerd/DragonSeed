@@ -68,16 +68,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
         StoreGroundPage = GameObject.Find("StoreGroundPage");
         GroundScrollView = StoreGroundPage.transform.GetChild(1);
         GroundScrollView.gameObject.SetActive(false);
-        //----------------------------------------------------------
-        for (int i = 0; i < GameObject.Find("fence").transform.childCount; i++)
-        {
-            fence[i] = GameObject.Find("fence").transform.GetChild(i);
-        }
-
-        for (int i = 0; i < GameObject.Find("tree").transform.childCount; i++)
-        {
-            tree[i] = GameObject.Find("tree").transform.GetChild(i);
-        }
+        
 
     }
 
@@ -234,6 +225,28 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
 
     }
 
+    public override void OnEnable()
+    {
+        base.OnEnable();
+
+        //----------------------------------------------------------
+        for (int i = 0; i < GameObject.Find("fence").transform.childCount; i++)
+        {
+            fence[i] = GameObject.Find("fence").transform.GetChild(i);
+        }
+
+        for (int i = 0; i < GameObject.Find("tree").transform.childCount; i++)
+        {
+            tree[i] = GameObject.Find("tree").transform.GetChild(i);
+        }
+
+
+        if (SliderBarList != null && GameManager.INSTANCE.SCENENUM == 1)
+        {
+            SliderBarList.Clear();
+        }
+    }
+
     private void Start()
     {
         defenseUI.targetDisplay = 1;   
@@ -261,14 +274,15 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
             wellCount = 10;
         }
 
-        if(GameManager.INSTANCE.ISGAMEIN)
-        {
-            Debug.Log("유아이 사라져 제발");
-            for (int i = 0; i < SliderBarList.Count; i++)
-            {
-                SliderBarList[i].gameObject.SetActive(false);
-            }
-        }
+        //if(GameManager.INSTANCE.ISGAMEIN)
+        //{
+        //    Debug.Log("유아이 사라져 제발");
+        //    for (int i = 0; i < SliderBarList.Count; i++)
+        //    {
+        //       // if (SliderBarList[i].gameObject.activeSelf)
+        //        SliderBarList[i].gameObject.SetActive(false);
+        //    }
+        //}
         
 
     }

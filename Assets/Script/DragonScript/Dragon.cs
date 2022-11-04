@@ -128,6 +128,13 @@ public class Dragon : MonoBehaviourPun
 
     IEnumerator FindPlayerObject()
     {
+        if (GameManager.INSTANCE.SCENENUM != 2)
+        {
+            StopCoroutine(enumerator);
+            enumerator = null;
+            yield break;
+        }
+
         while (true)
         {
             targetPlayer = FindObjectOfType<PlayerController>();

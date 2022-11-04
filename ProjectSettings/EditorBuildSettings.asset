@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/3_OffenceScene.unity
     guid: e072bc80b5d082d4db4c4b18fb0932a1
   - enabled: 1
-    path: Assets/Scenes/3_DefenseScene.unity
+    path: Assets/Scenes/TestScene/DefenseScene_legacy.unity
     guid: 00b6f07c5e7a90c4cb38ac346c5bb3f8
   m_configObjects: {}
