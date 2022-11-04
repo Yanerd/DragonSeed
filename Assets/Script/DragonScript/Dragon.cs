@@ -118,7 +118,7 @@ public class Dragon : MonoBehaviourPun
 
         if (testMode == false)
         {
-            newObj = Instantiate(targetObjectPrefab, new Vector3(this.transform.position.x + RandXpos, 0f, this.transform.position.z + RandZpos), Quaternion.identity, Level.transform);
+            newObj = Instantiate(targetObjectPrefab, new Vector3(this.transform.position.x + RandXpos, 0.33f, this.transform.position.z + RandZpos), Quaternion.identity, Level.transform);
         }
 
         GameManager.INSTANCE.AllDragonCount(this.gameObject);
@@ -128,13 +128,6 @@ public class Dragon : MonoBehaviourPun
 
     IEnumerator FindPlayerObject()
     {
-        if (GameManager.INSTANCE.SCENENUM != 2)
-        {
-            StopCoroutine(enumerator);
-            enumerator = null;
-            yield break;
-        }
-
         while (true)
         {
             targetPlayer = FindObjectOfType<PlayerController>();
@@ -272,7 +265,7 @@ public class Dragon : MonoBehaviourPun
             {
                 //Debug.Log("방 안이고 내꺼임");
                 this.GetComponent<Rigidbody>().position += this.transform.forward * speed * Time.deltaTime;
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(ObjectToMove), Time.deltaTime);
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(ObjectToMove), Time.deltaTime*4);
             }
             else
             {
@@ -284,7 +277,7 @@ public class Dragon : MonoBehaviourPun
         {
             //Debug.Log("방 밖임");
             this.GetComponent<Rigidbody>().position += this.transform.forward * speed * Time.deltaTime;
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(ObjectToMove), Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(ObjectToMove), Time.deltaTime*4);
         }
         
     }

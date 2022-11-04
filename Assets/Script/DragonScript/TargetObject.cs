@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class TargetObject : MonoBehaviour
 {
@@ -30,7 +27,7 @@ public class TargetObject : MonoBehaviour
         timer += Time.deltaTime;
 
         // 드래곤이 일정시간동안 오브젝트를 찾지 못했을 때 재생성
-        if (timer > 1f)
+        if (timer > 5f)
         {
             timer = 0f;
             CreatNewPosition();
@@ -40,11 +37,12 @@ public class TargetObject : MonoBehaviour
     // 새로운 위치값을 할당
     private void CreatNewPosition()
     {
-        if (dragon==null) { Destroy(this.gameObject); }
+        int centerpos = 10 - DefenseUIManager.INSTANCE.MapState;
+        if (dragon == null) { Destroy(this.gameObject); }
 
         // 랜덤한 위치값을 계속 준다
-        RandXpos = Random.Range(-(float)DefenseUIManager.INSTANCE.MapState/2f, (float)DefenseUIManager.INSTANCE.MapState / 2f);
-        RandZpos = Random.Range(-(float)DefenseUIManager.INSTANCE.MapState / 2f, (float)DefenseUIManager.INSTANCE.MapState / 2f);
+        RandXpos = Random.Range(-(float)centerpos / 2f, (float)centerpos / 2f);
+        RandZpos = Random.Range(-(float)centerpos / 2f, (float)centerpos / 2f);
 
         // 드래곤의 포지션
         if (dragon != null)
@@ -53,7 +51,7 @@ public class TargetObject : MonoBehaviour
 
             // 오브젝트의 새로운 랜덤 생성 위치값
             Vector3 RandPos = new Vector3(RandXpos, 0f, RandZpos);
-            newPos = Vector3.one * ((float)DefenseUIManager.INSTANCE.MapState / 2f) + RandPos;
+            newPos = RandPos + new Vector3(centerpos / 2, 0.33f, centerpos / 2);
         }
 
         // 오브젝트의 위치는 새로운 위치
@@ -69,6 +67,13 @@ public class TargetObject : MonoBehaviour
         {
             timer = 0f;
             CreatNewPosition();
+        }
+
+        if (other.CompareTag("well") || other.CompareTag("Building"))
+        {
+            timer = 0f;
+            CreatNewPosition();
+            Debug.Log("충돌쳌");
         }
     }
 

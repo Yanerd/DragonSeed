@@ -2,218 +2,41 @@ using UnityEngine;
 
 public class CameraMoveScroll : MonoBehaviour
 {
+    Transform transform = null;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-
+        transform = GetComponent<Transform>();
     }
 
-    // Update is called once per frame
+    
     public void Update()
     {
-        Wheel();
         Move();
-    }
-
-    void Wheel()
-    {
-        float scroollWheel = Input.GetAxis("Mouse ScrollWheel") * -1;
-        Camera.main.orthographicSize += scroollWheel * 5f;
-        if (Camera.main.orthographicSize >= 4.5)
-        {
-            Camera.main.orthographicSize = 4.5f;
-        }
-        else if (Camera.main.orthographicSize <= 1)
-        {
-            Camera.main.orthographicSize = 1.0f;
-        }
     }
 
     public void Move()
     {
-        if (Camera.main.orthographicSize == 1)
+        if (GameManager.INSTANCE.WANTINVASION)
+            return;
+
+        Debug.Log($"{transform.position.x}, {transform.position.y}, {transform.position.z}");
+
+        if (Input.GetKey(KeyCode.W) && transform.position.x < 1 * (5 - DefenseUIManager.INSTANCE.MapState))
         {
-            if (Input.GetKey(KeyCode.RightArrow) && transform.position.x <= 5f && transform.position.z >= -5f)
-            {
-                transform.Translate(0.02f, 0, -0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.LeftArrow) && transform.position.x >= -5f && transform.position.z <= 5f)
-            {
-                transform.Translate(-0.02f, 0, 0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.UpArrow) && transform.position.x <= 5f && transform.position.z <= 5f)
-            {
-                transform.Translate(0.02f, 0, 0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.DownArrow) && transform.position.x >= -5f && transform.position.z >= -5f)
-            {
-                transform.Translate(-0.02f, 0, -0.02f);
-            }
+            transform.position += Vector3.right * Time.deltaTime;
         }
-
-        if (Camera.main.orthographicSize == 1.5f)
+        else if (Input.GetKey(KeyCode.A) && transform.position.z < 1 * (5 - DefenseUIManager.INSTANCE.MapState))
         {
-            if (Input.GetKey(KeyCode.RightArrow) && transform.position.x <= 4f && transform.position.z >= -4f)
-            {
-                transform.Translate(0.02f, 0, -0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.LeftArrow) && transform.position.x >= -4f && transform.position.z <= 4f)
-            {
-                transform.Translate(-0.02f, 0, 0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.UpArrow) && transform.position.x <= 4f && transform.position.z <= 4f)
-            {
-                transform.Translate(0.02f, 0, 0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.DownArrow) && transform.position.x >= -4f && transform.position.z >= -4f)
-            {
-                transform.Translate(-0.02f, 0, -0.02f);
-            }
+            transform.position += Vector3.forward * Time.deltaTime;
         }
-
-        if (Camera.main.orthographicSize == 2f)
+        else if (Input.GetKey(KeyCode.S) && transform.position.x > -5)
         {
-            if (Input.GetKey(KeyCode.RightArrow) && transform.position.x <= 3f && transform.position.z >= -3f)
-            {
-                transform.Translate(0.02f, 0, -0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.LeftArrow) && transform.position.x >= -3f && transform.position.z <= 3f)
-            {
-                transform.Translate(-0.02f, 0, 0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.UpArrow) && transform.position.x <= 3f && transform.position.z <= 3f)
-            {
-                transform.Translate(0.02f, 0, 0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.DownArrow) && transform.position.x >= -3f && transform.position.z >= -3f)
-            {
-                transform.Translate(-0.02f, 0, -0.02f);
-            }
+            transform.position += Vector3.left * Time.deltaTime;
         }
-
-        if (Camera.main.orthographicSize == 2.5f)
+        else if (Input.GetKey(KeyCode.D) && transform.position.z > -5)
         {
-            if (Input.GetKey(KeyCode.RightArrow) && transform.position.x <= 2.5f && transform.position.z >= -2.5f)
-            {
-                transform.Translate(0.02f, 0, -0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.LeftArrow) && transform.position.x >= -2.5f && transform.position.z <= 2.5f)
-            {
-                transform.Translate(-0.02f, 0, 0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.UpArrow) && transform.position.x <= 2.5f && transform.position.z <= 2.5f)
-            {
-                transform.Translate(0.02f, 0, 0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.DownArrow) && transform.position.x >= -2.5f && transform.position.z >= -2.5f)
-            {
-                transform.Translate(-0.02f, 0, -0.02f);
-            }
-        }
-
-        if (Camera.main.orthographicSize == 3f)
-        {
-            if (Input.GetKey(KeyCode.RightArrow) && transform.position.x <= 2f && transform.position.z >= -2f)
-            {
-                transform.Translate(0.02f, 0, -0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.LeftArrow) && transform.position.x >= -2f && transform.position.z <= 2f)
-            {
-                transform.Translate(-0.02f, 0, 0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.UpArrow) && transform.position.x <= 2f && transform.position.z <= 2f)
-            {
-                transform.Translate(0.02f, 0, 0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.DownArrow) && transform.position.x >= -2f && transform.position.z >= -2f)
-            {
-                transform.Translate(-0.02f, 0, -0.02f);
-            }
-        }
-
-        if (Camera.main.orthographicSize == 3.5f)
-        {
-            if (Input.GetKey(KeyCode.RightArrow) && transform.position.x <= 1.5f && transform.position.z >= -1.5f)
-            {
-                transform.Translate(0.02f, 0, -0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.LeftArrow) && transform.position.x >= -1.5f && transform.position.z <= 1.5f)
-            {
-                transform.Translate(-0.02f, 0, 0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.UpArrow) && transform.position.x <= 1.5f && transform.position.z <= 1.5f)
-            {
-                transform.Translate(0.02f, 0, 0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.DownArrow) && transform.position.x >= -1.5f && transform.position.z >= -1.5f)
-            {
-                transform.Translate(-0.02f, 0, -0.02f);
-            }
-        }
-
-        if (Camera.main.orthographicSize == 4)
-        {
-            if (Input.GetKey(KeyCode.RightArrow) && transform.position.x <= 1f && transform.position.z >= -1f)
-            {
-                transform.Translate(0.02f, 0, -0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.LeftArrow) && transform.position.x >= -1f && transform.position.z <= 1f)
-            {
-                transform.Translate(-0.02f, 0, 0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.UpArrow) && transform.position.x <= 1f && transform.position.z <= 1f)
-            {
-                transform.Translate(0.02f, 0, 0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.DownArrow) && transform.position.x >= -1f && transform.position.z >= -1f)
-            {
-                transform.Translate(-0.02f, 0, -0.02f);
-            }
-        }
-
-        if (Camera.main.orthographicSize == 4.5f)
-        {
-            if (Input.GetKey(KeyCode.RightArrow) && transform.position.x <= 0.5f && transform.position.z >= -0.5f)
-            {
-                transform.Translate(0.02f, 0, -0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.LeftArrow) && transform.position.x >= -0.5f && transform.position.z <= 0.5f)
-            {
-                transform.Translate(-0.02f, 0, 0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.UpArrow) && transform.position.x <= 0.5f && transform.position.z <= 0.5f)
-            {
-                transform.Translate(0.02f, 0, 0.02f);
-            }
-
-            if (Input.GetKey(KeyCode.DownArrow) && transform.position.x >= -0.5f && transform.position.z >= -0.5f)
-            {
-                transform.Translate(-0.02f, 0, -0.02f);
-            }
+            transform.position += Vector3.back * Time.deltaTime;
         }
     }
 

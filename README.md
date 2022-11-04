@@ -26,3 +26,9 @@ Fence & Tree 에셋 수정
 Scene별 프리팹 적용 
 가드닝 Slider nullexception fix
 
+11.4 15:41 금혜성
+Post Processing 적용
+카메라 이동 함수 수정 적용
+
+11.4 15:41 이원혁
+맵 범위 내(defense ui manager에서 mapstate를 받아서 계산 - map state 구매시 범위확장)에서 기즈모 생성, 드래곤이 타겟 오브젝트방향으로 회전하는 값을 증가시켜 빙빙 도는 현상제거 전체적으로 자연스러운 움직임 구현 및 타겟오브젝트 지속시간 증가로 드래곤이 중간중간 멈추는것 수정

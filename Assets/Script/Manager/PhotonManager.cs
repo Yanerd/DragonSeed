@@ -533,7 +533,7 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
         {
             Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(-2.72f, 4.25f, -2.72f), Time.deltaTime * 2f);
 
-            if (Camera.main.orthographicSize <= 2.5f)
+            if (Camera.main.orthographicSize <= 1.5f)
             {
                 Camera.main.orthographicSize += 0.04f;
             }
