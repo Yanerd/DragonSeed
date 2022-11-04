@@ -167,9 +167,9 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
         cabbageSeedCount   = int.Parse(data2.cabbageSeedCount  == "" ? "0" : data2.cabbageSeedCount);
         carrotSeedCount    = int.Parse(data2.carrotSeedCount   == "" ? "0" : data2.carrotSeedCount);
         eggplantSeedCount  = int.Parse(data2.eggplantSeedCount == "" ? "0" : data2.eggplantSeedCount);
-        HouseCount         = int.Parse(data2.houseCount        == null ? "0" : data2.houseCount);
-        WellCount          = int.Parse(data2.wellCount         == null ? "0" : data2.wellCount);
-        convertGroundState = int.Parse(data2.groundState       == null ? "0" : data2.groundState);
+        HouseCount         = int.Parse(data2.houseCount        == "" ? "0" : data2.houseCount);
+        WellCount          = int.Parse(data2.wellCount         == "" ? "0" : data2.wellCount);
+        convertGroundState = int.Parse(data2.groundState       == "" ? "0" : data2.groundState);
 
         for (int i = 0; i < ObjCount; i++)
         {

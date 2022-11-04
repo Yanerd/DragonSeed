@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 5807563273173384381}
   - component: {fileID: 5069726900895744509}
   - component: {fileID: 7516185429135096883}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -190,7 +190,7 @@ GameObject:
   - component: {fileID: 4646177689114051968}
   - component: {fileID: 5642246671821384711}
   - component: {fileID: 6136841388021624474}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Ui_GrowthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -320,7 +320,7 @@ GameObject:
   - component: {fileID: 1226437677814397453}
   - component: {fileID: 8731666130984047227}
   - component: {fileID: 5356129192572360714}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -523,7 +523,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2155205338164195211}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -562,7 +562,7 @@ GameObject:
   - component: {fileID: 5316003463395201055}
   - component: {fileID: 8494410855398617340}
   - component: {fileID: 1484024400237334768}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -908,7 +908,7 @@ GameObject:
   - component: {fileID: 8173051064920269552}
   - component: {fileID: 6462520158364056574}
   - component: {fileID: 899563078588015687}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Ui_WaterCount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1036,7 +1036,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3257333941153512500}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16279,7 +16279,7 @@ GameObject:
   - component: {fileID: 7316442833661910699}
   - component: {fileID: 6249692449706150486}
   - component: {fileID: 1785558388381138385}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}

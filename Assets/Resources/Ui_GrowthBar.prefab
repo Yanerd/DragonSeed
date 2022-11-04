@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5024387615691522965}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,7 +48,7 @@ GameObject:
   - component: {fileID: 4639080815609979066}
   - component: {fileID: 3479713964057225911}
   - component: {fileID: 3578176542145318116}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 2530146514307591108}
   - component: {fileID: 6622041696505280691}
   - component: {fileID: 4921176827556608518}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: 5445951183627535249}
   - component: {fileID: 1994843774627490652}
   - component: {fileID: 8809455186835390135}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Ui_GrowthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
