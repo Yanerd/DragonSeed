@@ -101,8 +101,6 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
             INABLE = true;
         }
 
-        connectInfo.text = PhotonNetwork.NetworkClientState.ToString();
-
         //this parts detecting clients alived athor room successfully ->this clients be a invader
         if (PhotonNetwork.InRoom && PhotonNetwork.CurrentRoom.PlayerCount == 2 && GameManager.INSTANCE.ISGAMEIN == false)
         {
