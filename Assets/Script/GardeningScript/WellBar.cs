@@ -21,9 +21,21 @@ public class WellBar : MonoBehaviour
 
     private void Awake()
     {
-        
-        
-      
+        wellBar.minValue = 0;
+        wellBar.value = 0;
+
+        if (GameManager.INSTANCE.ISGAMEIN)
+        {
+            InstOffenseWell(SaveLoadManager.INSTANCE.wellBarCount);
+            
+        }
+        else
+        {
+            Debug.Log(SaveLoadManager.INSTANCE.wellBarCount.ToString());
+            InstGardeningWell(SaveLoadManager.INSTANCE.wellBarCount);
+        }
+
+
     }
     private void Start()
     {
@@ -33,7 +45,7 @@ public class WellBar : MonoBehaviour
         }
         DefenseUIManager.INSTANCE.SliderBarList.Add(wellBar);
 
-        wellBar.value = FillValue * 0.25f;
+        //wellBar.value = FillValue * 0.25f;
     }
 
     public void DisapearWaterCount()
@@ -49,29 +61,25 @@ public class WellBar : MonoBehaviour
         StartCoroutine(FillWater());
     }
 
-    public void PhotonDefenseFillWater(float FillValue)
+    void InstGardeningWell(float fillValue)
     {
-        wellBar.value = FillValue * 0.25f;
+        this.FillValue = fillValue;
+        wellBar.value  = fillValue;
         instCheck = true;
 
-        wellBar.value = FillValue*0.25f;
         float pos=0f;
-        pos =FillValue*0.056f;
+        pos =fillValue*0.056f;
 
         water.transform.position=new Vector3 (water.transform.position.x, transform.position.y+pos, water.transform.position.z);
         
         StartCoroutine(FillWater());
     }
 
-    public void PhotonOffenseFillWater(float FillValue)
+    void InstOffenseWell(float FillValue)
     {
-        wellBar.value = FillValue * 0.25f;
-        instCheck = true;
-
-        wellBar.value = FillValue * 0.25f;
         float pos = 0f;
         pos = FillValue * 0.056f;
-        Debug.Log(FillValue);
+
         wellBar.gameObject.SetActive(false);
         water.transform.position = new Vector3(water.transform.position.x, transform.position.y + pos, water.transform.position.z);
       
@@ -92,7 +100,6 @@ public class WellBar : MonoBehaviour
             }
 
             yield return new WaitForSeconds(Time.deltaTime * lerpSensive);
-
             wellBar.value = Mathf.Lerp(wellBar.value, 1f, Time.deltaTime * lerpSensive);
             water.transform.position = Vector3.Lerp(water.transform.position, new Vector3(water.transform.position.x, transform.position.y + 0.225f, water.transform.position.z), lerpSensive * Time.deltaTime);
         }

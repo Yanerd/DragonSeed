@@ -38,17 +38,30 @@ public class Vegetable : MonoBehaviour
 
     private void Awake()
     {
-        
-    }
-
-
-    private void Start()
-    {
         Initializing();
 
         CountBar.maxValue = WaterCount;
         CountBar.minValue = 0;
         CountBar.value = 0;
+
+        if(DefenseUIManager.INSTANCE.BUILDINGMODE==false)
+        {
+            if (GameManager.INSTANCE.SCENENUM == 2)
+            {
+                InstOffenseVegetable(SaveLoadManager.INSTANCE.vegetableGrowBarValue, SaveLoadManager.INSTANCE.vegetableWrterValue);
+            }
+            else if (GameManager.INSTANCE.SCENENUM == 1 || GameManager.INSTANCE.SCENENUM == 0)
+            {
+                InstGardeningVegetable(SaveLoadManager.INSTANCE.vegetableGrowBarValue, SaveLoadManager.INSTANCE.vegetableWrterValue);
+            }
+        }
+
+       
+    }
+
+
+    private void Start()
+    {
 
         if (GameManager.INSTANCE.SCENENUM == 1)
         {
@@ -103,14 +116,29 @@ public class Vegetable : MonoBehaviour
         }
     }
 
-    public void PhotonInstDefenseVegetable(float growthValue, int countValue)
+    void InstGardeningVegetable(float growthValue, int countValue)
     {
-        if (CountBar.value == WaterCount) return;
+        Debug.Log(growthValue.ToString());
 
+        if (growthValue>=1f)
+        {
+            this.GrowthValue = growthValue;
+            this.CountValue = countValue;
+
+            growBar.value = growthValue;
+            CountBar.value = countValue;
+
+            growBar.gameObject.SetActive(false);
+            CountBar.gameObject.SetActive(false);
+            Seed.enabled = false;
+            Stem.gameObject.SetActive(false);
+            return;
+        }
         this.GrowthValue = growthValue;
         this.CountValue = countValue;
 
-        CountBar.value = CountValue;
+        growBar.value = growthValue;
+        CountBar.value = countValue;
 
         if (CountBar.value == WaterCount)
         {
@@ -121,20 +149,26 @@ public class Vegetable : MonoBehaviour
         }
     }
 
-    public void PhotonInstOffenseVegetable(float growthValue, int countValue)
+    void InstOffenseVegetable(float growthValue, int countValue)
     {
+        Debug.Log("¤¾¤·");
+        Debug.Log(growthValue.ToString());
+
         this.GrowthValue = growthValue;
         this.CountValue = countValue;
+
+        growBar.value = growthValue;
+        CountBar.value = countValue;
 
         growBar.gameObject.SetActive(false);
         CountBar.gameObject.SetActive(false);
 
-        if (growthValue>=0.5f&& growthValue<1)
+        if (growthValue>=0.5f&& growthValue<1f)
         {
             Seed.enabled = false;
             Stem.gameObject.SetActive(true);
         }
-        if(growthValue>=1)
+        else if(growthValue>=1f)
         {
             Seed.enabled = false;
             Stem.gameObject.SetActive(false);

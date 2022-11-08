@@ -507,18 +507,18 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
     #endregion
 
     #region Change CameraView Coroutine
+
+    Vector3 beforePos = Vector3.zero;
+
     IEnumerator ClosUpCamera()
     {
+        beforePos = Camera.main.transform.position;
+        Camera.main.transform.position = new Vector3(-1.25f, 4.5f, -1.25f);
         while (true)
         {
-            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(-2.5f, 2.9f, -4.1f), Time.deltaTime * 2f);
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(-2.5f, 2.9f, -5.1f), Time.deltaTime * 2f);
 
-            if (Camera.main.orthographicSize >= 0.3f)
-            {
-                Camera.main.orthographicSize -= 0.04f;
-            }
-
-            if (Camera.main.transform.position.z <= -4.08f)
+            if (Camera.main.transform.position.z <= -5.08f)
             {
                 searchRoomButton.interactable = true;
                 yield break;
@@ -527,20 +527,19 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
             yield return null;
         }
     }
+    //new Vector3(-2f,4.5f,-1.8f)
     IEnumerator FadeOutCamera()
     {
+        Debug.Log(beforePos.z);
+        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, beforePos, Time.deltaTime * 2f);
+
         while (true)
         {
-            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(-2.72f, 4.25f, -2.72f), Time.deltaTime * 2f);
 
-            if (Camera.main.orthographicSize <= 1.5f)
-            {
-                Camera.main.orthographicSize += 0.04f;
-            }
-
-            if (Camera.main.transform.position.z >= -2.74f)
+            if (Camera.main.transform.position.z >= beforePos.z-0.02f)
             {
                 searchRoomButton.interactable = true;
+                Camera.main.transform.position = beforePos;
                 yield break;
             }
             yield return null;
@@ -569,7 +568,7 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
         Debug.Log("플레이어 생성");
         PhotonNetwork.Instantiate("O_Farmer", new Vector3(0f, 1f, 0f), Quaternion.identity);
     }
-
+   
     IEnumerator dragonInstantiate()
     {
         Debug.Log("씬 전환중");
@@ -582,8 +581,12 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
         yield return StartCoroutine(CreateDefenseUI());
 
         Debug.Log("드래곤 생성");
+       
         SaveLoadManager.INSTANCE.Load();
+        //SendMessage("GroundSetting", SendMessageOptions.DontRequireReceiver);
     }
+
+   
 
     IEnumerator CreateCam(string camName)
     {

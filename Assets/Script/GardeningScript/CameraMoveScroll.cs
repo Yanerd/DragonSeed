@@ -20,7 +20,7 @@ public class CameraMoveScroll : MonoBehaviour
         if (GameManager.INSTANCE.WANTINVASION)
             return;
 
-        Debug.Log($"{transform.position.x}, {transform.position.y}, {transform.position.z}");
+        //Debug.Log($"{transform.position.x}, {transform.position.y}, {transform.position.z}");
 
         if (Input.GetKey(KeyCode.W) && transform.position.x < 1 * (5 - DefenseUIManager.INSTANCE.MapState))
         {

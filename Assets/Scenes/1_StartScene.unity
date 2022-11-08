@@ -451,6 +451,7 @@ GameObject:
   m_Component:
   - component: {fileID: 633320700}
   - component: {fileID: 633320701}
+  - component: {fileID: 633320702}
   m_Layer: 0
   m_Name: PhotonManager
   m_TagString: Untagged
@@ -496,6 +497,18 @@ MonoBehaviour:
   roomListSpot: {fileID: 2057016284}
   roomPrefab: {fileID: 3693721304313193634, guid: 175fc5c011533de45bb387bd41269861, type: 3}
   emptyRoomPrefab: {fileID: 3547790427312692436, guid: 7ef337c6af6892c4d86d0f49a42fd34f, type: 3}
+--- !u!114 &633320702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 633320699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bebe24a941e3f48419c238b1c4e07d99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &647018166
 GameObject:
   m_ObjectHideFlags: 0
@@ -1658,13 +1671,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d74fbe45827434c930087ab45e7ab6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waterCount: 0
-  plantBarCount: 0
+  vegetableWrterValue: 0
+  vegetableGrowBarValue: 0
   wellBarCount: 0
-  str: 
+  objectName: 
   xpos: 
   ypos: 
   zpos: 
+  convertGroundState: 0
 --- !u!4 &1176968604
 Transform:
   m_ObjectHideFlags: 0
