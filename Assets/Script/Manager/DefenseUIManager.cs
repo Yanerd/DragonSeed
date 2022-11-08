@@ -68,8 +68,8 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
         StoreGroundPage = GameObject.Find("StoreGroundPage");
         GroundScrollView = StoreGroundPage.transform.GetChild(1);
         GroundScrollView.gameObject.SetActive(false);
-        
 
+        
     }
 
     GameObject GardeningMenu;
@@ -104,8 +104,8 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     [SerializeField] TextMeshProUGUI CarrotSeedCount;
     [SerializeField] TextMeshProUGUI EggplantSeedCount;
 
-    Transform[] fence = new Transform[5];
-    Transform[] tree = new Transform[4];
+    Transform[] fence = new Transform[10];
+    Transform[] tree  = new Transform[20];
     [SerializeField] public int MapState;
     /////////////////////////////////////////////////
     #endregion
@@ -184,6 +184,9 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     Vector3 VegetableMenuOriginPos;
     Vector3 BuildingMenuOriginPos;
     Vector3 originMenuPos;
+    Vector3 fenceAndtreePos;
+
+
    
     private void Awake()
     {
@@ -222,7 +225,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
 
             SaveLoadManager.INSTANCE.Load();
         }
-
+        fenceAndtreePos = new Vector3(10f, 10f, 10f);
     }
 
     public override void OnEnable()
@@ -230,22 +233,42 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
         base.OnEnable();
 
         //----------------------------------------------------------
-        for (int i = 0; i < GameObject.Find("fence").transform.childCount; i++)
-        {
-            fence[i] = GameObject.Find("fence").transform.GetChild(i);
-        }
-
-        for (int i = 0; i < GameObject.Find("tree").transform.childCount; i++)
-        {
-            tree[i] = GameObject.Find("tree").transform.GetChild(i);
-        }
-
+        //StartCoroutine(FindLevel());
 
         if (SliderBarList != null && GameManager.INSTANCE.SCENENUM == 1)
         {
             SliderBarList.Clear();
         }
     }
+
+    IEnumerator FindLevel()
+    {
+        GameObject fence= null;
+        GameObject tree = null;
+
+        while (fence==null && tree==null)
+        {
+            fence = GameObject.Find("L_Fence(Clone)");
+            tree  = GameObject.Find("L_Fence(Clone)");
+
+            yield return null;
+        }
+
+        for (int i = 0; i < fence.transform.childCount; i++)
+        {
+            this.fence[i] = fence.transform.GetChild(i);
+        }
+
+        for (int i = 0; i < tree.transform.childCount; i++)
+        {
+            this.tree[i] = tree.transform.GetChild(i);
+        }
+    }
+
+
+
+
+
 
     private void Start()
     {
@@ -747,39 +770,39 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
 
         if (MapState == 5)
         {
-            fence[0].transform.position = new Vector3(10, 10, 10);
-            fence[1].gameObject.SetActive(true);
-            tree[0].gameObject.SetActive(false);
+            SaveLoadManager.INSTANCE.fence[0].transform.position = fenceAndtreePos;
+            SaveLoadManager.INSTANCE.fence[1].gameObject.SetActive(true);
+            SaveLoadManager.INSTANCE.tree[0].gameObject.SetActive(false);
             MapState = 4;
             curGroundState.GetComponent<TextMeshProUGUI>().text = MapState.ToString();
         }
         else if (MapState == 4)
         {
-            fence[1].transform.position = new Vector3(10, 10, 10);
-            fence[2].gameObject.SetActive(true);
-            tree[1].gameObject.SetActive(false);
+            SaveLoadManager.INSTANCE.fence[1].transform.position = fenceAndtreePos;
+            SaveLoadManager.INSTANCE.fence[2].gameObject.SetActive(true);
+            SaveLoadManager.INSTANCE.tree[1].gameObject.SetActive(false);
             MapState = 3;
             curGroundState.GetComponent<TextMeshProUGUI>().text = MapState.ToString();
         }
         else if (MapState == 3)
         {
-            fence[2].transform.position = new Vector3(10, 10, 10);
-            fence[3].gameObject.SetActive(true);
-            tree[2].gameObject.SetActive(false);
+            SaveLoadManager.INSTANCE.fence[2].transform.position = fenceAndtreePos;
+            SaveLoadManager.INSTANCE.fence[3].gameObject.SetActive(true);
+            SaveLoadManager.INSTANCE.tree[2].gameObject.SetActive(false);
             MapState = 2;
             curGroundState.GetComponent<TextMeshProUGUI>().text = MapState.ToString();
         }
         else if (MapState == 2)
         {
-            fence[3].transform.position = new Vector3(10, 10, 10);
-            fence[4].gameObject.SetActive(true);
-            tree[3].gameObject.SetActive(false);
+            SaveLoadManager.INSTANCE.fence[3].transform.position = fenceAndtreePos;
+            SaveLoadManager.INSTANCE.fence[4].gameObject.SetActive(true);
+            SaveLoadManager.INSTANCE.tree[3].gameObject.SetActive(false);
             MapState = 1;
             curGroundState.GetComponent<TextMeshProUGUI>().text = MapState.ToString();
         }
         else if (MapState == 1)
         {
-            fence[4].transform.position = new Vector3(10, 10, 10);
+            SaveLoadManager.INSTANCE.fence[4].transform.position = fenceAndtreePos;
 
             GroundBuyButton.interactable = false;
             MapState = 0;

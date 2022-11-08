@@ -48,11 +48,11 @@ public class Vegetable : MonoBehaviour
         {
             if (GameManager.INSTANCE.SCENENUM == 2)
             {
-                InstOffenseVegetable(SaveLoadManager.INSTANCE.vegetableGrowBarValue, SaveLoadManager.INSTANCE.vegetableWrterValue);
+                InstOffenseVegetable(SaveLoadManager.INSTANCE.vegetableGrowBarValue, SaveLoadManager.INSTANCE.vegetableWaterValue);
             }
             else if (GameManager.INSTANCE.SCENENUM == 1 || GameManager.INSTANCE.SCENENUM == 0)
             {
-                InstGardeningVegetable(SaveLoadManager.INSTANCE.vegetableGrowBarValue, SaveLoadManager.INSTANCE.vegetableWrterValue);
+                InstGardeningVegetable(SaveLoadManager.INSTANCE.vegetableGrowBarValue, SaveLoadManager.INSTANCE.vegetableWaterValue);
             }
         }
 

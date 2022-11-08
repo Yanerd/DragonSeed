@@ -111,8 +111,9 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
                 //Offense scene move -> invasion view
                 GameManager.INSTANCE.ISGAMEIN = true;
                 GameManager.INSTANCE.SCENENUM = 2;
-
-                PhotonNetwork.LoadLevel("3_OffenceScene");
+                
+                //PhotonNetwork.LoadLevel("3_OffenceScene");
+                PhotonNetwork.LoadLevel("Test_OffenceScene");
 
                 Debug.Log("나는 공격");
 
@@ -440,7 +441,8 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
 
             SaveLoadManager.INSTANCE.Save();
 
-            PhotonNetwork.LoadLevel("3_OffenceScene");
+            //PhotonNetwork.LoadLevel("3_OffenceScene");
+            PhotonNetwork.LoadLevel("Test_OffenceScene");
 
             Debug.Log("나는 방어");
 
@@ -551,7 +553,9 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
     {
 
         Debug.Log("씬 전환중");
-        yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "2_GardenningScene");
+        //yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "2_GardenningScene");
+        yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "Test_GardenningScene");
+
         StopCoroutine(instiateCoroutine);
         instiateCoroutine = null;
         yield break;
@@ -559,9 +563,9 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
     IEnumerator playerInstantiate()
     {
         Debug.Log("씬 전환중");
+        //yield return new WaitUntil(() => (SceneManager.GetActiveScene().name == "3_OffenceScene"));
+        yield return new WaitUntil(() => (SceneManager.GetActiveScene().name == "Test_OffenceScene"));
 
-        yield return new WaitUntil(() => (SceneManager.GetActiveScene().name == "3_OffenceScene"));
-        
         yield return StartCoroutine(CreateCam("O_CameraArm"));
 
         yield return StartCoroutine(CreateOffenseUI());
@@ -573,8 +577,8 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
     {
         Debug.Log("씬 전환중");
         
-        yield return new WaitUntil(() => (SceneManager.GetActiveScene().name == "3_OffenceScene"));
-
+        //yield return new WaitUntil(() => (SceneManager.GetActiveScene().name == "3_OffenceScene"));
+        yield return new WaitUntil(() => (SceneManager.GetActiveScene().name == "Test_OffenceScene"));
 
         yield return StartCoroutine(CreateCam("O_DEFMainCamera"));
 

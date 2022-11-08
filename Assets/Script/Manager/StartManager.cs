@@ -50,7 +50,8 @@ public class StartManager : MonoBehaviour
     }
     IEnumerator LoadDefenseScene()
     {
-        AsyncOperation operation = SceneManager.LoadSceneAsync("2_GardenningScene", LoadSceneMode.Additive);
+        //AsyncOperation operation = SceneManager.LoadSceneAsync("2_GardenningScene", LoadSceneMode.Additive);
+        AsyncOperation operation = SceneManager.LoadSceneAsync("Test_GardenningScene", LoadSceneMode.Additive);
 
         while (true)
         {

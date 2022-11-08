@@ -36,7 +36,7 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
     public int? totalObjectCount;
 
     //Slider Value
-    public int vegetableWrterValue;
+    public int vegetableWaterValue;
     public float vegetableGrowBarValue;
     public float wellBarCount;
 
@@ -59,8 +59,8 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
     public int WellCount         { get; set; }
 
     //Level Object
-    Transform[] fence = new Transform[5];
-    Transform[] tree  = new Transform[4];
+    public Transform[] fence = new Transform[10];
+    public Transform[] tree  = new Transform[20];
 
     //Jason File Route
     string path     = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Dragon Seed/" + "/Saves/";
@@ -68,6 +68,7 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
 
     //Inst Object Route 
     private GameObject PoolingZone;
+    private GameObject Level;
     #endregion
 
     private void Awake()
@@ -182,7 +183,7 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
             if (whatYourName[0]=="V")
             {
                 vegetableGrowBarValue = float.Parse(data2.plantBar[vegetableCount] == "" ? "0" : data2.plantBar[vegetableCount]);
-                vegetableWrterValue = int.Parse(data2.water[vegetableCount] == "" ? "0" : data2.water[vegetableCount]);
+                vegetableWaterValue = int.Parse(data2.water[vegetableCount] == "" ? "0" : data2.water[vegetableCount]);
                 VegetableInst(data2.name[i], vector3);
                 vegetableCount++;
             }
@@ -264,26 +265,45 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
             instObject = Instantiate(obj, pos, Quaternion.identity, PoolingZone.transform);
         }
     }
-
     
     public void GroundInst()
     {
-        Debug.Log(convertGroundState);
+        Vector3 fencePos = new Vector3(0.06f, 4.1f, -0.16f);
+        Vector3 treePos  = new Vector3(0.06f, 4.3f, -0.16f);
+        GameObject fence = Resources.Load<GameObject>("L_Fence");
+        GameObject tree  = Resources.Load<GameObject>("L_Tree");
+        GameObject instFence = null;
+        GameObject instTree  = null;
+
         DefenseUIManager.INSTANCE.MapState = convertGroundState;
-        for (int i = 0; i < GameObject.Find("fence").transform.childCount; i++)
+
+        if (GameManager.INSTANCE.ISGAMEIN == true)
         {
-            fence[i] = GameObject.Find("fence").transform.GetChild(i);
+            instFence = PhotonNetwork.Instantiate("L_Fence", fencePos, Quaternion.identity);
+            instTree = PhotonNetwork.Instantiate("L_Tree", fencePos, Quaternion.identity);
+        }
+        else
+        {
+            Level = GameObject.Find("Level");
+            instFence = Instantiate(fence, fencePos, Quaternion.identity, Level.transform);
+            instTree  = Instantiate(tree, treePos, Quaternion.identity, Level.transform);
         }
 
-        for (int i = 0; i < GameObject.Find("tree").transform.childCount; i++)
+        for (int i = 0; i < instFence.transform.childCount; i++)
         {
-            tree[i] = GameObject.Find("tree").transform.GetChild(i);
+            this.fence[i] = instFence.transform.GetChild(i);
         }
 
-        PhotonInstGround(fence, tree, convertGroundState);
+        for (int i = 0; i < instTree.transform.childCount; i++)
+        {
+            this.tree[i] = instTree.transform.GetChild(i);
+        }
+
+
+        InstGround(this.fence, this.tree, convertGroundState);
     }
 
-    public void PhotonInstGround(Transform[] fence, Transform[] tree, int mapState)
+    public void InstGround(Transform[] fence, Transform[] tree, int mapState)
     {
         if (mapState == 4)
         {
