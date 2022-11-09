@@ -27,7 +27,7 @@ public class TargetObject : MonoBehaviour
         timer += Time.deltaTime;
 
         // 드래곤이 일정시간동안 오브젝트를 찾지 못했을 때 재생성
-        if (timer > 5f)
+        if (timer > 10f)
         {
             timer = 0f;
             CreatNewPosition();
