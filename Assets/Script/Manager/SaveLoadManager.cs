@@ -212,9 +212,7 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
         DefenseUIManager.INSTANCE.MapState          = convertGroundState;
         DefenseUIManager.INSTANCE.Gold              = Gold;
 
-        Debug.Log(Gold);
-        Debug.Log(DefenseUIManager.INSTANCE.Gold);
-
+       
 
         for (int i = 0; i < ObjCount; i++)
         {
@@ -331,7 +329,7 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
             instMaplevel = PhotonNetwork.Instantiate("L_MapState_"+mapState.ToString(), levelPos, Quaternion.identity);
         }
         else
-        {
+        {            
             Level = GameObject.Find("Level");
             instMaplevel = Instantiate(maplevel, levelPos, Quaternion.identity, Level.transform);
         }

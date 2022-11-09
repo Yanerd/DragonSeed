@@ -34,8 +34,8 @@ public class StartManager : MonoBehaviour
     {
         while (true)
         {
-            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(-2.72f, 4.25f, -2.72f), Time.deltaTime);
-            if (Camera.main.transform.position.x > -2.8f)
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(-3.83f, 3f, -3.83f), Time.deltaTime);
+            if (Camera.main.transform.position.x > -3.85f)
             {
                 for (int i = 0; i < ActiveFalsedObj.Length; i++)
                 {
@@ -54,8 +54,6 @@ public class StartManager : MonoBehaviour
 
         while (true)
         {
-
-
             if (operation.isDone && PhotonManager.INSTANCE.testName != null)
             {
                 SaveLoadManager.INSTANCE.InitLoad();

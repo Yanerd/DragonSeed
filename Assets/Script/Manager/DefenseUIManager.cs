@@ -127,8 +127,9 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     #region Object Amount
     /////////////////////////////////////////////////
     [Header("[GameMoney(Zera)]")]
-    [SerializeField] TextMeshProUGUI GameMoney;
-    
+    [SerializeField] TextMeshProUGUI GoldText;
+    [SerializeField] TextMeshProUGUI ZeraText;
+
     [Header("Cur DragonCount")]
     [SerializeField] TextMeshProUGUI curPotato;
     [SerializeField] TextMeshProUGUI curApple;
@@ -184,7 +185,8 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     Vector3 VegetableMenuOriginPos;
     Vector3 BuildingMenuOriginPos;
     Vector3 originMenuPos;
-    Vector3 levelPos; 
+    Vector3 levelPos;
+    Vector3 levelDisPos;
 
     GameObject level = null;
 
@@ -226,6 +228,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
             SaveLoadManager.INSTANCE.Load();
         }
         levelPos = new Vector3(0.06f, 4.1f, -0.16f);
+        levelDisPos = new Vector3(10f, 10f, 10f);
     }
 
     public override void OnEnable()
@@ -254,7 +257,8 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
 
     private void Update()
     {
-        GameMoney.text = Gold.ToString();
+        GoldText.text = Gold.ToString();
+        ZeraText.text = MetaTrendAPIHandler.INSTANCE.ZERA.ToString();   
 
         if (GameManager.INSTANCE.SCENENUM == 1)
         {
@@ -315,7 +319,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
         curEggplant.text = "Eggplant : " + eggplantSeedCount.ToString();
         curWell.text     = "Well : " + wellCount.ToString();
         curHouse.text    = "House : " + houseCount.ToString();
-        GameMoney.text   = Gold.ToString();
+        GoldText.text   = Gold.ToString();
 
         PotatoSeedCount.text = "Seed : " + potatoSeedCount;
         AppleSeedCount.text = "Seed : " + appleSeedCount;
@@ -629,7 +633,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
 
         //gold calculation
         Gold += dragonData[0].SalePrice;
-        GameMoney.text = Gold.ToString();
+        GoldText.text = Gold.ToString();
 
         //bring instance list 
         List<GameObject> instList = new List<GameObject>();
@@ -651,7 +655,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
         if (GameManager.INSTANCE.appleDragonList.Count == 0) return;
 
         Gold += dragonData[1].SalePrice;
-        GameMoney.text = Gold.ToString();
+        GoldText.text = Gold.ToString();
 
         ObjectPoolingManager.inst.Destroy(GameManager.INSTANCE.appleDragonList[0]);
         GameManager.INSTANCE.appleDragonList.RemoveAt(0);
@@ -662,7 +666,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
         if (GameManager.INSTANCE.cabbageDragonList.Count == 0) return;
 
         Gold += dragonData[2].SalePrice;
-        GameMoney.text = Gold.ToString();
+        GoldText.text = Gold.ToString();
 
         ObjectPoolingManager.inst.Destroy(GameManager.INSTANCE.cabbageDragonList[0]);
         GameManager.INSTANCE.cabbageDragonList.RemoveAt(0);
@@ -673,7 +677,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
         if (GameManager.INSTANCE.carrotDragonList.Count == 0) return;
 
         Gold += dragonData[3].SalePrice;
-        GameMoney.text = Gold.ToString();
+        GoldText.text = Gold.ToString();
 
         ObjectPoolingManager.inst.Destroy(GameManager.INSTANCE.carrotDragonList[0]);
         GameManager.INSTANCE.carrotDragonList.RemoveAt(0);
@@ -684,7 +688,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
         if (GameManager.INSTANCE.eggplantDragonList.Count == 0) return;
 
         Gold += dragonData[4].SalePrice;
-        GameMoney.text = Gold.ToString();
+        GoldText.text = Gold.ToString();
 
         ObjectPoolingManager.inst.Destroy(GameManager.INSTANCE.eggplantDragonList[0]);
         GameManager.INSTANCE.eggplantDragonList.RemoveAt(0);
@@ -696,7 +700,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     {
         potatoSeedCount++;
         Gold -= vegetableData[0].PurchasePrice;
-        GameMoney.text = Gold.ToString();
+        GoldText.text = Gold.ToString();
         PotatoSeedCount.text = "Seed : " + potatoSeedCount;
 
     }
@@ -704,42 +708,42 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     {
         appleSeedCount++;
         Gold -= vegetableData[1].PurchasePrice;
-        GameMoney.text = Gold.ToString();
+        GoldText.text = Gold.ToString();
         AppleSeedCount.text = "Seed : " + appleSeedCount;
     }
     public void BuyCabbageSeed()
     {
         cabbageSeedCount++;
         Gold -= vegetableData[2].PurchasePrice;
-        GameMoney.text = Gold.ToString();
+        GoldText.text = Gold.ToString();
         CabbageSeedCount.text = "Seed : " + cabbageSeedCount;
     }
     public void BuyCarrotSeed()
     {
         carrotSeedCount++;
         Gold -= vegetableData[3].PurchasePrice;
-        GameMoney.text = Gold.ToString();
+        GoldText.text = Gold.ToString();
         CarrotSeedCount.text = "Seed : " + carrotSeedCount;
     }
     public void BuyEggplantSeed()
     {
         eggplantSeedCount++;
         Gold -= vegetableData[4].PurchasePrice;
-        GameMoney.text = Gold.ToString();
+        GoldText.text = Gold.ToString();
         EggplantSeedCount.text = "Seed : " + eggplantSeedCount;
     }
     public void BuyHouse()
     {
         houseCount++;
         Gold -= housePrice;
-        GameMoney.text = Gold.ToString();
+        GoldText.text = Gold.ToString();
         BringObjectCount();
     }
     public void BuyWell()
     {
         wellCount++;
         Gold -= wellPrice;
-        GameMoney.text = Gold.ToString();
+        GoldText.text = Gold.ToString();
         BringObjectCount();
     }
 
@@ -749,10 +753,11 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
 
         if (SaveLoadManager.INSTANCE.instMaplevel != null)
         {
-            Destroy(SaveLoadManager.INSTANCE.instMaplevel);
+            SaveLoadManager.INSTANCE.instMaplevel.transform.position = levelDisPos;
         }
 
-        if (level != null) Destroy(level);
+        // if (level != null) Destroy(level);
+        if (level != null) level.transform.position = levelDisPos;
 
         MapState--;
         curGroundState.GetComponent<TextMeshProUGUI>().text = MapState.ToString();
@@ -765,8 +770,6 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
         }
             
         level = Instantiate(levelPrefab, levelPos, Quaternion.identity);
-
-        
 
     }
 

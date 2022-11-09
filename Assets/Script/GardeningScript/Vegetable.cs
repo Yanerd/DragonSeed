@@ -118,7 +118,6 @@ public class Vegetable : MonoBehaviour
 
     void InstGardeningVegetable(float growthValue, int countValue)
     {
-        Debug.Log(growthValue.ToString());
 
         if (growthValue>=1f)
         {

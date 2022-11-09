@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
 using Photon.Pun;
-using Photon.Realtime;
+using System.Collections;
+using UnityEngine;
 
 public class Dragon : MonoBehaviourPun
 {
@@ -97,7 +94,7 @@ public class Dragon : MonoBehaviourPun
         dragonEvent = GetComponent<EventReciever>();
 
 
-        
+
         // 체력 초기화
         curHP = maxHP;
 
@@ -131,14 +128,14 @@ public class Dragon : MonoBehaviourPun
         while (true)
         {
             targetPlayer = FindObjectOfType<PlayerController>();
-            Debug.Log("졸라찾기");
+            //Debug.Log("졸라찾기");
             if (targetPlayer != null)
             {
                 if (targetPlayer.name == "O_Farmer(Clone)")
                 {
-                    Debug.Log($"졸라 찾았음{targetPlayer.name}");
+                    //Debug.Log($"졸라 찾았음{targetPlayer.name}");
 
-                    StopCoroutine(enumerator    );
+                    StopCoroutine(enumerator);
                     yield break;
                 }
             }
@@ -155,7 +152,7 @@ public class Dragon : MonoBehaviourPun
     {
         // 드래곤이 생성되면 IDLE 상태를 2초정도 지속 후 MOVE 상태로 이동
         StartCoroutine(IDLE_ST());
-        
+
     }
 
 
@@ -265,21 +262,21 @@ public class Dragon : MonoBehaviourPun
             {
                 //Debug.Log("방 안이고 내꺼임");
                 this.GetComponent<Rigidbody>().position += this.transform.forward * speed * Time.deltaTime;
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(ObjectToMove), Time.deltaTime*4);
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(ObjectToMove), Time.deltaTime * 4);
             }
             else
             {
                 //Debug.Log("방 안이고 내꺼 아님");
             }
-            
+
         }
         else
         {
             //Debug.Log("방 밖임");
             this.GetComponent<Rigidbody>().position += this.transform.forward * speed * Time.deltaTime;
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(ObjectToMove), Time.deltaTime*4);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(ObjectToMove), Time.deltaTime * 4);
         }
-        
+
     }
 
 
@@ -316,7 +313,7 @@ public class Dragon : MonoBehaviourPun
 
     public enum STATE
     {
-        NONE, IDLE, MOVE, MOVERATE, FIND, TRKING, ATTACK, DIE
+        NONE, IDLE, MOVE, MOVERATE, FIND, TRKING, ATTACK, DIE, RANDOMMOTION
     }
 
 
@@ -381,7 +378,7 @@ public class Dragon : MonoBehaviourPun
 
 
 
-    // 멈춤
+    //멈춤 - 이거 그거임 타겟 먹으면 멈추는거
 
     IEnumerator MOVERATE_ST()
     {
@@ -389,12 +386,31 @@ public class Dragon : MonoBehaviourPun
         //애니메이션 호출
         myAnimation.SetBool("move", false);
 
-        yield return new WaitForSeconds(1.5f);
-        nextState(STATE.MOVE);
-
+        yield return new WaitForSeconds(0f);
+            nextState(STATE.RANDOMMOTION);
     }
 
-
+    IEnumerator RANDOMMOTION_ST()
+    {
+        int randMotion = Random.Range(0, 3);
+        switch (randMotion)
+        {
+            case 0:
+                myAnimation.SetTrigger("Eat");
+                Debug.Log("먹어!");
+                break;
+            case 1:
+                myAnimation.SetTrigger("Dead");
+                Debug.Log("죽어!");
+                break;
+            case 2:
+                myAnimation.SetTrigger("Roar");
+                Debug.Log("짖어!");
+                break;
+        }
+        yield return new WaitForSeconds(4f);
+        nextState(STATE.MOVE);
+    }
 
 
 
@@ -434,7 +450,7 @@ public class Dragon : MonoBehaviourPun
             yield return null;
 
         }
-       
+
 
     }
 

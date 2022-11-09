@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dragonType: D_Eggplagon
   attackPower: 50
-  attackRange: 1.8
+  attackRange: 0.6
   attackInterval: 1.2
   hp: 300
   speed: 1.8

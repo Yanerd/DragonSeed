@@ -31,7 +31,6 @@ public class WellBar : MonoBehaviour
         }
         else
         {
-            Debug.Log(SaveLoadManager.INSTANCE.wellBarCount.ToString());
             InstGardeningWell(SaveLoadManager.INSTANCE.wellBarCount);
         }
 

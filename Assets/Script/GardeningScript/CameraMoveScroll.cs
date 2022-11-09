@@ -20,23 +20,68 @@ public class CameraMoveScroll : MonoBehaviour
         if (GameManager.INSTANCE.WANTINVASION)
             return;
 
-        //Debug.Log($"{transform.position.x}, {transform.position.y}, {transform.position.z}");
+        float maxLimit = 3 + (5 - DefenseUIManager.INSTANCE.MapState);
+        float minLimit = -1f;
 
-        if (Input.GetKey(KeyCode.W) && transform.position.x < 1 * (5 - DefenseUIManager.INSTANCE.MapState))
+        if (Input.GetKey(KeyCode.W) && (transform.position.x < maxLimit || transform.position.z < maxLimit))
         {
-            transform.position += Vector3.right * Time.deltaTime;
+            if (transform.position.z > maxLimit)
+            {
+                transform.position += Vector3.right * Time.deltaTime;
+            }
+            else if (transform.position.x > maxLimit)
+            {
+                transform.position += Vector3.forward * Time.deltaTime;
+            }
+            else
+            { 
+                transform.position += (Vector3.right + Vector3.forward).normalized * Time.deltaTime;
+            }
         }
-        else if (Input.GetKey(KeyCode.A) && transform.position.z < 1 * (5 - DefenseUIManager.INSTANCE.MapState))
+        if (Input.GetKey(KeyCode.A) && (transform.position.z < maxLimit || transform.position.x > minLimit))
         {
-            transform.position += Vector3.forward * Time.deltaTime;
+            if (transform.position.z > maxLimit)
+            {
+                transform.position += Vector3.left * Time.deltaTime;
+            }
+            else if (transform.position.x < minLimit)
+            {
+                transform.position += Vector3.forward * Time.deltaTime;
+            }
+            else
+            {
+                transform.position += (Vector3.forward + Vector3.left).normalized * Time.deltaTime;
+            }
         }
-        else if (Input.GetKey(KeyCode.S) && transform.position.x > -5)
+        if (Input.GetKey(KeyCode.S) && (transform.position.z > minLimit || transform.position.x > minLimit))
         {
-            transform.position += Vector3.left * Time.deltaTime;
+            if (transform.position.z < minLimit)
+            {
+                transform.position += Vector3.left * Time.deltaTime;
+            }
+            else if (transform.position.x < minLimit)
+            {
+                transform.position += Vector3.back * Time.deltaTime;
+            }
+            else
+            {
+                transform.position += (Vector3.left + Vector3.back).normalized * Time.deltaTime;
+            }
         }
-        else if (Input.GetKey(KeyCode.D) && transform.position.z > -5)
+        if (Input.GetKey(KeyCode.D) && (transform.position.z > minLimit || transform.position.x < maxLimit))
         {
-            transform.position += Vector3.back * Time.deltaTime;
+            if (transform.position.z < minLimit)
+            {
+                transform.position += Vector3.right * Time.deltaTime;
+            }
+            else if (transform.position.x > maxLimit)
+            {
+                transform.position += Vector3.back * Time.deltaTime;
+            }
+            else
+            {
+                transform.position += (Vector3.back + Vector3.right).normalized * Time.deltaTime;
+            }
         }
     }
 
