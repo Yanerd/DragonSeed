@@ -101,8 +101,6 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
             INABLE = true;
         }
 
-        connectInfo.text = PhotonNetwork.NetworkClientState.ToString();
-
         //this parts detecting clients alived athor room successfully ->this clients be a invader
         if (PhotonNetwork.InRoom && PhotonNetwork.CurrentRoom.PlayerCount == 2 && GameManager.INSTANCE.ISGAMEIN == false)
         {
@@ -111,7 +109,7 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
                 //Offense scene move -> invasion view
                 GameManager.INSTANCE.ISGAMEIN = true;
                 GameManager.INSTANCE.SCENENUM = 2;
-
+                
                 PhotonNetwork.LoadLevel("3_OffenceScene");
 
                 Debug.Log("³ª´Â °ø°Ý");
@@ -552,6 +550,7 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
 
         Debug.Log("¾À ÀüÈ¯Áß");
         yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "2_GardenningScene");
+
         StopCoroutine(instiateCoroutine);
         instiateCoroutine = null;
         yield break;
@@ -559,9 +558,8 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
     IEnumerator playerInstantiate()
     {
         Debug.Log("¾À ÀüÈ¯Áß");
-
         yield return new WaitUntil(() => (SceneManager.GetActiveScene().name == "3_OffenceScene"));
-        
+
         yield return StartCoroutine(CreateCam("O_CameraArm"));
 
         yield return StartCoroutine(CreateOffenseUI());
@@ -574,7 +572,6 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
         Debug.Log("¾À ÀüÈ¯Áß");
         
         yield return new WaitUntil(() => (SceneManager.GetActiveScene().name == "3_OffenceScene"));
-
 
         yield return StartCoroutine(CreateCam("O_DEFMainCamera"));
 

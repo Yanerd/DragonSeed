@@ -27,6 +27,7 @@ public class Data
     public string houseCount;
     public string wellCount;
     public string groundState;
+    public string gold;
 }
 
 public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
@@ -36,7 +37,7 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
     public int? totalObjectCount;
 
     //Slider Value
-    public int vegetableWrterValue;
+    public int vegetableWaterValue;
     public float vegetableGrowBarValue;
     public float wellBarCount;
 
@@ -58,9 +59,12 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
     public int HouseCount        { get; set; }
     public int WellCount         { get; set; }
 
+    public int Gold              { get; set; }
+
+
     //Level Object
-    Transform[] fence = new Transform[5];
-    Transform[] tree  = new Transform[4];
+    public Transform[] fence = new Transform[10];
+    public Transform[] tree  = new Transform[20];
 
     //Jason File Route
     string path     = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Dragon Seed/" + "/Saves/";
@@ -68,6 +72,8 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
 
     //Inst Object Route 
     private GameObject PoolingZone;
+    private GameObject Level;
+    public GameObject instMaplevel;
     #endregion
 
     private void Awake()
@@ -107,6 +113,7 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
         data.eggplantSeedCount = DefenseUIManager.INSTANCE.eggplantSeedCount.ToString();
         data.houseCount        = DefenseUIManager.INSTANCE.houseCount.ToString();
         data.wellCount         = DefenseUIManager.INSTANCE.wellCount.ToString();
+        data.gold              = DefenseUIManager.INSTANCE.Gold.ToString();
         data.saveListCount     = totalObjectCount == null ? "0" : totalObjectCount.ToString();
         #endregion
 
@@ -137,6 +144,30 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
         }
         File.WriteAllText(path + fileName, Encryption.Encrypt((JsonUtility.ToJson(data)), "key"));
     }
+    public void Save(bool init)
+    {
+        if (init)
+        {
+            Directory.CreateDirectory(path);
+
+            Data data = new Data();
+
+            #region data Save
+            data.groundState = "5";
+            data.potatoSeedCount = "1";
+            data.appleSeedCount = "0";
+            data.cabbageSeedCount = "0";
+            data.carrotSeedCount = "0";
+            data.eggplantSeedCount = "0";
+            data.houseCount = "1";
+            data.wellCount = "1";
+            data.gold = "500";
+            data.saveListCount = "0";
+            #endregion
+
+            File.WriteAllText(path + fileName, Encryption.Encrypt((JsonUtility.ToJson(data)), "key"));
+        }
+    }
 
     public void Load()
     {
@@ -159,15 +190,31 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
 
         Data data2 = JsonUtility.FromJson<Data>(File.ReadAllText(path + "/Read.json"));
 
-        ObjCount           = int.Parse(data2.saveListCount     == "" ? "0" : data2.saveListCount);
+        ObjCount           = int.Parse(data2.saveListCount     == "" ? "1" : data2.saveListCount);
         potatoSeedCount    = int.Parse(data2.potatoSeedCount   == "" ? "0" : data2.potatoSeedCount);
         appleSeedCount     = int.Parse(data2.appleSeedCount    == "" ? "0" : data2.appleSeedCount);
         cabbageSeedCount   = int.Parse(data2.cabbageSeedCount  == "" ? "0" : data2.cabbageSeedCount);
         carrotSeedCount    = int.Parse(data2.carrotSeedCount   == "" ? "0" : data2.carrotSeedCount);
         eggplantSeedCount  = int.Parse(data2.eggplantSeedCount == "" ? "0" : data2.eggplantSeedCount);
-        HouseCount         = int.Parse(data2.houseCount        == "" ? "0" : data2.houseCount);
-        WellCount          = int.Parse(data2.wellCount         == "" ? "0" : data2.wellCount);
+        HouseCount         = int.Parse(data2.houseCount        == "" ? "1" : data2.houseCount);
+        WellCount          = int.Parse(data2.wellCount         == "" ? "1" : data2.wellCount);
         convertGroundState = int.Parse(data2.groundState       == "" ? "0" : data2.groundState);
+        Gold               = int.Parse(data2.gold == "" ? "500" : data2.gold);
+
+
+        DefenseUIManager.INSTANCE.potatoSeedCount   = potatoSeedCount;
+        DefenseUIManager.INSTANCE.appleSeedCount    = appleSeedCount;
+        DefenseUIManager.INSTANCE.cabbageSeedCount  = cabbageSeedCount;
+        DefenseUIManager.INSTANCE.carrotSeedCount   = carrotSeedCount;
+        DefenseUIManager.INSTANCE.eggplantSeedCount = eggplantSeedCount;
+        DefenseUIManager.INSTANCE.houseCount        = HouseCount;
+        DefenseUIManager.INSTANCE.wellCount         = WellCount;
+        DefenseUIManager.INSTANCE.MapState          = convertGroundState;
+        DefenseUIManager.INSTANCE.Gold              = Gold;
+
+        Debug.Log(Gold);
+        Debug.Log(DefenseUIManager.INSTANCE.Gold);
+
 
         for (int i = 0; i < ObjCount; i++)
         {
@@ -182,7 +229,7 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
             if (whatYourName[0]=="V")
             {
                 vegetableGrowBarValue = float.Parse(data2.plantBar[vegetableCount] == "" ? "0" : data2.plantBar[vegetableCount]);
-                vegetableWrterValue = int.Parse(data2.water[vegetableCount] == "" ? "0" : data2.water[vegetableCount]);
+                vegetableWaterValue = int.Parse(data2.water[vegetableCount] == "" ? "0" : data2.water[vegetableCount]);
                 VegetableInst(data2.name[i], vector3);
                 vegetableCount++;
             }
@@ -200,7 +247,7 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
             else
                 Inst(data2.name[i], vector3);
         }
-        GroundInst();
+        GroundInst(convertGroundState);
         
     }
 
@@ -211,6 +258,11 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
         // There's no directory
         if (Directory.Exists(path) == true)
         {
+            Load();
+        }
+        else
+        {
+            Save(true);
             Load();
         }
     }
@@ -264,77 +316,27 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
             instObject = Instantiate(obj, pos, Quaternion.identity, PoolingZone.transform);
         }
     }
-
     
-    public void GroundInst()
+    public void GroundInst(int mapState)
     {
-        Debug.Log(convertGroundState);
-        DefenseUIManager.INSTANCE.MapState = convertGroundState;
-        for (int i = 0; i < GameObject.Find("fence").transform.childCount; i++)
-        {
-            fence[i] = GameObject.Find("fence").transform.GetChild(i);
-        }
+        Vector3 levelPos = new Vector3(0.06f, 4.1f, -0.16f);
 
-        for (int i = 0; i < GameObject.Find("tree").transform.childCount; i++)
-        {
-            tree[i] = GameObject.Find("tree").transform.GetChild(i);
-        }
+        GameObject maplevel = Resources.Load<GameObject>("L_MapState_"+mapState.ToString());
+        instMaplevel = null;
 
-        PhotonInstGround(fence, tree, convertGroundState);
-    }
+        
 
-    public void PhotonInstGround(Transform[] fence, Transform[] tree, int mapState)
-    {
-        if (mapState == 4)
+        if (GameManager.INSTANCE.ISGAMEIN == true)
         {
-            fence[0].transform.position = new Vector3(10, 10, 10);
-            fence[1].gameObject.SetActive(true);
-            tree[0].gameObject.SetActive(false);
+            instMaplevel = PhotonNetwork.Instantiate("L_MapState_"+mapState.ToString(), levelPos, Quaternion.identity);
         }
-        else if (mapState == 3)
+        else
         {
-            fence[0].transform.position = new Vector3(10, 10, 10);
-            fence[1].transform.position = new Vector3(10, 10, 10);
-            fence[2].gameObject.SetActive(true);
-            tree[0].gameObject.SetActive(false);
-            tree[1].gameObject.SetActive(false);
-        }
-        else if (mapState == 2)
-        {
-            fence[0].transform.position = new Vector3(10, 10, 10);
-            fence[1].transform.position = new Vector3(10, 10, 10);
-            fence[2].transform.position = new Vector3(10, 10, 10);
-            fence[3].gameObject.SetActive(true);
-            tree[0].gameObject.SetActive(false);
-            tree[1].gameObject.SetActive(false);
-            tree[2].gameObject.SetActive(false);
-        }
-        else if (mapState == 1)
-        {
-            fence[0].transform.position = new Vector3(10, 10, 10);
-            fence[1].transform.position = new Vector3(10, 10, 10);
-            fence[2].transform.position = new Vector3(10, 10, 10);
-            fence[3].transform.position = new Vector3(10, 10, 10);
-            fence[4].gameObject.SetActive(true);
-
-            tree[0].gameObject.SetActive(false);
-            tree[1].gameObject.SetActive(false);
-            tree[2].gameObject.SetActive(false);
-            tree[3].gameObject.SetActive(false);
-        }
-        else if (mapState == 0)
-        {
-            fence[0].transform.position = new Vector3(10, 10, 10);
-            fence[1].transform.position = new Vector3(10, 10, 10);
-            fence[2].transform.position = new Vector3(10, 10, 10);
-            fence[3].transform.position = new Vector3(10, 10, 10);
-            fence[4].transform.position = new Vector3(10, 10, 10);
-            tree[0].gameObject.SetActive(false);
-            tree[1].gameObject.SetActive(false);
-            tree[2].gameObject.SetActive(false);
-            tree[3].gameObject.SetActive(false);
+            Level = GameObject.Find("Level");
+            instMaplevel = Instantiate(maplevel, levelPos, Quaternion.identity, Level.transform);
         }
     }
+   
 }
 
 

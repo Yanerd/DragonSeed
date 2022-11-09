@@ -68,8 +68,8 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
         StoreGroundPage = GameObject.Find("StoreGroundPage");
         GroundScrollView = StoreGroundPage.transform.GetChild(1);
         GroundScrollView.gameObject.SetActive(false);
-        
 
+        
     }
 
     GameObject GardeningMenu;
@@ -104,8 +104,8 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     [SerializeField] TextMeshProUGUI CarrotSeedCount;
     [SerializeField] TextMeshProUGUI EggplantSeedCount;
 
-    Transform[] fence = new Transform[5];
-    Transform[] tree = new Transform[4];
+    Transform[] fence = new Transform[10];
+    Transform[] tree  = new Transform[20];
     [SerializeField] public int MapState;
     /////////////////////////////////////////////////
     #endregion
@@ -166,7 +166,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
 
     //GameManager value
     /////////////////////////////////////////////////////
-    int Gold;
+    public int Gold;
     int groundPrice = 1000;
     int housePrice = 500;
     int wellPrice = 500;
@@ -184,6 +184,10 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     Vector3 VegetableMenuOriginPos;
     Vector3 BuildingMenuOriginPos;
     Vector3 originMenuPos;
+    Vector3 levelPos; 
+
+    GameObject level = null;
+
    
     private void Awake()
     {
@@ -197,8 +201,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
         DontDestroyOnLoad(this.gameObject);
 
         //MapState = 5;
-        Gold = 5000;
-        GameMoney.text = Gold.ToString();
+        //Gold = 5000;
 
         //button is clicked Permit
         onMenu = false;
@@ -222,7 +225,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
 
             SaveLoadManager.INSTANCE.Load();
         }
-
+        levelPos = new Vector3(0.06f, 4.1f, -0.16f);
     }
 
     public override void OnEnable()
@@ -230,30 +233,29 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
         base.OnEnable();
 
         //----------------------------------------------------------
-        for (int i = 0; i < GameObject.Find("fence").transform.childCount; i++)
-        {
-            fence[i] = GameObject.Find("fence").transform.GetChild(i);
-        }
-
-        for (int i = 0; i < GameObject.Find("tree").transform.childCount; i++)
-        {
-            tree[i] = GameObject.Find("tree").transform.GetChild(i);
-        }
+        //StartCoroutine(FindLevel());
 
 
         if (SliderBarList != null && GameManager.INSTANCE.SCENENUM == 1)
         {
             SliderBarList.Clear();
         }
+        
     }
+
+
+
 
     private void Start()
     {
-        defenseUI.targetDisplay = 1;   
+        defenseUI.targetDisplay = 1;
+
     }
 
     private void Update()
     {
+        GameMoney.text = Gold.ToString();
+
         if (GameManager.INSTANCE.SCENENUM == 1)
         {
             defenseUI.targetDisplay = 0;
@@ -608,6 +610,8 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     }
     public void ClickStoreGroundPage()
     {
+        curGroundState.GetComponent<TextMeshProUGUI>().text = MapState.ToString();
+
         GroundScrollView.gameObject.SetActive(true);
         VegetableScrollView.gameObject.SetActive(false);
         BuildingScrollView.gameObject.SetActive(false);
@@ -738,53 +742,31 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
         GameMoney.text = Gold.ToString();
         BringObjectCount();
     }
+
     public void BuyGround()
     {
         if (MapState == 0) return;
 
-        Gold -= groundPrice;
-        GameMoney.text = Gold.ToString();
+        if (SaveLoadManager.INSTANCE.instMaplevel != null)
+        {
+            Destroy(SaveLoadManager.INSTANCE.instMaplevel);
+        }
 
-        if (MapState == 5)
-        {
-            fence[0].transform.position = new Vector3(10, 10, 10);
-            fence[1].gameObject.SetActive(true);
-            tree[0].gameObject.SetActive(false);
-            MapState = 4;
-            curGroundState.GetComponent<TextMeshProUGUI>().text = MapState.ToString();
-        }
-        else if (MapState == 4)
-        {
-            fence[1].transform.position = new Vector3(10, 10, 10);
-            fence[2].gameObject.SetActive(true);
-            tree[1].gameObject.SetActive(false);
-            MapState = 3;
-            curGroundState.GetComponent<TextMeshProUGUI>().text = MapState.ToString();
-        }
-        else if (MapState == 3)
-        {
-            fence[2].transform.position = new Vector3(10, 10, 10);
-            fence[3].gameObject.SetActive(true);
-            tree[2].gameObject.SetActive(false);
-            MapState = 2;
-            curGroundState.GetComponent<TextMeshProUGUI>().text = MapState.ToString();
-        }
-        else if (MapState == 2)
-        {
-            fence[3].transform.position = new Vector3(10, 10, 10);
-            fence[4].gameObject.SetActive(true);
-            tree[3].gameObject.SetActive(false);
-            MapState = 1;
-            curGroundState.GetComponent<TextMeshProUGUI>().text = MapState.ToString();
-        }
-        else if (MapState == 1)
-        {
-            fence[4].transform.position = new Vector3(10, 10, 10);
+        if (level != null) Destroy(level);
 
+        MapState--;
+        curGroundState.GetComponent<TextMeshProUGUI>().text = MapState.ToString();
+        GameObject levelPrefab = Resources.Load<GameObject>("L_MapState_" + MapState.ToString());
+
+        if (MapState == 0)
+        {
             GroundBuyButton.interactable = false;
-            MapState = 0;
-            curGroundState.GetComponent<TextMeshProUGUI>().text = MapState.ToString();
+            return;
         }
+            
+        level = Instantiate(levelPrefab, levelPos, Quaternion.identity);
+
+        
 
     }
 
@@ -959,64 +941,6 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
         ObjectPoolingManager.inst.ObjectDisappear();
     }
     #endregion
-
- 
-    public void PhotonInstGround(Transform [] fence,Transform[] tree, int mapState)
-    {
-        if (mapState == 4)
-        {
-            fence[0].transform.position = new Vector3(10, 10, 10);
-            fence[1].gameObject.SetActive(true);
-            tree[0].gameObject.SetActive(false);
-        }
-        else if (mapState == 3)
-        {
-            fence[0].transform.position = new Vector3(10, 10, 10);
-            fence[1].transform.position = new Vector3(10, 10, 10);
-            fence[2].gameObject.SetActive(true);
-            tree[0].gameObject.SetActive(false);
-            tree[1].gameObject.SetActive(false);
-        }
-        else if (mapState == 2)
-        {
-            fence[0].transform.position = new Vector3(10, 10, 10);
-            fence[1].transform.position = new Vector3(10, 10, 10);
-            fence[2].transform.position = new Vector3(10, 10, 10);
-            fence[3].gameObject.SetActive(true);
-            tree[0].gameObject.SetActive(false);
-            tree[1].gameObject.SetActive(false);
-            tree[2].gameObject.SetActive(false);
-        }
-        else if (mapState == 1)
-        {
-            fence[0].transform.position = new Vector3(10, 10, 10);
-            fence[1].transform.position = new Vector3(10, 10, 10);
-            fence[2].transform.position = new Vector3(10, 10, 10);
-            fence[3].transform.position = new Vector3(10, 10, 10);
-            fence[4].gameObject.SetActive(true);
-
-            tree[0].gameObject.SetActive(false);
-            tree[1].gameObject.SetActive(false);
-            tree[2].gameObject.SetActive(false);
-            tree[3].gameObject.SetActive(false);
-        }
-        else if (mapState == 0)
-        {
-            fence[0].transform.position = new Vector3(10, 10, 10);
-            fence[1].transform.position = new Vector3(10, 10, 10);
-            fence[2].transform.position = new Vector3(10, 10, 10);
-            fence[3].transform.position = new Vector3(10, 10, 10);
-            fence[4].transform.position = new Vector3(10, 10, 10);
-            tree[0].gameObject.SetActive(false);
-            tree[1].gameObject.SetActive(false);
-            tree[2].gameObject.SetActive(false);
-            tree[3].gameObject.SetActive(false);
-        }
-
-    }
-
-
-
 
 
 
