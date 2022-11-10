@@ -62,9 +62,8 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
     public int Gold              { get; set; }
 
 
-    //Level Object
-    public Transform[] fence = new Transform[10];
-    public Transform[] tree  = new Transform[20];
+
+    public List<GameObject> dragons = new List<GameObject>();
 
     //Jason File Route
     string path     = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Dragon Seed/" + "/Saves/";
@@ -171,6 +170,7 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
 
     public void Load()
     {
+        dragons.Clear();
         //총 오브젝트의 숫자
         int ObjCount;
         //오브젝트의 위치를 저장할 변수
@@ -265,14 +265,32 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
         }
     }
 
+    [PunRPC]
+    void DragonData()
+    {
+        OffenseUIManager.INSTANCE.fruitragons = new List<Dragon>();
+    }
+
+
+
+
     public void Inst(string name, Vector3 pos)
     {
         GameObject obj = Resources.Load<GameObject>(name);
         GameObject instObject = null;
+        Dragon instDragon = null;
 
         if (GameManager.INSTANCE.ISGAMEIN == true)
         {
             instObject = PhotonNetwork.Instantiate(name, pos, Quaternion.identity);
+
+            string[] DragonName = name.Split('_');
+           
+            if (DragonName[0]=="D")
+            {
+                dragons.Add(instObject);
+               
+            }
         }
         else
         {

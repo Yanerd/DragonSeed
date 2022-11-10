@@ -112,9 +112,9 @@ public class PlayerController : MonoBehaviourPun
             StartCoroutine(FindCamera());
 
             //live dragon list init
-            for (int i = 0; i < FindObjectsOfType<Dragon>().Length; i++)
+            for (int i = 0; i < SaveLoadManager.INSTANCE.dragons.Count; i++)
             {
-                liveDragon.Add(FindObjectsOfType<Dragon>()[i].gameObject);
+                liveDragon.Add(SaveLoadManager.INSTANCE.dragons[i]);
             }
 
 
@@ -143,7 +143,6 @@ public class PlayerController : MonoBehaviourPun
             #endregion
         }
         playerCurHp = playerMaxHp;
-        Debug.Log($"이니셜 체력 : {playerCurHp}");
 
         CallOffWeaponCollider();
 
@@ -155,7 +154,6 @@ public class PlayerController : MonoBehaviourPun
         {
             if (testMode || photonView.IsMine)
             {
-                Debug.Log("카메라 찾는 중");
                 if (camTransfrom==null)
                 {
                     if (testMode == true)
@@ -168,7 +166,6 @@ public class PlayerController : MonoBehaviourPun
                     }
                     if (camTransfrom != null)
                     {
-                        Debug.Log("카메라 찾음");
                         yield break;
                     }
                 }
@@ -491,8 +488,6 @@ public class PlayerController : MonoBehaviourPun
     [PunRPC]
     private void OffWeaponCollider()
     {
-        Debug.Log("콜라이더 꺼짐");
-        Debug.Log(weaponCollider.name);
         weaponCollider.SetActive(false);
     }
 

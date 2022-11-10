@@ -73,7 +73,6 @@ public class TargetObject : MonoBehaviour
         {
             timer = 0f;
             CreatNewPosition();
-            Debug.Log("Ãæµ¹«n");
         }
     }
 

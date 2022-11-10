@@ -831,7 +831,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     public void SelectHouse()
     {
         if (houseCount <= 0) return;
-        houseCount--;
+        //houseCount--;
         InstButtonTurnOff();
         curHouse.text = "House : " + houseCount.ToString();
 
@@ -849,7 +849,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     public void SelectPotato()
     {
         if (potatoSeedCount <= 0) return;
-        potatoSeedCount--;
+        //potatoSeedCount--;
         InstButtonTurnOff();
         curPotato.text = "Poato : "+potatoSeedCount.ToString();
 

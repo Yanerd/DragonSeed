@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 using Photon.Pun;
 
 
-public class OffenseUIManager : MonoBehaviourPun
+public class OffenseUIManager : MonoSingleTon<OffenseUIManager>
 {
 
     //camera components
@@ -24,7 +24,7 @@ public class OffenseUIManager : MonoBehaviourPun
     GameObject dragonHpGroupObj = null;
     Slider dragonHpSlider = null;
     Slider dragonHpFollowSlider = null;
-    List<Dragon> fruitragons = null;
+    public List<Dragon> fruitragons = null;
 
     //Cine Producton components
     RectTransform cineUp = null;
@@ -94,7 +94,6 @@ public class OffenseUIManager : MonoBehaviourPun
         //hp ui components
         player = FindObjectOfType<PlayerController>();
 
-        Debug.Log(GameManager.INSTANCE.WANTINVASION);
 
         if (GameManager.INSTANCE.WANTINVASION)
         {
@@ -127,17 +126,13 @@ public class OffenseUIManager : MonoBehaviourPun
         GameManager.INSTANCE.TimerStart();
         // Offense End UI
         offenseEndUI.SetActive(false);
-       
-        //player hp delegate
-        if(player != null)
-        //player.playerEvent.callBackPlayerHPChangeEvent += OnChangedHp;
 
-        //dragon hp delegate
-        for (int i = 0; i < FindObjectsOfType<Dragon>().Length; i++)
-        {
-            fruitragons.Add(FindObjectsOfType<Dragon>()[i]);
-            fruitragons[i].dragonEvent.callBackDragonHPChangeEvent += OnChangeDragonHP;
-        }
+        //player hp delegate
+        if (player != null)
+            //player.playerEvent.callBackPlayerHPChangeEvent += OnChangedHp;
+
+
+        Invoke("FindDragon",2f);
 
         //dragon hp view init
         dragonHpGroupObj.SetActive(false);
@@ -148,6 +143,26 @@ public class OffenseUIManager : MonoBehaviourPun
         initUp = cineUp.position;
         initDown = cineDown.position;
 
+    }
+
+    public void FindDragon()
+    {
+        Debug.Log("찾는다!");
+        Debug.Log("찾는다!");
+        Debug.Log("찾는다!");
+        Debug.Log("찾는다!");
+        Debug.Log("찾는다!");
+        Debug.Log("찾는다!");
+        Dragon[] dragons = FindObjectsOfType<Dragon>();
+        Debug.Log(dragons.Length);
+        //dragon hp delegate
+        for (int i = 0; i < dragons.Length; i++)
+        {
+            Debug.Log(dragons[i].name);
+            //fruitragons.Add(FindObjectsOfType<Dragon>()[i]);
+            dragons[i].GetComponent<Dragon>().
+                    dragonEvent.callBackDragonHPChangeEvent += OnChangeDragonHP;
+        }
     }
 
     // Update is called once per frame
@@ -226,6 +241,7 @@ public class OffenseUIManager : MonoBehaviourPun
     //oversee function
     private void OnChangeDragonHP(float curHp, float maxHp)
     {
+        Debug.Log("체력바 나와");
         dragonHpGroupObj.SetActive(true);
         dragonHpSlider.value = curHp / maxHp;
         StartCoroutine(DragonFollowSlider());
@@ -280,7 +296,6 @@ public class OffenseUIManager : MonoBehaviourPun
 
         if (GameManager.INSTANCE.ISDEAD|| GameManager.INSTANCE.ISTIMEOVER)
         {
-            Debug.Log("죽었거나 타임오버");
             // 마우스 커서 활성화
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
