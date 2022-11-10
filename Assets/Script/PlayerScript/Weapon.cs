@@ -1,4 +1,4 @@
-using System.Collections;
+    using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +15,11 @@ public class Weapon : MonoBehaviour
         playerController = FindObjectOfType<PlayerController>();
 
         totalDamage = playerController.PlayerAttackPower; //+ weaponScriptableObj.damage;
+    }
+
+    private void Update()
+    {
+        Debug.Log($"무기 콜라이더 상태 :{ this.gameObject.activeSelf}");
     }
 
     private void OnTriggerEnter(Collider other)

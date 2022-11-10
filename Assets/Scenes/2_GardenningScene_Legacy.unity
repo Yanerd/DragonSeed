@@ -44971,7 +44971,8 @@ MonoBehaviour:
   CarrotSeedCount: {fileID: 784840954}
   EggplantSeedCount: {fileID: 1360279087}
   MapState: 5
-  GameMoney: {fileID: 1883671672}
+  GoldText: {fileID: 0}
+  ZeraText: {fileID: 0}
   curPotato: {fileID: 788954892}
   curApple: {fileID: 1434992298}
   curCabbage: {fileID: 1763224707}
@@ -44992,6 +44993,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: da5106545353c39458031d81c6405c63, type: 2}
   - {fileID: 11400000, guid: a28ebbc83598f0d4ebb87bfebdefbdc2, type: 2}
   - {fileID: 11400000, guid: 61452d0c1304ac84e9179e186893d96f, type: 2}
+  Gold: 0
   potatoSeedCount: 0
   appleSeedCount: 0
   cabbageSeedCount: 0

@@ -49,6 +49,10 @@ MonoBehaviour:
   - SendGameEnd
   - GroundInst
   - GroundSatting
+  - OffWeaponCollider
+  - OnAttackEnd
+  - OnAttackStart
+  - OnWeaponCollider
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

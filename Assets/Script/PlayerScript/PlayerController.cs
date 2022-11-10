@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviourPun
 {
@@ -11,9 +12,10 @@ public class PlayerController : MonoBehaviourPun
     #region components
     Transform playerTransform = null;
     Rigidbody playerRigidbody = null;
-    Animator playerAnimator = null; 
-    Transform camTransfrom = null;
-    GameObject weaponCollider = null;
+    Animator playerAnimator = null;
+    [SerializeField] GameObject weaponCollider = null;
+    [SerializeField] Transform camTransfrom = null;
+    [SerializeField] Transform cam = null;
 
     //event components 
     public EventReciever playerEvent = null;
@@ -70,6 +72,10 @@ public class PlayerController : MonoBehaviourPun
     public float PlayerAttackPower { get { return playerAttackPower; } }
     #endregion
 
+    [SerializeField] Slider hpSlider = null;
+    [SerializeField] Slider hpFollowSlider = null;
+
+
     private void Awake()
     {
         if (testMode || photonView.IsMine )
@@ -80,15 +86,19 @@ public class PlayerController : MonoBehaviourPun
             playerAnimator = this.GetComponent<Animator>();
             playerEvent = this.GetComponent<EventReciever>();
 
-
             #endregion
+
+
 
             #region deligate chain
-            playerEvent.callBackAttackStartEvent += OnAttackStart;
-            playerEvent.callBackAttackEndEvent += OnAttackEnd;
-            playerEvent.callBackEnableTransferDamageEvent += OnWeaponCollider;
-            playerEvent.callBackDisableTransferDamageEvent += OffWeaponCollider;
+            playerEvent.callBackAttackStartEvent += CallOnAttackStart;
+            playerEvent.callBackAttackEndEvent += CallOnAttackEnd;
+            playerEvent.callBackEnableTransferDamageEvent += CallOnWeaponCollider;
+            playerEvent.callBackDisableTransferDamageEvent += CallOffWeaponCollider;
+            playerEvent.callBackPlayerHPChangeEvent += OnChangedHp;
             #endregion
+
+            cam.gameObject.SetActive(true);
         }
     }
 
@@ -126,7 +136,7 @@ public class PlayerController : MonoBehaviourPun
             curState = STATE.NONE;
 
             //weapon collider init
-            weaponCollider.SetActive(false);
+           
 
             //start state
             ChangeState(STATE.IDLE);
@@ -134,6 +144,9 @@ public class PlayerController : MonoBehaviourPun
         }
         playerCurHp = playerMaxHp;
         Debug.Log($"이니셜 체력 : {playerCurHp}");
+
+        CallOffWeaponCollider();
+
     }
 
     IEnumerator FindCamera()
@@ -151,10 +164,8 @@ public class PlayerController : MonoBehaviourPun
                     }
                     else
                     {
-                        camTransfrom = GameObject.Find("O_CameraArm(Clone)").GetComponent<Transform>();
+                        camTransfrom = GameObject.Find("O_CameraArm").GetComponent<Transform>();
                     }
-
-                    weaponCollider = GameObject.Find("WeaponCollider");
                     if (camTransfrom != null)
                     {
                         Debug.Log("카메라 찾음");
@@ -166,11 +177,6 @@ public class PlayerController : MonoBehaviourPun
         }
         
     }
-
-
-
-
-
 
     private void Update()
     {
@@ -187,6 +193,17 @@ public class PlayerController : MonoBehaviourPun
 
         
 
+    }
+
+    private void OnDisable()
+    {
+        if(playerEvent!=null)
+        {
+            playerEvent.callBackAttackStartEvent -= CallOnAttackStart;
+            playerEvent.callBackAttackEndEvent -= CallOnAttackEnd;
+            playerEvent.callBackEnableTransferDamageEvent -= CallOnWeaponCollider;
+            playerEvent.callBackDisableTransferDamageEvent -= CallOffWeaponCollider;
+        }
     }
 
     #region Position Controll
@@ -231,11 +248,7 @@ public class PlayerController : MonoBehaviourPun
 
     private void CamTransFormControll()//camera transform controll
     {
-        Debug.Log("카메라 위치 이동");
-        if (camTransfrom == null) StartCoroutine(FindCamera());
-
-        //camTransfrom.position = playerTransform.position - camToPlayerVec;
-        camTransfrom.position = this.transform.position + new Vector3(0, 0.1f, 0);
+        //camTransfrom.position = this.transform.position + new Vector3(0, 0.1f, -0.5f);
         camTransfrom.rotation = Quaternion.Euler(-mouseY, mouseX, 0);
 
     }
@@ -439,6 +452,25 @@ public class PlayerController : MonoBehaviourPun
     #endregion
 
     #region Transfer Function
+    
+    public void CallOnAttackStart()
+    {
+        photonView.RPC("OnAttackStart", RpcTarget.All);
+    }
+    public void CallOnAttackEnd()
+    {
+        photonView.RPC("OnAttackEnd", RpcTarget.All);
+    }
+    public void CallOnWeaponCollider()
+    {
+        photonView.RPC("OnWeaponCollider", RpcTarget.All);
+    }
+    public void CallOffWeaponCollider()
+    {
+        photonView.RPC("OffWeaponCollider", RpcTarget.All);
+    }
+
+    [PunRPC]
     private void OnAttackStart()
     {
         isAttacking = true;
@@ -446,16 +478,21 @@ public class PlayerController : MonoBehaviourPun
         axisX = 0f;
         axisZ = 0f;
     }
+    [PunRPC]
     private void OnAttackEnd()
     {
         isAttacking = false;
     }
+    [PunRPC]
     private void OnWeaponCollider()
     {
         weaponCollider.SetActive(true);
     }
+    [PunRPC]
     private void OffWeaponCollider()
     {
+        Debug.Log("콜라이더 꺼짐");
+        Debug.Log(weaponCollider.name);
         weaponCollider.SetActive(false);
     }
 
@@ -496,5 +533,25 @@ public class PlayerController : MonoBehaviourPun
             playerEvent.callBackPlayerHPChangeEvent(playerCurHp, playerMaxHp);
 
     }
+    private void OnChangedHp(float curHp, float maxHp)
+    {
+        hpSlider.value = curHp / maxHp;
+        StartCoroutine(FollowSlider());
+    }
+
+    IEnumerator FollowSlider()
+    {
+        while (true)
+        {
+            hpFollowSlider.value = Mathf.Lerp(hpFollowSlider.value, hpSlider.value, Time.deltaTime / 5f);
+
+            if (hpFollowSlider.value == hpSlider.value) yield break;
+
+            yield return null;
+        }
+    }
+
+
+
     #endregion
 }

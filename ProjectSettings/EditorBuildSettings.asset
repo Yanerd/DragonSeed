@@ -15,9 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/3_OffenceScene.unity
     guid: 235bba81eaf25f644948964d9293532f
   - enabled: 0
-    path: Assets/Scenes/2_GardenningScene_Origin.unity
+    path: Assets/Scenes/2_GardenningScene_Legacy.unity
     guid: 45f38d566781e194b9c8e0fde2449b26
   - enabled: 0
-    path: Assets/Scenes/3_OffenceScene_Origin.unity
+    path: Assets/Scenes/3_OffenceScene_Legacy.unity
     guid: e072bc80b5d082d4db4c4b18fb0932a1
   m_configObjects: {}

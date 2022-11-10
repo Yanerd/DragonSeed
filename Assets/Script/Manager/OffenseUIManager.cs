@@ -98,7 +98,7 @@ public class OffenseUIManager : MonoBehaviourPun
 
         if (GameManager.INSTANCE.WANTINVASION)
         {
-            exceptionCoroutine = StartCoroutine(FindPlayerUI());
+            //exceptionCoroutine = StartCoroutine(FindPlayerUI());
         }
 
         //dragon hp ui components
@@ -130,7 +130,7 @@ public class OffenseUIManager : MonoBehaviourPun
        
         //player hp delegate
         if(player != null)
-        player.playerEvent.callBackPlayerHPChangeEvent += OnChangedHp;
+        //player.playerEvent.callBackPlayerHPChangeEvent += OnChangedHp;
 
         //dragon hp delegate
         for (int i = 0; i < FindObjectsOfType<Dragon>().Length; i++)

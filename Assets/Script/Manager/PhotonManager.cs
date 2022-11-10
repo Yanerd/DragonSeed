@@ -564,7 +564,7 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
 
         yield return StartCoroutine(CreateOffenseUI());
         Debug.Log("플레이어 생성");
-        PhotonNetwork.Instantiate("O_Farmer", new Vector3(0f, 1f, 0f), Quaternion.identity);
+        PhotonNetwork.Instantiate("O_Farmer_Upgrade", new Vector3(0f, 1f, 0f), Quaternion.identity);
     }
    
     IEnumerator dragonInstantiate()
