@@ -2425,11 +2425,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecbc7634b90ca8f4e92626cd3d58ecac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  masterSessionId: 
-  masterName: 
-  masterZera: 0
-  masterWalletAdress: 
-  masterBettingId: 
+  <SessionId>k__BackingField: 
+  <Name>k__BackingField: 
+  <Zera>k__BackingField: 0
+  <WalletAdress>k__BackingField: 
+  <BettingId>k__BackingField: 
+  <masterSessionId>k__BackingField: 
+  <masterName>k__BackingField: 
+  <masterZera>k__BackingField: 0
+  <masterWalletAdress>k__BackingField: 
+  <masterBettingId>k__BackingField: 
+  <otherSessionId>k__BackingField: 
+  <otherName>k__BackingField: 
+  <otherZera>k__BackingField: 0
+  <otherWalletAdress>k__BackingField: 
+  <otherBettingId>k__BackingField: 
 --- !u!1 &1664893655
 GameObject:
   m_ObjectHideFlags: 0

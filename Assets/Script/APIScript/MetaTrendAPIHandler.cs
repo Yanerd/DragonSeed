@@ -13,9 +13,6 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
     public int ZERA { get; set; }
     public string BETTINGID { get; set; }
 
-
-
-
     [SerializeField] string selectedBettingID;
 
     [Header("[등록된 프로젝트에서 획득가능한 API 키]")]
@@ -39,31 +36,6 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
         GetSessionID();
         Invoke("Settings", 1f);
         Invoke("ZeraBalance", 1f);
-    }
-
-    private void Start()
-    {
-        
-
-    }
-
-    private void Update()
-    {
-        if (PhotonManager.INSTANCE.ISMASTER)
-        {
-            if (GameManager.INSTANCE.ISGAMEIN)
-            {
-                //승자판정
-                if (GameManager.INSTANCE.ISDEAD)
-                {
-                    //master win
-                }
-                else if (GameManager.INSTANCE.ISTIMEOVER)
-                {
-                    //invader/otherclient win
-                }
-            }
-        }
     }
 
     // 현재 개발단계에 따라서 사용하는 BaseURL이 달라진다.
@@ -200,16 +172,16 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
     //-----------------------------------------------------------------------------------------------------
     //
     // ZERA 베팅
-    public void Betting_Zera()
+    public void Betting_Zera(string bettingid)
     {
-        StartCoroutine(processRequestBetting_Zera());
+        StartCoroutine(processRequestBetting_Zera(bettingid));
     }
-    IEnumerator processRequestBetting_Zera()
+    IEnumerator processRequestBetting_Zera(string bettingid)
     {
         ResBettingPlaceBet resBettingPlaceBet = null;
         ReqBettingPlaceBet reqBettingPlaceBet = new ReqBettingPlaceBet();
         reqBettingPlaceBet.players_session_id = new string[] { resGetSessionID.sessionId };
-        reqBettingPlaceBet.bet_id = selectedBettingID;// resSettigns.data.bets[0]._id;
+        reqBettingPlaceBet.bet_id = bettingid;//selectedBettingID;// resSettigns.data.bets[0]._id;
         yield return requestCoinPlaceBet(reqBettingPlaceBet, (response) =>
         {
             if (response != null)
@@ -221,11 +193,11 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
     }
 
     // ZERA 베팅-승자
-    public void Betting_Zera_DeclareWinner()
+    public void Betting_Zera_DeclareWinner(string id)
     {
-        StartCoroutine(processRequestBetting_Zera_DeclareWinner());
+        StartCoroutine(processRequestBetting_Zera_DeclareWinner(id));
     }
-    IEnumerator processRequestBetting_Zera_DeclareWinner()
+    IEnumerator processRequestBetting_Zera_DeclareWinner(string id)
     {
         ResBettingDeclareWinner resBettingDeclareWinner = null;
         ReqBettingDeclareWinner reqBettingDeclareWinner = new ReqBettingDeclareWinner();
@@ -242,15 +214,15 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
     }
 
     // 베팅금액 반환
-    public void Betting_Zera_Disconnect()
+    public void Betting_Zera_Disconnect(string bettingid)
     {
-        StartCoroutine(processRequestBetting_Zera_Disconnect());
+        StartCoroutine(processRequestBetting_Zera_Disconnect(bettingid));
     }
-    IEnumerator processRequestBetting_Zera_Disconnect()
+    IEnumerator processRequestBetting_Zera_Disconnect(string bettingid)
     {
         ResBettingDisconnect resBettingDisconnect = null;
         ReqBettingDisconnect reqBettingDisconnect = new ReqBettingDisconnect();
-        reqBettingDisconnect.betting_id = selectedBettingID;// resSettigns.data.bets[1]._id;
+        reqBettingDisconnect.betting_id = bettingid; //selectedBettingID;// resSettigns.data.bets[1]._id;
         yield return requestCoinDisconnect(reqBettingDisconnect, (response) =>
         {
             if (response != null)
@@ -300,6 +272,8 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
             USERNAME = res_getUserProfile.userProfile.username;
             WALLETADRESS = res_getUserProfile.userProfile.public_address;
             SESSIONID = resGetSessionID.sessionId;
+            Debug.Log("SESSIONID : " + SESSIONID);
+            Debug.Log("SESSIONID : " + SESSIONID);
         }
     }
 

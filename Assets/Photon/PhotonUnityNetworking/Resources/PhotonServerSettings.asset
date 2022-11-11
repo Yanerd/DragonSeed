@@ -54,6 +54,14 @@ MonoBehaviour:
   - OnAttackStart
   - OnWeaponCollider
   - DragonData
+  - TransferMasterBettingId
+  - TransferMasterName
+  - TransferMasterWalletAdress
+  - TransferMasterZera
+  - TransferOtherBettingId
+  - TransferOtherName
+  - TransferOtherWalletAdress
+  - TransferOtherZera
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
