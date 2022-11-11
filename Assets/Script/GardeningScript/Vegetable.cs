@@ -118,7 +118,6 @@ public class Vegetable : MonoBehaviour
 
     void InstGardeningVegetable(float growthValue, int countValue)
     {
-        Debug.Log(growthValue.ToString());
 
         if (growthValue>=1f)
         {
@@ -132,6 +131,7 @@ public class Vegetable : MonoBehaviour
             CountBar.gameObject.SetActive(false);
             Seed.enabled = false;
             Stem.gameObject.SetActive(false);
+            this.gameObject.name = "B_Mud";
             return;
         }
         this.GrowthValue = growthValue;
@@ -198,7 +198,8 @@ public class Vegetable : MonoBehaviour
         if (GrownDragon == false)
         {
             growBar.gameObject.SetActive(false);
-            CountBar.gameObject.SetActive(false);   
+            CountBar.gameObject.SetActive(false);
+            this.gameObject.name = "B_Mud";
             InstantiateDragon();
         }
     }
@@ -214,6 +215,7 @@ public class Vegetable : MonoBehaviour
             {
                 StemStat();
                 SateStem = true;
+                this.gameObject.name = this.gameObject.name+"_Stemp";
             }
             if (growBar.value >= 1f&& SateGrown==false)
             {

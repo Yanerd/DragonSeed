@@ -963,7 +963,7 @@ MonoBehaviour:
   playerEvent: {fileID: 0}
   playerMaxHp: 500
   playerSpeed: 0.4
-  playerAttackPower: 4000000
+  playerAttackPower: 40
   playerAttackInterval: 2
   RotCamSpeed: 200
   swingWeaponFX: {fileID: 0}

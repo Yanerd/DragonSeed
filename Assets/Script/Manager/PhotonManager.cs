@@ -564,7 +564,7 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
 
         yield return StartCoroutine(CreateOffenseUI());
         Debug.Log("플레이어 생성");
-        PhotonNetwork.Instantiate("O_Farmer", new Vector3(0f, 1f, 0f), Quaternion.identity);
+        PhotonNetwork.Instantiate("O_Farmer_Upgrade", new Vector3(0f, 1f, 0f), Quaternion.identity);
     }
    
     IEnumerator dragonInstantiate()
@@ -587,19 +587,16 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
 
     IEnumerator CreateCam(string camName)
     {
-        Debug.Log("카메라 생성");
 
         GameObject CameraArm;
         
         CameraArm = Resources.Load<GameObject>(camName);
         Instantiate(CameraArm, CameraArm.transform.position, Quaternion.identity);
 
-        Debug.Log("캠 생성 완료");
         yield break;
     }
     IEnumerator CreateOffenseUI()
     {
-        Debug.Log("오팬스 ui 생성");
 
         GameObject OffenseUIManager;
         GameObject instOffenseUIManager;
@@ -607,12 +604,10 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
         OffenseUIManager = Resources.Load<GameObject>("O_OffenseUIManager");
         instOffenseUIManager = Instantiate(OffenseUIManager, OffenseUIManager.transform.position, Quaternion.identity);
 
-        Debug.Log("UI 생성 완료");
         yield break;
     }
     IEnumerator CreateDefenseUI()
     {
-        Debug.Log("디팬스 ui 생성");
 
         GameObject DefenseBattleUIManager;
         GameObject instDefenseBattleUIManager;

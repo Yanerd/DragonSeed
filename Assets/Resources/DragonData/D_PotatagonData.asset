@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dragonType: D_Potatagon
   attackPower: 10
-  attackRange: 1
+  attackRange: 0.2
   attackInterval: 2
   hp: 100
   speed: 1

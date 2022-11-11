@@ -102,12 +102,14 @@ public class RayClick : MonoBehaviour
                         DefenseUIManager.INSTANCE.onHOUSE = false;
                         ObjectPoolingManager.inst.Instantiate(housePrefab, hit.transform.position + new Vector3(0, 0.33f, 0), Quaternion.identity, ObjectPoolingManager.inst.PoolingZone);
                         ObjectPoolingManager.inst.ObjectDisappear();
+                       
                     }
                     else if (DefenseUIManager.INSTANCE.onPOTATO == true)
                     {
                         DefenseUIManager.INSTANCE.onPOTATO = false;
                         ObjectPoolingManager.inst.Instantiate(potatoPrefab, hit.transform.position + new Vector3(0, 0.33f, 0), Quaternion.identity, ObjectPoolingManager.inst.PoolingZone);
                         ObjectPoolingManager.inst.ObjectDisappear();
+                        
                     }
                     else if (DefenseUIManager.INSTANCE.onWELL == true )
                     {

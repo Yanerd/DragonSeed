@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dragonType: D_Carrotagon
   attackPower: 40
-  attackRange: 1.6
+  attackRange: 0.5
   attackInterval: 1.4
   hp: 250
   speed: 1.6

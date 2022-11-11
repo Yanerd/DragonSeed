@@ -210,7 +210,7 @@ public class Dragon : MonoBehaviourPun
     [PunRPC]
     public void DragonTransferDamage(float attackPower) // 플레이어의 공격이 들어오면 체력 감소
     {
-
+        Debug.Log(attackPower.ToString());
         // 이미 죽었으면 리턴
         if (IsDeath) return;
 
@@ -218,7 +218,7 @@ public class Dragon : MonoBehaviourPun
 
         if (dragonEvent.callBackDragonHPChangeEvent != null)
             dragonEvent.callBackDragonHPChangeEvent(curHP, maxHP);
-
+        
         // 애니메이션 호출
         myAnimation.SetTrigger("hit");
 
