@@ -82,17 +82,17 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
 
     public void Save()
     {
-        //clear instance list
-        GameManager.INSTANCE.DragonTableClear();
-
-        //save data to json 
-        PoolingZone = GameObject.Find("PoolingZone");
-
         //There's no directory
         if (Directory.Exists(path) == false)
         {
             Directory.CreateDirectory(path);
         }
+
+        //clear instance list
+        GameManager.INSTANCE.DragonTableClear();
+
+        //save data to json 
+        PoolingZone = GameObject.Find("PoolingZone");
 
         //Bring total ObjectCount
         totalObjectCount = PoolingZone.transform.childCount;
@@ -228,7 +228,7 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
             {
                 vegetableGrowBarValue = float.Parse(data2.plantBar[vegetableCount] == "" ? "0" : data2.plantBar[vegetableCount]);
                 vegetableWaterValue = int.Parse(data2.water[vegetableCount] == "" ? "0" : data2.water[vegetableCount]);
-                VegetableInst(data2.name[i], vector3);
+                Inst(data2.name[i], vector3);
                 vegetableCount++;
             }
             else if (whatYourName[0] == "B")
@@ -236,7 +236,7 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
                 if (data2.name[i] == "B_Well")
                 {
                     wellBarCount = float.Parse(data2.wellBar[wellCount] == "" ? "0" : data2.wellBar[wellCount]);
-                    WellInst(data2.name[i], vector3);
+                    Inst(data2.name[i], vector3);
                     wellCount++;
                 }
                 else
@@ -248,9 +248,6 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
         GroundInst(convertGroundState);
         
     }
-
-    PhotonView pun;
-
     public void InitLoad()
     {
         // There's no directory
@@ -263,18 +260,6 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
             Save(true);
             Load();
         }
-    }
-
-
-    public void SendDragonList()
-    {
-        
-    }
-
-    [PunRPC]
-    void DragonList()
-    {
-        OffenseUIManager.INSTANCE.fruitragons = new List<Dragon>();
     }
 
     public void Inst(string name, Vector3 pos)
@@ -292,49 +277,12 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
             instObject = Instantiate(obj, pos, Quaternion.identity, PoolingZone.transform);
         }
     }
-
-    public void VegetableInst(string name, Vector3 pos)
-    {
-        GameObject obj= Resources.Load<GameObject>(name);
-        GameObject instObject=null;
-
-        if (GameManager.INSTANCE.ISGAMEIN == true)
-        {
-            instObject = PhotonNetwork.Instantiate(name, pos, Quaternion.identity);
-        }
-        else
-        {
-            PoolingZone = GameObject.Find("PoolingZone");
-            instObject = Instantiate(obj, pos, Quaternion.identity, PoolingZone.transform);
-        }
-
-
-    }
-
-    public void WellInst(string name, Vector3 pos)
-    {
-        GameObject obj= Resources.Load<GameObject>(name); ;
-        GameObject instObject = null;
-
-        if (GameManager.INSTANCE.ISGAMEIN == true)
-        {
-            instObject = PhotonNetwork.Instantiate(name, pos, Quaternion.identity);
-        }
-        else
-        {
-            PoolingZone = GameObject.Find("PoolingZone");
-            instObject = Instantiate(obj, pos, Quaternion.identity, PoolingZone.transform);
-        }
-    }
-    
     public void GroundInst(int mapState)
     {
         Vector3 levelPos = new Vector3(0.06f, 4.1f, -0.16f);
 
-        GameObject maplevel = Resources.Load<GameObject>("L_MapState_"+mapState.ToString());
+        GameObject maplevel = Resources.Load<GameObject>("L_MapState_"+ mapState.ToString());
         instMaplevel = null;
-
-        
 
         if (GameManager.INSTANCE.ISGAMEIN == true)
         {
@@ -346,7 +294,6 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
             instMaplevel = Instantiate(maplevel, levelPos, Quaternion.identity, Level.transform);
         }
     }
-   
 }
 
 

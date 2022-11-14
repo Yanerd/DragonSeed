@@ -15,7 +15,6 @@ public class PlayerController : MonoBehaviourPun
     Animator playerAnimator = null;
     [SerializeField] GameObject weaponCollider = null;
     [SerializeField] Transform camTransfrom = null;
-    [SerializeField] Transform cam = null;
 
     //event components 
     public EventReciever playerEvent = null;
@@ -30,7 +29,6 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] private float playerAttackInterval = 2f;
 
     [SerializeField] private float RotCamSpeed = 200f;
-    Vector3 camToPlayerVec = Vector3.zero;
     #endregion
 
     #region prefab
@@ -85,10 +83,7 @@ public class PlayerController : MonoBehaviourPun
             playerRigidbody = this.GetComponent<Rigidbody>();
             playerAnimator = this.GetComponent<Animator>();
             playerEvent = this.GetComponent<EventReciever>();
-
             #endregion
-
-
 
             #region deligate chain
             playerEvent.callBackAttackStartEvent += CallOnAttackStart;
@@ -97,8 +92,6 @@ public class PlayerController : MonoBehaviourPun
             playerEvent.callBackDisableTransferDamageEvent += CallOffWeaponCollider;
             playerEvent.callBackPlayerHPChangeEvent += OnChangedHp;
             #endregion
-
-            cam.gameObject.SetActive(true);
         }
     }
 
@@ -107,15 +100,8 @@ public class PlayerController : MonoBehaviourPun
         if (testMode || photonView.IsMine)
         {
             #region initializing
-            //invader client
-
-            StartCoroutine(FindCamera());
-
-            //live dragon list init
-           
-
-
-            camToPlayerVec = playerTransform.position - camTransfrom.position;
+            //get component
+            camTransfrom = GameObject.Find("O_CameraArm").GetComponent<Transform>();
 
             //visible value
             lookForward = new Vector3(camTransfrom.forward.x, 0f, camTransfrom.forward.z).normalized;
@@ -125,15 +111,8 @@ public class PlayerController : MonoBehaviourPun
             //move position value
             newPosition = this.transform.position;
 
-            ////player state
-            //playerCurHp = playerMaxHp;
-            //Debug.Log($"이니셜 체력 : {playerCurHp}");
-
             //state value
             curState = STATE.NONE;
-
-            //weapon collider init
-           
 
             //start state
             ChangeState(STATE.IDLE);
@@ -141,52 +120,21 @@ public class PlayerController : MonoBehaviourPun
         }
         playerCurHp = playerMaxHp;
 
-        CallOffWeaponCollider();
-
-    }
-
-    IEnumerator FindCamera()
-    {
-        while (true)
-        {
-            if (testMode || photonView.IsMine)
-            {
-                if (camTransfrom==null)
-                {
-                    if (testMode == true)
-                    {
-                        camTransfrom = GameObject.Find("O_CameraArm").GetComponent<Transform>();
-                    }
-                    else
-                    {
-                        camTransfrom = GameObject.Find("O_CameraArm").GetComponent<Transform>();
-                    }
-                    if (camTransfrom != null)
-                    {
-                        yield break;
-                    }
-                }
-            }
-            yield return null;
-        }
-        
+        if (testMode) OffWeaponCollider();
+        else CallOffWeaponCollider();
     }
 
     private void Update()
     {
-        liveDragon = GameManager.INSTANCE.dragons;
-
         if (GameManager.INSTANCE.ISDEAD || GameManager.INSTANCE.ISTIMEOVER) return;
+
+        liveDragon = GameManager.INSTANCE.dragons;
 
         if (testMode || photonView.IsMine)
         {
-            Debug.Log("카메라 위치 바꾸렴");
             CamTransFormControll();
             InputControll();
         }
-
-        
-
     }
 
     private void OnDisable()
@@ -230,7 +178,6 @@ public class PlayerController : MonoBehaviourPun
         //LockOn Input
         if (!GameManager.INSTANCE.ISLOCKON && Input.GetKeyDown(KeyCode.F))
         {
-            Debug.Log("f눌림");
             GameManager.INSTANCE.ISLOCKON = true;
             StartCoroutine(LockOn());
         }
@@ -242,22 +189,19 @@ public class PlayerController : MonoBehaviourPun
 
     private void CamTransFormControll()//camera transform controll
     {
-        //camTransfrom.position = this.transform.position + new Vector3(0, 0.1f, -0.5f);
         camTransfrom.rotation = Quaternion.Euler(-mouseY, mouseX, 0);
-
     }
     #endregion
 
     #region LockOn Loop
     IEnumerator LockOn()//lockon coroutine
     {
-        Debug.Log("lock");
         VisibleCheck();
         Vector3 viewDir = (Camera.main.transform.forward).normalized;
 
-        while (GameManager.INSTANCE.ISLOCKON)/////////////////////////////////////////////////////////////////////////////////////target missing exception
+        while (GameManager.INSTANCE.ISLOCKON)//target missing exception
         {
-            if (targetObject == null)
+            if (targetObject == null || targetObject.activeSelf == false)
             {
                 GameManager.INSTANCE.ISLOCKON = false;
                 yield break;
@@ -268,12 +212,6 @@ public class PlayerController : MonoBehaviourPun
 
             camTransfrom.rotation = Quaternion.LookRotation(viewDir);
             playerTransform.rotation = Quaternion.LookRotation(new Vector3(viewDir.x, 0f, viewDir.z));
-
-            if (targetObject.activeSelf == false)
-            {
-                GameManager.INSTANCE.ISLOCKON = false;
-                yield break;
-            }
 
             yield return null;
         }
@@ -311,7 +249,6 @@ public class PlayerController : MonoBehaviourPun
     #endregion
 
     #region State Transition
-    //###############################################################################//
     //STATE value
     enum STATE
     {
@@ -343,8 +280,6 @@ public class PlayerController : MonoBehaviourPun
         //function
         while (true)
         {
-            //Debug.Log("idle");
-
             if (axisX != 0 || axisZ != 0)
             {
                 ChangeState(STATE.MOVE);
@@ -436,17 +371,13 @@ public class PlayerController : MonoBehaviourPun
 
         yield return new WaitForSeconds(1.2f);
 
-        Debug.Log("타임스탑");
-
         Time.timeScale = 0;
 
         yield return null;
     }
-    //###############################################################################//
     #endregion
 
     #region Transfer Function
-    
     public void CallOnAttackStart()
     {
         photonView.RPC("OnAttackStart", RpcTarget.All);
@@ -463,7 +394,6 @@ public class PlayerController : MonoBehaviourPun
     {
         photonView.RPC("OffWeaponCollider", RpcTarget.All);
     }
-
     [PunRPC]
     private void OnAttackStart()
     {
@@ -492,7 +422,7 @@ public class PlayerController : MonoBehaviourPun
     {
         if (testMode)
         {
-            PlayerTransferDamage(damage);
+            PlayerGetDamage(damage);
         }
         else
         {
@@ -500,9 +430,8 @@ public class PlayerController : MonoBehaviourPun
             photonView.RPC("PlayerTransferDamage", RpcTarget.Others, damage);
         }
     }
-
     [PunRPC]
-    public void PlayerTransferDamage(float damage)
+    public void PlayerGetDamage(float damage)
     {
         if (isDead) return;
         
@@ -523,7 +452,6 @@ public class PlayerController : MonoBehaviourPun
 
         if (playerEvent.callBackPlayerHPChangeEvent != null)
             playerEvent.callBackPlayerHPChangeEvent(playerCurHp, playerMaxHp);
-
     }
     private void OnChangedHp(float curHp, float maxHp)
     {
@@ -542,8 +470,5 @@ public class PlayerController : MonoBehaviourPun
             yield return null;
         }
     }
-
-
-
     #endregion
 }

@@ -11,6 +11,7 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
     public string SESSIONID { get; set; }
     public string WALLETADRESS { get; set; }
     public int ZERA { get; set; }
+    public string _ID { get; set; }
     public string BETTINGID { get; set; }
 
     [SerializeField] string selectedBettingID;
@@ -34,7 +35,6 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
         DontDestroyOnLoad(this.gameObject);
         GetUserProfile();
         GetSessionID();
-        Invoke("Settings", 1f);
         Invoke("ZeraBalance", 1f);
     }
 
@@ -104,7 +104,7 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
             if (response != null)
             {
                 resSettigns = response;
-                BETTINGID = resSettigns.data.settings._id;
+                _ID = resSettigns.data.settings._id;
             }
         });
     }
@@ -127,7 +127,6 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
             if (response != null)
             {
                 ZERA = response.data.balance;
-
             }
         });
     }
@@ -172,37 +171,39 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
     //-----------------------------------------------------------------------------------------------------
     //
     // ZERA 今特
-    public void Betting_Zera(string bettingid)
+    public void Betting_Zera(string _Id, string[] sessionIdArray)
     {
-        StartCoroutine(processRequestBetting_Zera(bettingid));
+        StartCoroutine(processRequestBetting_Zera(_Id, sessionIdArray));
     }
-    IEnumerator processRequestBetting_Zera(string bettingid)
+    IEnumerator processRequestBetting_Zera(string _Id, string[] sessionIdArray)
     {
         ResBettingPlaceBet resBettingPlaceBet = null;
         ReqBettingPlaceBet reqBettingPlaceBet = new ReqBettingPlaceBet();
-        reqBettingPlaceBet.players_session_id = new string[] { resGetSessionID.sessionId };
-        reqBettingPlaceBet.bet_id = bettingid;//selectedBettingID;// resSettigns.data.bets[0]._id;
+        reqBettingPlaceBet.players_session_id = sessionIdArray;//new string[] { resGetSessionID.sessionId };
+        reqBettingPlaceBet.bet_id = _ID;//selectedBettingID;// resSettigns.data.bets[0]._id;
         yield return requestCoinPlaceBet(reqBettingPlaceBet, (response) =>
         {
             if (response != null)
             {
                 Debug.Log("## CoinPlaceBet : " + response.message);
                 resBettingPlaceBet = response;
+
+                BETTINGID = response.data.betting_id;
             }
         });
     }
 
     // ZERA 今特-渋切
-    public void Betting_Zera_DeclareWinner(string id)
+    public void Betting_Zera_DeclareWinner(string bettingId, string winner_Id)
     {
-        StartCoroutine(processRequestBetting_Zera_DeclareWinner(id));
+        StartCoroutine(processRequestBetting_Zera_DeclareWinner(bettingId, winner_Id));
     }
-    IEnumerator processRequestBetting_Zera_DeclareWinner(string id)
+    IEnumerator processRequestBetting_Zera_DeclareWinner(string bettingId, string winner_Id)
     {
         ResBettingDeclareWinner resBettingDeclareWinner = null;
         ReqBettingDeclareWinner reqBettingDeclareWinner = new ReqBettingDeclareWinner();
-        reqBettingDeclareWinner.betting_id = selectedBettingID;// resSettigns.data.bets[0]._id;
-        reqBettingDeclareWinner.winner_player_id = resGetUserProfile.userProfile._id;
+        reqBettingDeclareWinner.betting_id = bettingId;// resSettigns.data.bets[0]._id;
+        reqBettingDeclareWinner.winner_player_id = winner_Id;//resGetUserProfile.userProfile._id;
         yield return requestCoinDeclareWinner(reqBettingDeclareWinner, (response) =>
         {
             if (response != null)
@@ -236,13 +237,6 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
 
 
 
-
-
-
-
-
-
-
     //-----------------------------------------------------------------------------------------------------
     #region LOCALHOST API
     /// <summary>
@@ -272,7 +266,6 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
             USERNAME = res_getUserProfile.userProfile.username;
             WALLETADRESS = res_getUserProfile.userProfile.public_address;
             SESSIONID = resGetSessionID.sessionId;
-            Debug.Log("SESSIONID : " + SESSIONID);
             Debug.Log("SESSIONID : " + SESSIONID);
         }
     }

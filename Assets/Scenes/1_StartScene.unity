@@ -2374,7 +2374,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1582866638}
   - component: {fileID: 1582866639}
-  - component: {fileID: 1582866640}
+  - component: {fileID: 1582866642}
   - component: {fileID: 1582866641}
   m_Layer: 0
   m_Name: NetworkAPI
@@ -2414,29 +2414,6 @@ MonoBehaviour:
   API_KEY: 5f3xufKK7tTPeATcC48CS2
   FullAppsProductionURL: https://odin-api.browseosiris.com
   FullAppsStagingURL: https://odin-api-sat.browseosiris.com
---- !u!114 &1582866640
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1582866636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecbc7634b90ca8f4e92626cd3d58ecac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <SessionId>k__BackingField: 
-  <Name>k__BackingField: 
-  <Zera>k__BackingField: 0
-  <WalletAdress>k__BackingField: 
-  <BettingId>k__BackingField: 
-  <masterName>k__BackingField: 
-  <masterWalletAdress>k__BackingField: 
-  <masterBettingId>k__BackingField: 
-  <otherName>k__BackingField: 
-  <otherWalletAdress>k__BackingField: 
-  <otherBettingId>k__BackingField: 
 --- !u!114 &1582866641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2459,6 +2436,32 @@ MonoBehaviour:
   sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &1582866642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582866636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecbc7634b90ca8f4e92626cd3d58ecac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: 
+  <SessionId>k__BackingField: 
+  <Zera>k__BackingField: 0
+  <WalletAdress>k__BackingField: 
+  <_Id>k__BackingField: 
+  <BettingId>k__BackingField: 
+  <MasterName>k__BackingField: 
+  <MasterSessionId>k__BackingField: 
+  <Master_Id>k__BackingField: 
+  <MasterBettingId>k__BackingField: 
+  <OtherName>k__BackingField: 
+  <OtherSessionId>k__BackingField: 
+  <Other_Id>k__BackingField: 
+  <OtherBettingId>k__BackingField: 
 --- !u!1 &1664893655
 GameObject:
   m_ObjectHideFlags: 0
