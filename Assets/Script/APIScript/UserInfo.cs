@@ -8,9 +8,9 @@ using Photon.Realtime;
 public class UserInfo : MonoBehaviourPunCallbacks
 {
     [field: SerializeField] public string Name { get; set; }
-    [field: SerializeField] public string SessionId { get; set; }
-    [field: SerializeField] public int Zera { get; set; }
     [field: SerializeField] public string WalletAdress { get; set; }
+    [field: SerializeField] public int Zera { get; set; }
+    [field: SerializeField] public string SessionId { get; set; }
     [field: SerializeField] public string _Id { get; set; }
     [field: SerializeField] public string BettingId { get; set; }
     //====================================================================
@@ -28,6 +28,11 @@ public class UserInfo : MonoBehaviourPunCallbacks
     bool WinToken = true;
     bool DisConnectToken = true;
 
+    private void Awake()
+    {
+        SettingClear();
+    }
+
     private void Start()
     {
         Invoke("UserInfoUpdate", 2f);
@@ -41,59 +46,61 @@ public class UserInfo : MonoBehaviourPunCallbacks
             // 전달함수실행
             photonView.RPC("SetMasterName", RpcTarget.All, Name);
             photonView.RPC("SetMasterSessionId", RpcTarget.All, SessionId);
+            photonView.RPC("SetMaster_Id",RpcTarget.All,_Id);
         }
         if (GameManager.INSTANCE.SCENENUM == 2 && GameManager.INSTANCE.WANTINVASION) //침입할때
         {
             photonView.RPC("SetOtherName", RpcTarget.All, Name);
             photonView.RPC("SetOtherSessionId", RpcTarget.All, SessionId);
+            photonView.RPC("SetOther_Id", RpcTarget.All, _Id);
         }
 
         //상대와 나의 정보가 모두 모인 시점
         //게임 시작후
-        if (GameManager.INSTANCE.ISGAMEIN && BettingToken) // 배틀씬들어옴
+        if (OtherSessionId != null && MasterSessionId != null && GameManager.INSTANCE.SCENENUM == 2 && GameManager.INSTANCE.INVASIONALLOW && BettingToken) // 마스터배틀씬들어옴
         {
-            BettingToken = false;
+            Debug.Log("betting id 얻기 시퀀스");
+            Debug.Log("betting id 얻기 시퀀스");
+            Debug.Log("betting id 얻기 시퀀스");
 
-            string[] array = { MasterSessionId, OtherSessionId };
-            MetaTrendAPIHandler.INSTANCE.Betting_Zera(BettingId, array);
-            BettingId = MetaTrendAPIHandler.INSTANCE.BETTINGID;
-
-            if (GameManager.INSTANCE.INVASIONALLOW) // 내가 마스터일때
-            {
-                photonView.RPC("SetMasterBettingId", RpcTarget.All, BettingId);
-            }
-            else//내가 침입자일때
-            {
-                photonView.RPC("SetOtherBettingId", RpcTarget.All, BettingId);
-            }
+            StartCoroutine(betting());
         }
-        
+
         //승자판정
         if (GameManager.INSTANCE.ISDEAD && WinToken) // 침입한 플레이어가 죽었을 때
         {
             WinToken = false;
             //master win
             MetaTrendAPIHandler.INSTANCE.Betting_Zera_DeclareWinner(MasterBettingId, Master_Id);
-            SettingClear();
         }
         else if (GameManager.INSTANCE.ISTIMEOVER && WinToken) // 타임오버가 호출됐을때
         {
             WinToken = false;
             //otherclient win
             MetaTrendAPIHandler.INSTANCE.Betting_Zera_DeclareWinner(MasterBettingId, Other_Id);
-            SettingClear();
         }
         
         
-        //// 게임이 비정상적으로 끝났을 때
-        if (!GameManager.INSTANCE.GameEndCorrect && DisConnectToken)
-        {
-            DisConnectToken = false;
-            // 베팅금액반환 - 베팅했던 Zera를 각자에게 되돌려줌                     
-            MetaTrendAPIHandler.INSTANCE.Betting_Zera_Disconnect(MasterBettingId);
+        ////// 게임이 비정상적으로 끝났을 때
+        //if (GameManager.INSTANCE.SCENENUM == 2 &&!GameManager.INSTANCE.GameEndCorrect && DisConnectToken)
+        //{
+        //    DisConnectToken = false;
+        //    // 베팅금액반환 - 베팅했던 Zera를 각자에게 되돌려줌                     
+        //    MetaTrendAPIHandler.INSTANCE.Betting_Zera_Disconnect(MasterBettingId);
+        //}
+    }
 
-            SettingClear();
-        }
+    IEnumerator betting()
+    {
+        BettingToken = false;
+
+        string[] array = { MasterSessionId, OtherSessionId };
+
+        yield return MetaTrendAPIHandler.INSTANCE.processRequestBetting_Zera(this.Master_Id,array);
+
+        BettingId = MetaTrendAPIHandler.INSTANCE.BETTINGID;
+
+        photonView.RPC("SetMasterBettingId", RpcTarget.All, BettingId);
     }
     // Name
     [PunRPC]
@@ -117,6 +124,16 @@ public class UserInfo : MonoBehaviourPunCallbacks
     {
         OtherSessionId = sessionId;
     }
+    [PunRPC]
+    public void SetMaster_Id(string _Id)
+    {
+        Master_Id = _Id;
+    }
+    [PunRPC]
+    public void SetOther_Id(string _Id)
+    {
+        Other_Id = _Id;
+    }
     // BettingId
     [PunRPC]
     public void SetMasterBettingId(string bettingId)
@@ -135,6 +152,7 @@ public class UserInfo : MonoBehaviourPunCallbacks
         SessionId = MetaTrendAPIHandler.INSTANCE.SESSIONID;
         Zera = MetaTrendAPIHandler.INSTANCE.ZERA;
         WalletAdress = MetaTrendAPIHandler.INSTANCE.WALLETADRESS;
+        _Id = MetaTrendAPIHandler.INSTANCE._ID;
     }
 
     void SettingClear()

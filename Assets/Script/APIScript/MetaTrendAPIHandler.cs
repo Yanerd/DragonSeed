@@ -14,8 +14,6 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
     public string _ID { get; set; }
     public string BETTINGID { get; set; }
 
-    [SerializeField] string selectedBettingID;
-
     [Header("[등록된 프로젝트에서 획득가능한 API 키]")]
     //https://odin-api-sat.browseosiris.com
 
@@ -36,6 +34,7 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
         GetUserProfile();
         GetSessionID();
         Invoke("ZeraBalance", 1f);
+        Invoke("Settings", 1f);
     }
 
     // 현재 개발단계에 따라서 사용하는 BaseURL이 달라진다.
@@ -97,14 +96,14 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
     {
         StartCoroutine(processRequestSettings());
     }
-    IEnumerator processRequestSettings()
+    public IEnumerator processRequestSettings()
     {
         yield return requestSettings((response) =>
         {
             if (response != null)
             {
                 resSettigns = response;
-                _ID = resSettigns.data.settings._id;
+                _ID = resSettigns.data.bets[0]._id;
             }
         });
     }
@@ -175,12 +174,12 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
     {
         StartCoroutine(processRequestBetting_Zera(_Id, sessionIdArray));
     }
-    IEnumerator processRequestBetting_Zera(string _Id, string[] sessionIdArray)
+    public IEnumerator processRequestBetting_Zera(string _Id, string[] sessionIdArray)
     {
         ResBettingPlaceBet resBettingPlaceBet = null;
         ReqBettingPlaceBet reqBettingPlaceBet = new ReqBettingPlaceBet();
         reqBettingPlaceBet.players_session_id = sessionIdArray;//new string[] { resGetSessionID.sessionId };
-        reqBettingPlaceBet.bet_id = _ID;//selectedBettingID;// resSettigns.data.bets[0]._id;
+        reqBettingPlaceBet.bet_id = _Id;//selectedBettingID;// resSettigns.data.bets[0]._id;
         yield return requestCoinPlaceBet(reqBettingPlaceBet, (response) =>
         {
             if (response != null)
