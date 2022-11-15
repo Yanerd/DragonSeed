@@ -92,6 +92,8 @@ public class PlayerController : MonoBehaviourPun
             playerEvent.callBackDisableTransferDamageEvent += CallOffWeaponCollider;
             playerEvent.callBackPlayerHPChangeEvent += OnChangedHp;
             #endregion
+
+
         }
     }
 
@@ -101,7 +103,7 @@ public class PlayerController : MonoBehaviourPun
         {
             #region initializing
             //get component
-            camTransfrom = GameObject.Find("O_CameraArm").GetComponent<Transform>();
+            
 
             //visible value
             lookForward = new Vector3(camTransfrom.forward.x, 0f, camTransfrom.forward.z).normalized;
@@ -118,6 +120,13 @@ public class PlayerController : MonoBehaviourPun
             ChangeState(STATE.IDLE);
             #endregion
         }
+        else
+        {
+            camTransfrom = GameObject.Find("O_CameraArm").GetComponent<Transform>();
+            camTransfrom.gameObject.SetActive(false);
+        }
+            
+            
         playerCurHp = playerMaxHp;
 
         if (testMode) OffWeaponCollider();
@@ -427,7 +436,7 @@ public class PlayerController : MonoBehaviourPun
         else
         {
             Debug.Log("데미지 받음");
-            photonView.RPC("PlayerTransferDamage", RpcTarget.Others, damage);
+            photonView.RPC("PlayerGetDamage", RpcTarget.Others, damage);
         }
     }
     [PunRPC]

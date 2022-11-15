@@ -118,6 +118,11 @@ public class Ground : MonoBehaviour
         {
             OnWater = true;
         }
+        if (other.tag == "Building")
+        {
+            this.gameObject.tag = "OnGround";
+            OnBuilding = true;
+        }
     }
     private void OnTriggerExit(Collider other)
     {
@@ -131,8 +136,23 @@ public class Ground : MonoBehaviour
         {
             OnWater = false;
         }
+        if (other.tag == "Building")
+        {
+            this.gameObject.tag = "GroundEmpty";
+            OnBuilding = false;
+        }
 
     }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Building")
+        {
+            this.gameObject.tag = "OnGround";
+            OnBuilding = true;
+        }
+    }
+  
 
 
 }

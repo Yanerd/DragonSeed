@@ -18,6 +18,9 @@ public class RayClick : MonoBehaviour
     [SerializeField] GameObject[] all_Alpha_Prefab;
     CursorChange myCursor;
 
+   
+
+
     private int mask; //cullingMask plag Save Value
     private int mask1;
     private bool wellClick;
@@ -97,49 +100,93 @@ public class RayClick : MonoBehaviour
                 {
                     if (hit.transform.tag == "OnGround") return;
 
+                    GameObject buildingCheck;
+
                     if (DefenseUIManager.INSTANCE.onHOUSE == true)
                     {
                         DefenseUIManager.INSTANCE.onHOUSE = false;
-                        ObjectPoolingManager.inst.Instantiate(housePrefab, hit.transform.position + new Vector3(0, 0.33f, 0), Quaternion.identity, ObjectPoolingManager.inst.PoolingZone);
+                        buildingCheck = ObjectPoolingManager.inst.Instantiate(housePrefab, hit.transform.position + new Vector3(0, 0.33f, 0), Quaternion.identity, ObjectPoolingManager.inst.PoolingZone);
                         ObjectPoolingManager.inst.ObjectDisappear();
-                       
+                       if(buildingCheck!=null)
+                        {
+                            DefenseUIManager.INSTANCE.houseCount--;
+                            DefenseUIManager.INSTANCE.BringObjectCount();
+                            DefenseUIManager.INSTANCE.InstButtonTurnOff();
+                        }
                     }
                     else if (DefenseUIManager.INSTANCE.onPOTATO == true)
                     {
                         DefenseUIManager.INSTANCE.onPOTATO = false;
-                        ObjectPoolingManager.inst.Instantiate(potatoPrefab, hit.transform.position + new Vector3(0, 0.33f, 0), Quaternion.identity, ObjectPoolingManager.inst.PoolingZone);
+                        buildingCheck = ObjectPoolingManager.inst.Instantiate(potatoPrefab, hit.transform.position + new Vector3(0, 0.33f, 0), Quaternion.identity, ObjectPoolingManager.inst.PoolingZone);
                         ObjectPoolingManager.inst.ObjectDisappear();
-                        
+                        if (buildingCheck != null)
+                        {
+                            DefenseUIManager.INSTANCE.potatoSeedCount--;
+                            DefenseUIManager.INSTANCE.BringObjectCount();
+                            DefenseUIManager.INSTANCE.InstButtonTurnOff();
+                        }
+
                     }
                     else if (DefenseUIManager.INSTANCE.onWELL == true )
                     {
                         DefenseUIManager.INSTANCE.onWELL = false;
-                        ObjectPoolingManager.inst.Instantiate(WellPrefab, hit.transform.position + new Vector3(0, 0.3f, 0), Quaternion.identity, ObjectPoolingManager.inst.PoolingZone);
+                        buildingCheck = ObjectPoolingManager.inst.Instantiate(WellPrefab, hit.transform.position + new Vector3(0, 0.3f, 0), Quaternion.identity, ObjectPoolingManager.inst.PoolingZone);
                         ObjectPoolingManager.inst.ObjectDisappear();
+                        if (buildingCheck != null)
+                        {
+                            DefenseUIManager.INSTANCE.wellCount--;
+                            DefenseUIManager.INSTANCE.BringObjectCount();
+                            DefenseUIManager.INSTANCE.InstButtonTurnOff();
+                        }
                     }
                     else if (DefenseUIManager.INSTANCE.onAPPLE == true)
                     {
                         DefenseUIManager.INSTANCE.onAPPLE = false;
-                        ObjectPoolingManager.inst.Instantiate(ApplePrefab, hit.transform.position+new Vector3(0,0.33f,0), Quaternion.identity, ObjectPoolingManager.inst.PoolingZone);
+                        buildingCheck = ObjectPoolingManager.inst.Instantiate(ApplePrefab, hit.transform.position+new Vector3(0,0.33f,0), Quaternion.identity, ObjectPoolingManager.inst.PoolingZone);
                         ObjectPoolingManager.inst.ObjectDisappear();
+                        if (buildingCheck != null)
+                        {
+                            DefenseUIManager.INSTANCE.appleSeedCount--;
+                            DefenseUIManager.INSTANCE.BringObjectCount();
+                            DefenseUIManager.INSTANCE.InstButtonTurnOff();
+                        }
                     }
                     else if (DefenseUIManager.INSTANCE.onCABBAGE == true)
                     {
                         DefenseUIManager.INSTANCE.onCABBAGE = false;
-                        ObjectPoolingManager.inst.Instantiate(CabbagePrefab, hit.transform.position + new Vector3(0, 0.33f, 0), Quaternion.identity, ObjectPoolingManager.inst.PoolingZone);
+                        buildingCheck = ObjectPoolingManager.inst.Instantiate(CabbagePrefab, hit.transform.position + new Vector3(0, 0.33f, 0), Quaternion.identity, ObjectPoolingManager.inst.PoolingZone);
                         ObjectPoolingManager.inst.ObjectDisappear();
+                        if (buildingCheck != null)
+                        {
+                            DefenseUIManager.INSTANCE.cabbageSeedCount--;
+                            DefenseUIManager.INSTANCE.BringObjectCount();
+                            DefenseUIManager.INSTANCE.InstButtonTurnOff();
+                        }
                     }
                     else if (DefenseUIManager.INSTANCE.onCARROT == true )
                     {
                         DefenseUIManager.INSTANCE.onCARROT = false;
-                        ObjectPoolingManager.inst.Instantiate(CarrotPrefab, hit.transform.position + new Vector3(0, 0.33f, 0), Quaternion.identity, ObjectPoolingManager.inst.PoolingZone);
+                        buildingCheck=ObjectPoolingManager.inst.Instantiate(CarrotPrefab, hit.transform.position + new Vector3(0, 0.33f, 0), Quaternion.identity, ObjectPoolingManager.inst.PoolingZone);
                         ObjectPoolingManager.inst.ObjectDisappear();
+                        if (buildingCheck != null)
+                        {
+                            DefenseUIManager.INSTANCE.carrotSeedCount--;
+                            DefenseUIManager.INSTANCE.BringObjectCount();
+                            DefenseUIManager.INSTANCE.InstButtonTurnOff();
+                        }
                     }
                     else if (DefenseUIManager.INSTANCE.onEEGPLANT == true)
                     {
                         DefenseUIManager.INSTANCE.onEEGPLANT = false;
-                        ObjectPoolingManager.inst.Instantiate(EggplantPrefab, hit.transform.position + new Vector3(0, 0.33f, 0), Quaternion.identity, ObjectPoolingManager.inst.PoolingZone);
+                        buildingCheck=ObjectPoolingManager.inst.Instantiate(EggplantPrefab, hit.transform.position + new Vector3(0, 0.33f, 0), Quaternion.identity, ObjectPoolingManager.inst.PoolingZone);
                         ObjectPoolingManager.inst.ObjectDisappear();
+                        if (buildingCheck != null)
+                        {
+                            DefenseUIManager.INSTANCE.eggplantSeedCount--;
+                            DefenseUIManager.INSTANCE.BringObjectCount();
+                            DefenseUIManager.INSTANCE.InstButtonTurnOff();
+
+                        }
                     }
                 }
             }

@@ -40,11 +40,17 @@ public class Vegetable : MonoBehaviour
     {
         Initializing();
 
+        DefenseUIManager.INSTANCE.SliderBarList.Add(growBar);
+        DefenseUIManager.INSTANCE.SliderBarList.Add(CountBar);
+
         CountBar.maxValue = WaterCount;
         CountBar.minValue = 0;
         CountBar.value = 0;
+        growBar.maxValue = GrowthTime;
 
-        if(DefenseUIManager.INSTANCE.BUILDINGMODE==false)
+
+
+        if (DefenseUIManager.INSTANCE.BUILDINGMODE==false)
         {
             if (GameManager.INSTANCE.SCENENUM == 2)
             {
@@ -119,7 +125,7 @@ public class Vegetable : MonoBehaviour
     void InstGardeningVegetable(float growthValue, int countValue)
     {
 
-        if (growthValue>=1f)
+        if (growthValue>= GrowthTime)
         {
             this.GrowthValue = growthValue;
             this.CountValue = countValue;
@@ -163,7 +169,7 @@ public class Vegetable : MonoBehaviour
         growBar.gameObject.SetActive(false);
         CountBar.gameObject.SetActive(false);
 
-        if (growthValue>=0.5f&& growthValue<1f)
+        if (growthValue>= GrowthTime /2&& growthValue< GrowthTime)
         {
             Seed.enabled = false;
             Stem.gameObject.SetActive(true);
@@ -197,6 +203,7 @@ public class Vegetable : MonoBehaviour
 
         if (GrownDragon == false)
         {
+            Debug.Log("슬라이더 꺼져");
             growBar.gameObject.SetActive(false);
             CountBar.gameObject.SetActive(false);
             this.gameObject.name = "B_Mud";
@@ -211,13 +218,13 @@ public class Vegetable : MonoBehaviour
         bool SateGrown = false;
         while (true)
         {
-            if (growBar.value >= 0.5f&& SateStem==false)
+            if (growBar.value >= GrowthTime /2&& SateStem==false)
             {
                 StemStat();
                 SateStem = true;
                 this.gameObject.name = this.gameObject.name+"_Stemp";
             }
-            if (growBar.value >= 1f&& SateGrown==false)
+            if (growBar.value >= GrowthTime && SateGrown==false)
             {
                 GrownState();
                 SateGrown = true;
@@ -233,15 +240,14 @@ public class Vegetable : MonoBehaviour
         
         while(true)
         {
-            yield return new WaitForSeconds(1f);
             GrowthValue += 0.1f;
+
+            if (GameManager.INSTANCE.INVASIONALLOW == true) yield return new WaitForSeconds(0.05f);
+            else yield return new WaitForSeconds(0.1f);
+
             growBar.value = GrowthValue;
-            if (DefenseUIManager.INSTANCE.invadePermit==true)
-            {
-                GrowthValue += 0.1f;
-                growBar.value = GrowthValue;
-            }
-            if(growBar.value>=1f)
+
+            if (growBar.value>= GrowthTime)
             {
                 growBar.gameObject.SetActive(false);
                 CountBar.gameObject.SetActive(false);

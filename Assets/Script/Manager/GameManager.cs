@@ -120,7 +120,7 @@ public class GameManager : MonoSingleTon<GameManager>
             GameManager.INSTANCE.GAMETIME += Time.deltaTime;
 
             //invader is win
-            if (GameManager.INSTANCE.GAMETIME > 20f)//->game time limit
+            if (GameManager.INSTANCE.GAMETIME > 60f)//->game time limit
             {
                 CoinRavish();
                 Time.timeScale = 0f;

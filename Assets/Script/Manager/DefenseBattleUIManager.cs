@@ -89,7 +89,7 @@ public class DefenseBattleUIManager : MonoBehaviourPun
        
         if (Input.GetMouseButtonDown(0))
         {
-            //SkillCheck();
+            SkillCheck();
             StaminaSliderCheck();
         }
 
@@ -115,17 +115,19 @@ public class DefenseBattleUIManager : MonoBehaviourPun
 
         if (Physics.Raycast(ray, out hit, 1000f))
         {
-            StartCoroutine(CheckSkill(hit.transform.position, Quaternion.identity, this.transform));
+            StartCoroutine(CallSkill(hit.transform.position));
         }
     }
 
-    // 레이캐스트 사용해서 오브젝트 생성
-    IEnumerator CheckSkill(Vector3 pos, Quaternion rotation, Transform tr)
+    IEnumerator CallSkill(Vector3 pos)
     {
-        GameObject skill = ObjectPoolingManager.inst.Instantiate(attackSkillPrefab, pos + new Vector3(0, 0.5f, 0), Quaternion.identity, tr);
-        yield return new WaitForSeconds(0.5f);
-        ObjectPoolingManager.inst.Destroy(skill);
+        GameObject skill = PhotonNetwork.Instantiate("O_AttackSkillObj", pos + new Vector3(0, 0.5f, 0), Quaternion.identity);
+        yield return new WaitForSeconds(1f);
+        PhotonNetwork.Destroy(skill);
     }
+
+
+
     #endregion
 
 
