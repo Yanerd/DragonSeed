@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 883bda8b8f6ed7940ad1985a82c260dd, type: 3}
+  m_Name: D_AppleagonData
+  m_EditorClassIdentifier: 
+  dragonType: Apple
+  attackPower: 20
+  attackRange: 0.3
+  attackInterval: 1.8
+  hp: 150
+  speed: 1.2
+  scale: 1.2
+  rare: 2
+  saleprice: 50
+  killPoint: 200
+  upgradePower: 0
+  upgradeHP: 0
+  upgradeScale: 0
