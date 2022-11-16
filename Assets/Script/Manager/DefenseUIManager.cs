@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
 {
-    [SerializeField] ParticleSystem shineParticle;
+    private GameObject sunshineObj=null;
 
     Canvas defenseUI;
 
@@ -196,8 +196,6 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
    
     private void Awake()
     {
-        shineParticle.Stop();
-
         defenseUI = GameObject.Find("DefenseUI").GetComponent<Canvas>();
 
         if (FindObjectsOfType<DefenseUIManager>().Length >1)
@@ -287,16 +285,22 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
             wellCount = 10;
         }
 
-        //ȿ�� �ѱ�
-        if (!shineParticle.isPlaying && GameManager.INSTANCE.INVASIONALLOW)
+        if(GameManager.INSTANCE.SCENENUM==1&& sunshineObj==null)
         {
-            shineParticle.Play();
+            sunshineObj = Instantiate(Resources.Load<GameObject>("G_SunShine"));
+            sunshineObj.GetComponent<ParticleSystem>().Stop();
+        }
+
+        //ȿ�� �ѱ�
+        if (sunshineObj != null&& !sunshineObj.GetComponent<ParticleSystem>().isPlaying && GameManager.INSTANCE.INVASIONALLOW)
+        {
+            sunshineObj.GetComponent<ParticleSystem>().Play();
         }
 
         //ȿ�� ����
-        if (shineParticle.isPlaying && !GameManager.INSTANCE.INVASIONALLOW)
+        if (sunshineObj != null && sunshineObj.GetComponent<ParticleSystem>().isPlaying && !GameManager.INSTANCE.INVASIONALLOW)
         {
-            shineParticle.Stop();
+            sunshineObj.GetComponent<ParticleSystem>().Stop();
         }
     }
 
