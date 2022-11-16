@@ -6,6 +6,10 @@ using UnityEngine;
 
 public class StartManager : MonoBehaviour
 {
+    [SerializeField] GameObject startCamPoint = null;
+    [SerializeField] GameObject endCamPoint = null;
+    [SerializeField] GameObject mainCamPoint = null;
+
     Button startButton = null;
     ObjectActiveFalse[] ActiveFalsedObj = null;
 
@@ -32,10 +36,11 @@ public class StartManager : MonoBehaviour
     }
     IEnumerator CameraMove()
     {
+        endCamPoint.SetActive(true);
+        startCamPoint.SetActive(false);
         while (true)
         {
-            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(-3.83f, 3f, -3.83f), Time.deltaTime);
-            if (Camera.main.transform.position.x > -3.85f)
+            if (mainCamPoint.transform.position == endCamPoint.transform.position)
             {
                 for (int i = 0; i < ActiveFalsedObj.Length; i++)
                 {

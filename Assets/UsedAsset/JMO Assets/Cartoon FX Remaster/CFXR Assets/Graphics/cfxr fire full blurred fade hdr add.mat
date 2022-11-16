@@ -63,7 +63,7 @@ Material:
     - _DirLightScreenAtten: 1
     - _DirectLightingRamp: 1
     - _DissolveSmooth: 0.1
-    - _Distort: 0.7
+    - _Distort: 1.1
     - _DstBlend: 1
     - _EdgeFadePow: 1
     - _FadeAlongU: 1

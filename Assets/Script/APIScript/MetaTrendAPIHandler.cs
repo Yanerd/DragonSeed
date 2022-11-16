@@ -4,6 +4,7 @@ using UnityEngine.Networking;
 
 using TMPro;
 using UnityEngine.Rendering;
+using Newtonsoft.Json;
 
 public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
 {
@@ -103,7 +104,9 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
             if (response != null)
             {
                 resSettigns = response;
-                _ID = resSettigns.data.bets[0]._id;
+                
+                if (resSettigns.data.bets[0] != null)
+                    _ID = resSettigns.data.bets[0]._id;
             }
         });
     }
@@ -357,13 +360,13 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
     {
         string url = getBaseURL() + "/v1/betting/settings";
 
-
         UnityWebRequest www = UnityWebRequest.Get(url);
         www.SetRequestHeader("api-key", API_KEY);
         yield return www.SendWebRequest();
-        Res_Settings res = JsonUtility.FromJson<Res_Settings>(www.downloadHandler.text);
+        Debug.Log(www.downloadHandler.text);
+
+        Res_Settings res = JsonConvert.DeserializeObject<Res_Settings>(www.downloadHandler.text);
         callback(res);
-        //UnityWebRequest www = new UnityWebRequest(URL);
     }
 
 

@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
 {
+    [SerializeField] ParticleSystem shineParticle;
+
     Canvas defenseUI;
 
     [Header("Be A KING")]
@@ -190,9 +192,12 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
 
     GameObject level = null;
 
+    public bool particle_toggle = false;
    
     private void Awake()
     {
+        shineParticle.Stop();
+
         defenseUI = GameObject.Find("DefenseUI").GetComponent<Canvas>();
 
         if (FindObjectsOfType<DefenseUIManager>().Length >1)
@@ -235,8 +240,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     {
         base.OnEnable();
 
-        //----------------------------------------------------------
-        //StartCoroutine(FindLevel());
+        particle_toggle = false;
     }
 
     public override void OnDisable()
@@ -261,8 +265,6 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
         GoldText.text = Gold.ToString();
         ZeraText.text = MetaTrendAPIHandler.INSTANCE.ZERA.ToString();
 
-
-
         if (GameManager.INSTANCE.SCENENUM == 1)
         {
             defenseUI.targetDisplay = 0;
@@ -283,6 +285,17 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
             wellCount = 10;
         }
 
+        //효과 켜기
+        if (!shineParticle.isPlaying && GameManager.INSTANCE.INVASIONALLOW)
+        {
+            shineParticle.Play();
+        }
+
+        //효과 끄기
+        if (shineParticle.isPlaying && !GameManager.INSTANCE.INVASIONALLOW)
+        {
+            shineParticle.Stop();
+        }
     }
 
     //Value Reset 

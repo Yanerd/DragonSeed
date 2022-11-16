@@ -121,7 +121,7 @@ public class DefenseBattleUIManager : MonoBehaviourPun
 
     IEnumerator CallSkill(Vector3 pos)
     {
-        GameObject skill = PhotonNetwork.Instantiate("O_AttackSkillObj", pos + new Vector3(0, 0.5f, 0), Quaternion.identity);
+        GameObject skill = PhotonNetwork.Instantiate("O_AttackSkillObj", pos, Quaternion.identity);
         yield return new WaitForSeconds(1f);
         PhotonNetwork.Destroy(skill);
     }

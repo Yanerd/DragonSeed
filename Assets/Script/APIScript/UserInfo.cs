@@ -59,10 +59,6 @@ public class UserInfo : MonoBehaviourPunCallbacks
         //게임 시작후
         if (OtherSessionId != null && MasterSessionId != null && GameManager.INSTANCE.SCENENUM == 2 && GameManager.INSTANCE.INVASIONALLOW && BettingToken) // 마스터배틀씬들어옴
         {
-            Debug.Log("betting id 얻기 시퀀스");
-            Debug.Log("betting id 얻기 시퀀스");
-            Debug.Log("betting id 얻기 시퀀스");
-
             StartCoroutine(betting());
         }
 

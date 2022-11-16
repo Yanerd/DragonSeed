@@ -163,11 +163,6 @@ namespace CartoonFX
 				if (currentEffect != null)
 				{
 					var ps = currentEffect.GetComponent<ParticleSystem>();
-					if (ps == null)
-					{
-						return;
-					}
-
 					if (ps.isEmitting)
 					{
 						ps.Stop(true);

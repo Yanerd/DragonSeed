@@ -111,8 +111,8 @@ public class Res_Settings
 		public int amount;
 		public int platform_fee;
 		public int developer_fee;
-		public int win_reward;
-		public int win_amount;
+		public float win_reward;
+		public float win_amount;
 		public string createdAt;
 		public string updatedAt;
 		public int __v;
