@@ -70,7 +70,6 @@ public class DefenseBattleUIManager : MonoBehaviourPun
     {
         if (GameManager.INSTANCE.ISDEAD || GameManager.INSTANCE.ISTIMEOVER)
         {
-            Debug.Log("���� ����");
             GameManager.INSTANCE.TimeOut();
             defenseEndUI.SetActive(true);
         }

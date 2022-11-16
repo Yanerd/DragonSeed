@@ -317,7 +317,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
 
 
 
-    private void BringObjectCount()
+    public void BringObjectCount()
     {
         curGroundState.GetComponent<TextMeshProUGUI>().text = MapState.ToString();
 
@@ -502,7 +502,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
 
 
     }
-    void InstButtonTurnOff()
+    public void InstButtonTurnOff()
     {
         if (potatoSeedCount <= 0)
         {
