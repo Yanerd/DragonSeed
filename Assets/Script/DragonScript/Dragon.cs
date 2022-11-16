@@ -15,13 +15,11 @@ public class Dragon : MonoBehaviourPun
     // 플레이어 발견 시 사용할 느낌표 아이콘
     [SerializeField] GameObject Eff_ExclamationMark;
     // 피격시 이펙트
-    [SerializeField] GameObject Eff_Hit;
+    [SerializeField] ParticleSystem Eff_Hit;
     // 드래곤 원래 얼굴
     [SerializeField] GameObject Face;
     // 드래곤 피격시 얼굴
     [SerializeField] GameObject Hit_Face;
-    // 내 과일
-    [SerializeField] GameObject myFruitObj;
     // 죽음 이펙트1
     [SerializeField] GameObject dieEffectobj;
     //죽음 이펙트2
@@ -31,10 +29,11 @@ public class Dragon : MonoBehaviourPun
 
     // 느낌표 오브젝트
     GameObject markObj;
-    // 피격 이펙트 오브젝트
-    GameObject hitObj;
     // 타겟 오브젝트
     GameObject newObj;
+    // 이펙트 오브젝트
+    GameObject hit_effet;
+
 
     // 드래곤이 바라볼 플레이어
     PlayerController targetPlayer;
@@ -107,9 +106,8 @@ public class Dragon : MonoBehaviourPun
 
         // 이펙트 찾아오기
         markObj = Instantiate(Eff_ExclamationMark, this.transform);
-        hitObj = Instantiate(Eff_Hit, this.transform);///////////////////////////////
+            
         Eff_ExclamationMark.SetActive(false);
-        Eff_Hit.SetActive(false);
         Face.SetActive(true);
         Hit_Face.SetActive(false);
 
@@ -179,22 +177,6 @@ public class Dragon : MonoBehaviourPun
     }
 
 
-
-
-
-
-
-
-    private void OnTriggerExit(Collider other)
-    {
-        // 피격 이펙트 출력
-        Eff_Hit.GetComponent<ParticleSystem>().Stop();
-        Eff_Hit.SetActive(false);
-
-    }
-
-
-
     //--------------------------------------------------------------------------------------------------------
     #region
 
@@ -226,9 +208,8 @@ public class Dragon : MonoBehaviourPun
         // 애니메이션 호출
         myAnimation.SetTrigger("hit");
 
-        // 피격 이펙트 출력
-        hitObj.SetActive(true);
-        hitObj.GetComponent<ParticleSystem>().Play();
+
+        StartCoroutine(CallHitEffet());
 
         // 체력이 반 이하일 때
         if (curHP <= maxHP / 2)
@@ -242,6 +223,17 @@ public class Dragon : MonoBehaviourPun
             nextState(STATE.DIE);
         }
     }
+
+    IEnumerator CallHitEffet()
+    {
+        hit_effet = Instantiate(Resources.Load<GameObject>("E_Eff_Hit"), this.transform.position+new Vector3(0,0.1f,0), Quaternion.identity, this.transform);
+        // 피격 이펙트 출력
+        hit_effet.GetComponent<ParticleSystem>().Play();
+        yield return new WaitForSeconds(2f);
+
+        Destroy(hit_effet);
+    }
+
 
     #endregion
     //--------------------------------------------------------------------------------------------------------
@@ -658,25 +650,21 @@ public class Dragon : MonoBehaviourPun
             // 죽고나서 이펙트 생성
             //죽음이펙트1
             GameObject dieEff = Instantiate(dieEffectobj, this.transform.position, this.transform.rotation);
-            //1초뒤에 나머지 이펙트실행
-            yield return new WaitForSeconds(1f);
             //죽음이펙트2
             GameObject dieEff2 = Instantiate(dieEffectobj2, this.transform.position, this.transform.rotation);
             //감자반갈죽
-            GameObject fruitEff = Instantiate(myFruitObj, this.transform.position, this.transform.rotation);
+            if(photonView.IsMine)
+            {
+                GameObject fruitEff = PhotonNetwork.Instantiate("F_" + dragonData.DragonType, this.transform.position, this.transform.rotation);
+            }
             // 드래곤 real 삭제
             yield return new WaitForSeconds(1f);
             Debug.Log("주금");
             Destroy(this.gameObject);
-
+            
         }
         yield return null;
     }
-
-
-
-
-
 
 
     #endregion Dragon STATE Coroutine

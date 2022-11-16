@@ -12,7 +12,7 @@ using Photon.Pun;
 
 public class DefenseBattleUIManager : MonoBehaviourPun
 {
-
+    [SerializeField] Image sliderImage = null;
     //DefenseEndUI
     [SerializeField] GameObject defenseEndUI = null;
 
@@ -37,8 +37,8 @@ public class DefenseBattleUIManager : MonoBehaviourPun
     #endregion
 
     Transform camTransfrom = null;
-
-
+    bool recoveryCheck;
+    Vector3 camOriginPos;
     private void Awake()
     {
         camTransfrom = GameObject.Find("O_DEFMainCamera(Clone)").GetComponent<Transform>();
@@ -48,18 +48,15 @@ public class DefenseBattleUIManager : MonoBehaviourPun
         playTimeText = GameObject.Find("PlayTime_number").GetComponent<TextMeshProUGUI>();
         stamina_Slider = GameObject.Find("Stamina_Slider").GetComponent<Slider>();
 
-        // ½½¶óÀÌ´õ ÃÊ±â°ª ¼³Á¤
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½Ê±â°ª ï¿½ï¿½ï¿½ï¿½
         stamina_Slider.value = stamina_Slider.maxValue;
 
         defenseUserAttackPower = defenseUserMaxAttackPower;
 
-        sliderRechargeTime += Time.deltaTime/10;
+        sliderRechargeTime = Time.deltaTime/10;
 
+        camOriginPos = camTransfrom.position;
     }
-
-
-
-
 
     private void Start()
     {
@@ -69,56 +66,68 @@ public class DefenseBattleUIManager : MonoBehaviourPun
        
     }
 
-
-
-
-
     private void Update()
     {
         if (GameManager.INSTANCE.ISDEAD || GameManager.INSTANCE.ISTIMEOVER)
         {
-            Debug.Log("°ÔÀÓ ³¡³²");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
             GameManager.INSTANCE.TimeOut();
             defenseEndUI.SetActive(true);
         }
 
-        // ÇÃ·¹ÀÌ Å¸ÀÓ ÅØ½ºÆ®·Î ¹Þ¾Æ¿À±â
+        // ï¿½Ã·ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½Ø½ï¿½Æ®ï¿½ï¿½ ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½
         playTimeText.text = ((int)GameManager.INSTANCE.GAMETIME).ToString();
 
-        //if(GameManager.INSTANCE.ISTIMEOVER) 
-       
         if (Input.GetMouseButtonDown(0))
         {
             SkillCheck();
-            StaminaSliderCheck();
         }
-
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            OnBackButton();
-        }
-
-        stamina_Slider.value += sliderRechargeTime;
+       
     }
-
-
-
 
     #region SkillCheck
     void SkillCheck()
     {
-        // ¸¶¿ì½º ¹öÆ° ÀÔ·ÂÀÌ ÀÖÀ» °æ¿ì
+        //ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        if (stamina_Slider.value <= 0.2f)
+        {
+            //ï¿½ð³¯·ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ï¿½ï¿½
+            StartCoroutine(CameraShake(0.5f,0.01f));
+            return;
+        }
+      
+        // ï¿½ï¿½ï¿½ì½º ï¿½ï¿½Æ° ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
+        //ï¿½ï¿½ ï¿½ï¿½ Å¬ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½
+        if (Physics.Raycast(ray, out hit, 1000f))
+        {
+            if (hit.transform.name == "NoBuildingZone" || hit.transform.name == "Boundary")
+            {
+                //ï¿½ð³¯·ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ï¿½ï¿½
+                StartCoroutine(CameraShake(0.5f, 0.01f));
+                return;
+            }
+        }
+        //ï¿½ï¿½ï¿½×¹Ì³ï¿½ ï¿½ï¿½ï¿½
+        stamina_Slider.value -= 0.2f;
+        
+        //ï¿½ï¿½ï¿½Â¹Ì³ï¿½ È¸ï¿½ï¿½ ï¿½Ú·ï¿½Æ¾// bool ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú·ï¿½Æ¾ ï¿½ßºï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        if(recoveryCheck == false) 
+            StartCoroutine(RecoveryStamina());
+
+        //Ray ï¿½ï¿½ï¿½ï¿½ï¿½
         Debug.DrawRay(ray.origin, ray.direction * 1000, Color.red);
 
-        if (Physics.Raycast(ray, out hit, 1000f))
+        //Layer ground ï¿½ï¿½ Raycastï¿½ï¿½ ï¿½Ç´ï¿½
+        if (Physics.Raycast(ray, out hit, 1000f, 1 << 9))
         {
             StartCoroutine(CallSkill(hit.transform.position));
         }
     }
 
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Î½ï¿½ï¿½Ï½Ã·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     IEnumerator CallSkill(Vector3 pos)
     {
         GameObject skill = PhotonNetwork.Instantiate("O_AttackSkillObj", pos, Quaternion.identity);
@@ -126,30 +135,49 @@ public class DefenseBattleUIManager : MonoBehaviourPun
         PhotonNetwork.Destroy(skill);
     }
 
-
-
-    #endregion
-
-
-
-
-    #region StaminaSliderCheck
-    void StaminaSliderCheck()
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½×¹Ì³ï¿½ È¸ï¿½ï¿½ ï¿½Ú·ï¿½Æ¾
+    IEnumerator RecoveryStamina()
     {
-        // ½ºÅÂ¹Ì³Ê ½½¶óÀÌ´õ
-        Debug.Log($"{defenseUserAttackPower} µ¥¹ÌÁö ¸¸Å­ °ø°Ý");
-
-        // ½ºÅÂ¹Ì³Ê »ç¿ë
-        stamina_Slider.value -= 0.2f;
-
-        // ½ºÅÂ¹Ì³Ê°¡ 0ÀÌÇÏ ÀÏ¶§´Â °ø°Ý ºÒ°¡
-        if (stamina_Slider.value <= 0.2f)
+        recoveryCheck = true;
+        while (true)
         {
-            stamina_Slider.value = 0f;
-            defenseUserAttackPower = 0;
-            Debug.Log($"³ªÀÇ µ¥¹ÌÁö{defenseUserAttackPower}, °ø°ÝºÒ°¡");
+            yield return new WaitForSeconds(0.1f);
+            stamina_Slider.value += sliderRechargeTime;
+
+            if(stamina_Slider.value>= stamina_Slider.maxValue)
+            {
+                recoveryCheck = false;
+                yield break;
+            }
+
+            //ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
+            if(stamina_Slider.value<=0.2f)
+            {
+                sliderImage.color = Color.red;
+            }
+            else
+            {
+                sliderImage.color = Color.white;
+            }
         }
     }
+
+    IEnumerator CameraShake(float shakeTime, float shakeRange)
+    {
+        float timer = 0;
+
+        while (timer<= shakeTime)
+        {
+            camTransfrom.localPosition = Random.insideUnitSphere * shakeRange + camOriginPos;
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        camTransfrom.localPosition = camOriginPos;
+    }
+
+
+
     #endregion
 
     Coroutine instiateCoroutine;
@@ -183,7 +211,7 @@ public class DefenseBattleUIManager : MonoBehaviourPun
 
     IEnumerator GoBackSceneInstantiate()
     {
-        Debug.Log("¾À ÀüÈ¯Áß");
+        Debug.Log("ï¿½ï¿½ ï¿½ï¿½È¯ï¿½ï¿½");
 
         yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "2_GardenningScene");
         StopCoroutine(instiateCoroutine);

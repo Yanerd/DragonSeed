@@ -19194,7 +19194,7 @@ GameObject:
   - component: {fileID: 5830000821411324345}
   - component: {fileID: 6424453170351359383}
   m_Layer: 0
-  m_Name: Dragon_dieEff 2
+  m_Name: E_Dragon_dieEff 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

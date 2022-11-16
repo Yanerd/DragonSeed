@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 883bda8b8f6ed7940ad1985a82c260dd, type: 3}
   m_Name: D_CarrotagonData
   m_EditorClassIdentifier: 
-  dragonType: D_Carrotagon
+  dragonType: Carrot
   attackPower: 40
   attackRange: 0.5
   attackInterval: 1.4

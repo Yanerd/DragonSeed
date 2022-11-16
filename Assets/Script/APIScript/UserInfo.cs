@@ -39,37 +39,37 @@ public class UserInfo : MonoBehaviourPunCallbacks
     }
     void Update()
     {
-        // ¿ÀÆæ½º¾ÀÀÌ µÇ¾úÀ» ¶§
-        // ÀÚ½ÅÀÇ »óÅÂ¸¦ ÆÇ´ÜÇÏ¿© ³ª¿Í »ó´ë Å¬¶óÀÌ¾ðÆ®¿¡°Ô data¸¦ Àü´ÞÇÑ´Ù.
-        if (GameManager.INSTANCE.SCENENUM == 2 && GameManager.INSTANCE.INVASIONALLOW) // Ä§ÀÔ´çÇÒ¶§
+        // ï¿½ï¿½ï¿½æ½ºï¿½ï¿½ï¿½ï¿½ ï¿½Ç¾ï¿½ï¿½ï¿½ ï¿½ï¿½
+        // ï¿½Ú½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½Ç´ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ dataï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+        if (GameManager.INSTANCE.SCENENUM == 2 && GameManager.INSTANCE.INVASIONALLOW) // Ä§ï¿½Ô´ï¿½ï¿½Ò¶ï¿½
         {
-            // Àü´ÞÇÔ¼ö½ÇÇà
+            // ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½
             photonView.RPC("SetMasterName", RpcTarget.All, Name);
             photonView.RPC("SetMasterSessionId", RpcTarget.All, SessionId);
             photonView.RPC("SetMaster_Id",RpcTarget.All,_Id);
         }
-        if (GameManager.INSTANCE.SCENENUM == 2 && GameManager.INSTANCE.WANTINVASION) //Ä§ÀÔÇÒ¶§
+        if (GameManager.INSTANCE.SCENENUM == 2 && GameManager.INSTANCE.WANTINVASION) //Ä§ï¿½ï¿½ï¿½Ò¶ï¿½
         {
             photonView.RPC("SetOtherName", RpcTarget.All, Name);
             photonView.RPC("SetOtherSessionId", RpcTarget.All, SessionId);
             photonView.RPC("SetOther_Id", RpcTarget.All, _Id);
         }
 
-        //»ó´ë¿Í ³ªÀÇ Á¤º¸°¡ ¸ðµÎ ¸ðÀÎ ½ÃÁ¡
-        //°ÔÀÓ ½ÃÀÛÈÄ
-        if (OtherSessionId != null && MasterSessionId != null && GameManager.INSTANCE.SCENENUM == 2 && GameManager.INSTANCE.INVASIONALLOW && BettingToken) // ¸¶½ºÅÍ¹èÆ²¾Àµé¾î¿È
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        if (OtherSessionId != null && MasterSessionId != null && GameManager.INSTANCE.SCENENUM == 2 && GameManager.INSTANCE.INVASIONALLOW && BettingToken) // ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½Æ²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
             StartCoroutine(betting());
         }
 
-        //½ÂÀÚÆÇÁ¤
-        if (GameManager.INSTANCE.ISDEAD && WinToken) // Ä§ÀÔÇÑ ÇÃ·¹ÀÌ¾î°¡ Á×¾úÀ» ¶§
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        if (GameManager.INSTANCE.ISDEAD && WinToken) // Ä§ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½×¾ï¿½ï¿½ï¿½ ï¿½ï¿½
         {
             WinToken = false;
             //master win
             MetaTrendAPIHandler.INSTANCE.Betting_Zera_DeclareWinner(MasterBettingId, Master_Id);
         }
-        else if (GameManager.INSTANCE.ISTIMEOVER && WinToken) // Å¸ÀÓ¿À¹ö°¡ È£ÃâµÆÀ»¶§
+        else if (GameManager.INSTANCE.ISTIMEOVER && WinToken) // Å¸ï¿½Ó¿ï¿½ï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
             WinToken = false;
             //otherclient win
@@ -77,11 +77,11 @@ public class UserInfo : MonoBehaviourPunCallbacks
         }
         
         
-        ////// °ÔÀÓÀÌ ºñÁ¤»óÀûÀ¸·Î ³¡³µÀ» ¶§
+        ////// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
         //if (GameManager.INSTANCE.SCENENUM == 2 &&!GameManager.INSTANCE.GameEndCorrect && DisConnectToken)
         //{
         //    DisConnectToken = false;
-        //    // º£ÆÃ±Ý¾×¹ÝÈ¯ - º£ÆÃÇß´ø Zera¸¦ °¢ÀÚ¿¡°Ô µÇµ¹·ÁÁÜ                     
+        //    // ï¿½ï¿½ï¿½Ã±Ý¾×¹ï¿½È¯ - ï¿½ï¿½ï¿½ï¿½ï¿½ß´ï¿½ Zeraï¿½ï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½Çµï¿½ï¿½ï¿½ï¿½ï¿½                     
         //    MetaTrendAPIHandler.INSTANCE.Betting_Zera_Disconnect(MasterBettingId);
         //}
     }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3045957511277228613}
   - component: {fileID: 3045957511295439494}
   m_Layer: 0
-  m_Name: Dragon_dieEff 1
+  m_Name: E_Dragon_dieEff 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

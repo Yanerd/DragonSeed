@@ -15,10 +15,10 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
     public string _ID { get; set; }
     public string BETTINGID { get; set; }
 
-    [Header("[µî·ÏµÈ ÇÁ·ÎÁ§Æ®¿¡¼­ È¹µæ°¡´ÉÇÑ API Å°]")]
+    [Header("[ï¿½ï¿½Ïµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ È¹ï¿½æ°¡ï¿½ï¿½ï¿½ï¿½ API Å°]")]
     //https://odin-api-sat.browseosiris.com
 
-    [Tooltip("ÀÌ°ÍÀº http://odin-registration-sat.browseosiris.com/# ¿¡ µî·ÏµÈ ÇÁ·ÎÁ§Æ®¸¦ ÅëÇØ¼­ È¹µæÇÒ ¼ö ÀÖ´Â API Key ÀÌ´Ù.\nhttps://odin-registration.browseosiris.com/ ´Â Production URL")]
+    [Tooltip("ï¿½Ì°ï¿½ï¿½ï¿½ http://odin-registration-sat.browseosiris.com/# ï¿½ï¿½ ï¿½ï¿½Ïµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ È¹ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ API Key ï¿½Ì´ï¿½.\nhttps://odin-registration.browseosiris.com/ ï¿½ï¿½ Production URL")]
     [SerializeField] string API_KEY = "";
 
 
@@ -38,7 +38,7 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
         Invoke("Settings", 1f);
     }
 
-    // ÇöÀç °³¹ß´Ü°è¿¡ µû¶ó¼­ »ç¿ëÇÏ´Â BaseURLÀÌ ´Þ¶óÁø´Ù.
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß´Ü°è¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ BaseURLï¿½ï¿½ ï¿½Þ¶ï¿½ï¿½ï¿½ï¿½ï¿½.
     string getBaseURL()
     {
         return FullAppsStagingURL;
@@ -54,7 +54,7 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
 
     //-----------------------------------------------------------------------------------------------------
     //
-    // À¯Àú Á¤º¸
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void GetUserProfile()
     {
         StartCoroutine(processRequestGetUserInfo());
@@ -62,7 +62,7 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
 
     IEnumerator processRequestGetUserInfo()
     {
-        // À¯Àú Á¤º¸
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         yield return requestGetUserInfo((response) =>
         {
             if (response != null)
@@ -81,7 +81,7 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
 
     IEnumerator processRequestGetSessionID()
     {
-        // À¯Àú Á¤º¸
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         yield return requestGetSessionID((response) =>
         {
             if (response != null)
@@ -92,7 +92,7 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
         });
     }
     //-----------------------------------------------------------------------------------------------------
-    // º£ÆÃ°ü·Ã ¼ÂÆÃ Á¤º¸¸¦ ¾ò¾î¿À±â
+    // ï¿½ï¿½ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public void Settings()
     {
         StartCoroutine(processRequestSettings());
@@ -113,7 +113,7 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
     //-----------------------------------------------------------------------------------------------------
 
     //-----------------------------------------------------------------------------------------------------
-    // Zera ÀÜ°í È®ÀÎ
+    // Zera ï¿½Ü°ï¿½ È®ï¿½ï¿½
     public void ZeraBalance()
     {
         if (USERNAME != null)
@@ -133,7 +133,7 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
         });
     }
 
-    // Ace ÀÜ°í È®ÀÎ
+    // Ace ï¿½Ü°ï¿½ È®ï¿½ï¿½
     public void AceBalance()
     {
         StartCoroutine(processRequestAceBalance());
@@ -151,7 +151,7 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
         });
     }
 
-    // Dappx ÀÜ°í È®ÀÎ
+    // Dappx ï¿½Ü°ï¿½ È®ï¿½ï¿½
     public void DappXBalance()
     {
         StartCoroutine(processRequestDappXBalance());
@@ -172,7 +172,7 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
 
     //-----------------------------------------------------------------------------------------------------
     //
-    // ZERA º£ÆÃ
+    // ZERA ï¿½ï¿½ï¿½ï¿½
     public void Betting_Zera(string _Id, string[] sessionIdArray)
     {
         StartCoroutine(processRequestBetting_Zera(_Id, sessionIdArray));
@@ -195,7 +195,7 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
         });
     }
 
-    // ZERA º£ÆÃ-½ÂÀÚ
+    // ZERA ï¿½ï¿½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½
     public void Betting_Zera_DeclareWinner(string bettingId, string winner_Id)
     {
         StartCoroutine(processRequestBetting_Zera_DeclareWinner(bettingId, winner_Id));
@@ -216,7 +216,7 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
         });
     }
 
-    // º£ÆÃ±Ý¾× ¹ÝÈ¯
+    // ï¿½ï¿½ï¿½Ã±Ý¾ï¿½ ï¿½ï¿½È¯
     public void Betting_Zera_Disconnect(string bettingid)
     {
         StartCoroutine(processRequestBetting_Zera_Disconnect(bettingid));
@@ -242,15 +242,15 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
     //-----------------------------------------------------------------------------------------------------
     #region LOCALHOST API
     /// <summary>
-    /// To get user¡¯s information.This is also used to authenticate if session-id is valid or not.
+    /// To get userï¿½ï¿½s information.This is also used to authenticate if session-id is valid or not.
     /// This can determine if the Odin is currently running or not. 
     ///	If Odin is not running, the API  is not accesible as well.
     ///	Inform the User to run the Osiris and Connect to Odin via Meta wallet.
     ///	
-    /// À¯ÀúÀÇ Á¤º¸¸¦ ¾ò¾î ¿Â´Ù. ÀÌ°ÍÀº ¶ÇÇÑ Session ID °¡ À¯È¿ÇÏÁö¿¡ µû¶ó ÀÎÁõ¿¡ »ç¿ëµÈ´Ù.
-    /// ÀÌ°ÍÀº OdinÀÌ ÇöÀç ½ÇÇà ÁßÀÎÁö¿¡ µû¶ó¼­ °áÁ¤µÈ´Ù.(OdinÀÌ ½ÇÇà ÁßÀÌ¾î¾ß ¿Ç¹Ù¸¥ µ¥ÀÌÅÍ¸¦ ¾òÀ» ¼ö ÀÖ´Ù´Â ÀÇ¹Ì)
-    /// OdinÀÌ ½ÇÇà ÁßÀÌÁö ¾ÊÀ¸¸é, API´Â Á¢±ÙÇÒ ¼ö ¾ø´Ù.
-    /// Osiris ¸¦ ½ÇÇàÇÏ±â À§ÇØ¼­ À¯Àú¸¦ ¾Ë·ÁÁÖ°í, Meta wallet À» ÅëÇØ¼­ odin ¿¡ ¿¬°áÇÑ´Ù.
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Â´ï¿½. ï¿½Ì°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Session ID ï¿½ï¿½ ï¿½ï¿½È¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½È´ï¿½.
+    /// ï¿½Ì°ï¿½ï¿½ï¿½ Odinï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½È´ï¿½.(Odinï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½ ï¿½Ç¹Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´Ù´ï¿½ ï¿½Ç¹ï¿½)
+    /// Odinï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, APIï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
+    /// Osiris ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë·ï¿½ï¿½Ö°ï¿½, Meta wallet ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ odin ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
     /// </summary>
     //
     delegate void resCallback_GetUserInfo(Res_GetUserProfile response);
@@ -273,7 +273,7 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
     }
 
     /// <summary>
-    /// À¯ÀúÀÇ Session ID ¸¦ ¿äÃ»ÇÑ´Ù.
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Session ID ï¿½ï¿½ ï¿½ï¿½Ã»ï¿½Ñ´ï¿½.
     /// 
     /// </summary>
     /// <returns></returns>
@@ -292,10 +292,10 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
 
     //-----------------------------------------------------------------------------------------------------
     //
-    #region ÀçÈ­(DAPPX, ZERA, ACE)ÀÇ ÀÜ°í¸¦ È®ÀÎÇÏ´Â API
+    #region ï¿½ï¿½È­(DAPPX, ZERA, ACE)ï¿½ï¿½ ï¿½Ü°ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï´ï¿½ API
 
     //
-    // ÀçÈ­(ZERA)ÀÇ ÀÜ°í¸¦ È®ÀÎÇÏ´Â API
+    // ï¿½ï¿½È­(ZERA)ï¿½ï¿½ ï¿½Ü°ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï´ï¿½ API
     // 
     delegate void resCallback_BalanceInfo(Res_BalanceInfo response);
     IEnumerator requestZeraBalance(string sessionID, resCallback_BalanceInfo callback)
@@ -312,7 +312,7 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
     }
 
     //
-    // ÀçÈ­(ACE)ÀÇ ÀÜ°í¸¦ È®ÀÎÇÏ´Â API
+    // ï¿½ï¿½È­(ACE)ï¿½ï¿½ ï¿½Ü°ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï´ï¿½ API
     // 
 
     IEnumerator requestAceBalance(string sessionID, resCallback_BalanceInfo callback)
@@ -331,7 +331,7 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
 
 
     //
-    // ÀçÈ­(DAPPX)ÀÇ ÀÜ°í¸¦ È®ÀÎÇÏ´Â API
+    // ï¿½ï¿½È­(DAPPX)ï¿½ï¿½ ï¿½Ü°ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï´ï¿½ API
     // 
 
     IEnumerator requestDappXBalance(string sessionID, resCallback_BalanceInfo callback)
@@ -346,14 +346,14 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
         callback(res);
         //UnityWebRequest www = new UnityWebRequest(URL);
     }
-    #endregion // ÀçÈ­(DAPPX, ZERA, ACE)ÀÇ ÀÜ°í¸¦ È®ÀÎÇÏ´Â API
+    #endregion // ï¿½ï¿½È­(DAPPX, ZERA, ACE)ï¿½ï¿½ ï¿½Ü°ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï´ï¿½ API
     //-----------------------------------------------------------------------------------------------------
 
 
 
     //-----------------------------------------------------------------------------------------------------
     //
-    // To get game¡¯s general and bet settings
+    // To get gameï¿½ï¿½s general and bet settings
     //
     delegate void resCallback_Settings(Res_Settings response);
     IEnumerator requestSettings(resCallback_Settings callback)

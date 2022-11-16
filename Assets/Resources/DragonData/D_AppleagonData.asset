@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 883bda8b8f6ed7940ad1985a82c260dd, type: 3}
   m_Name: D_AppleagonData
   m_EditorClassIdentifier: 
-  dragonType: D_Appleagon
+  dragonType: Apple
   attackPower: 20
   attackRange: 0.3
   attackInterval: 1.8

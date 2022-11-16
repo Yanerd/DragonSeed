@@ -124,6 +124,8 @@ public class PlayerController : MonoBehaviourPun
         {
             camTransfrom = GameObject.Find("O_CameraArm").GetComponent<Transform>();
             camTransfrom.gameObject.SetActive(false);
+            hpSlider.gameObject.SetActive(false);
+            hpFollowSlider.gameObject.SetActive(false);
         }
             
             
@@ -435,7 +437,7 @@ public class PlayerController : MonoBehaviourPun
         }
         else
         {
-            Debug.Log("µ¥¹ÌÁö ¹ÞÀ½");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
             photonView.RPC("PlayerGetDamage", RpcTarget.Others, damage);
         }
     }
@@ -450,7 +452,7 @@ public class PlayerController : MonoBehaviourPun
 
         if (playerCurHp <= 0f)
         {
-            Debug.Log("ÇÃ·¹ÀÌ¾î Á×À½");
+            Debug.Log("ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½");
             playerCurHp = 0f;
             isDead = true;
             ChangeState(STATE.DIE);
@@ -459,8 +461,11 @@ public class PlayerController : MonoBehaviourPun
 
         playerCurHp -= damage;
 
-        if (playerEvent.callBackPlayerHPChangeEvent != null)
-            playerEvent.callBackPlayerHPChangeEvent(playerCurHp, playerMaxHp);
+        if(photonView.IsMine)
+        {
+            if (playerEvent.callBackPlayerHPChangeEvent != null)
+                playerEvent.callBackPlayerHPChangeEvent(playerCurHp, playerMaxHp);
+        }
     }
     private void OnChangedHp(float curHp, float maxHp)
     {

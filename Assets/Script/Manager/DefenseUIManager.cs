@@ -32,7 +32,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
 
     void UiInitializing()
     {
-        //¾×Æ¼ºê ÆÞ½º µÈ »óÅÂ¸é find·Î ¸ø Ã£¾Æ¼­ Ã£Àº ´ÙÀ½ ÆÞ½º½ÃÅ´
+        //ï¿½ï¿½Æ¼ï¿½ï¿½ ï¿½Þ½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ findï¿½ï¿½ ï¿½ï¿½ Ã£ï¿½Æ¼ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½Å´
 
         GardeningMenu = GameObject.Find("GardeningMenu");
 
@@ -149,7 +149,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
 
     #endregion
 
-    //Å¬¸¯ ¹æÁö
+    //Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     bool onMenu;
 
     #endregion
@@ -240,18 +240,18 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     {
         base.OnEnable();
 
-        particle_toggle = false;
-    }
+        //----------------------------------------------------------
+        //StartCoroutine(FindLevel());
 
-    public override void OnDisable()
-    {
-        base.OnDisable();
 
-        if (SliderBarList != null)
+        if (SliderBarList != null && GameManager.INSTANCE.SCENENUM == 1)
         {
             SliderBarList.Clear();
         }
+        
     }
+
+
 
 
     private void Start()
@@ -263,7 +263,9 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     private void Update()
     {
         GoldText.text = Gold.ToString();
-        ZeraText.text = MetaTrendAPIHandler.INSTANCE.ZERA.ToString();
+        ZeraText.text = MetaTrendAPIHandler.INSTANCE.ZERA.ToString();   
+
+
 
         if (GameManager.INSTANCE.SCENENUM == 1)
         {
@@ -285,13 +287,13 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
             wellCount = 10;
         }
 
-        //È¿°ú ÄÑ±â
+        //È¿ï¿½ï¿½ ï¿½Ñ±ï¿½
         if (!shineParticle.isPlaying && GameManager.INSTANCE.INVASIONALLOW)
         {
             shineParticle.Play();
         }
 
-        //È¿°ú ²ô±â
+        //È¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (shineParticle.isPlaying && !GameManager.INSTANCE.INVASIONALLOW)
         {
             shineParticle.Stop();
@@ -315,7 +317,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
 
 
 
-    public void BringObjectCount()
+    private void BringObjectCount()
     {
         curGroundState.GetComponent<TextMeshProUGUI>().text = MapState.ToString();
 
@@ -372,6 +374,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     public void OpenScrollBuilding()
     {
         VegetableScrollOpenButton.GetComponent<Button>().interactable = false;
+
         StartCoroutine(OpenScroll(BuildingScroll));
 
         SwitchBackButton(BuildingScrollOpenButton);
@@ -499,7 +502,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
 
 
     }
-    public void InstButtonTurnOff()
+    void InstButtonTurnOff()
     {
         if (potatoSeedCount <= 0)
         {
@@ -659,9 +662,9 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
         GameManager.INSTANCE.RemoveDragonCount("D_Potatagon");
 
 
-        //»ý¼ºÇÒ¶§ text¿¡ ¿¬°áÇØÁà¾ßÇÔ
-        //¸®½ºÆ®´Â Á¤»óµ¿ÀÛÇÏ°íÀÖÀ½
-        //text update È®ÀÎÇØÁÖ±â
+        //ï¿½ï¿½ï¿½ï¿½ï¿½Ò¶ï¿½ textï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        //ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ï¿½ï¿½ï¿½ï¿½
+        //text update È®ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½
         PotatoCount.GetComponent<TextMeshProUGUI>().text = GameManager.INSTANCE.DragonCount("D_Potatagon").ToString();
     }
 
@@ -797,7 +800,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
             return;
         }
         onMenu = true;
-        BringObjectCount();
+
         StoreVegetablePage.GetComponent<Button>().interactable = false;
         BuildingScrollView.gameObject.SetActive(false);
         GroundScrollView.gameObject.SetActive(false);
@@ -827,6 +830,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     public void SelectWell()
     {
         if (wellCount <=0) return;
+        wellCount--;
         InstButtonTurnOff();
         curWell.text = "Well : " + wellCount.ToString();
 
@@ -845,6 +849,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     public void SelectHouse()
     {
         if (houseCount <= 0) return;
+        //houseCount--;
         InstButtonTurnOff();
         curHouse.text = "House : " + houseCount.ToString();
 
@@ -862,6 +867,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     public void SelectPotato()
     {
         if (potatoSeedCount <= 0) return;
+        //potatoSeedCount--;
         InstButtonTurnOff();
         curPotato.text = "Poato : "+potatoSeedCount.ToString();
 
@@ -879,7 +885,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     public void SelectApple()
     {
         if (appleSeedCount <= 0) return;
-        
+        appleSeedCount--;
         InstButtonTurnOff();
         curApple.text = "Apple : " + appleSeedCount.ToString();
 
@@ -898,7 +904,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     public void SelectCabbage()
     {
         if (cabbageSeedCount <= 0) return;
-        
+        cabbageSeedCount--;
         InstButtonTurnOff();
 
         curCabbage.text = "Cabbage : " + cabbageSeedCount.ToString();
