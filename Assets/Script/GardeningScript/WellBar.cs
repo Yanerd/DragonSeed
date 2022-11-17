@@ -10,11 +10,12 @@ public class WellBar : MonoBehaviour
     [SerializeField] Transform water;
 
     [SerializeField] public float FillValue;
-    [SerializeField] float lerpSensive = 0.3f;
+    [SerializeField] float lerpSensive = 0.03f;
 
 
     [SerializeField] public Slider wellBar;
     [SerializeField] Canvas canvas;
+    [SerializeField] Image fillimage;
 
     bool instCheck=false;
     bool WaterCheck = false;
@@ -49,7 +50,12 @@ public class WellBar : MonoBehaviour
 
     public void DisapearWaterCount()
     {
-        if (wellBar.value <= 0) return;
+        if (wellBar.value <= 0.25f)
+        {
+            
+            return;
+        }
+           
         
         wellBar.value -= 0.25f;
         water.transform.Translate(0, -0.056f, 0);
@@ -101,10 +107,17 @@ public class WellBar : MonoBehaviour
             yield return new WaitForSeconds(Time.deltaTime * lerpSensive);
             wellBar.value = Mathf.Lerp(wellBar.value, 1f, Time.deltaTime * lerpSensive);
             water.transform.position = Vector3.Lerp(water.transform.position, new Vector3(water.transform.position.x, transform.position.y + 0.225f, water.transform.position.z), lerpSensive * Time.deltaTime);
+
+            if(wellBar.value<=0.25f)
+            {
+                fillimage.color = Color.red;
+            }
+            else
+            {
+                fillimage.color = Color.Lerp(fillimage.color, Color.blue, Time.deltaTime * 0.1f);
+            }
+            
         }
     }
-
-
-
 
 }

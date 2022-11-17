@@ -7,8 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
 {
-    [SerializeField] ParticleSystem shineParticle;
-
     Canvas defenseUI;
 
     [Header("Be A KING")]
@@ -192,7 +190,6 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
 
     GameObject level = null;
 
-    public bool particle_toggle = false;
    
     private void Awake()
     {
@@ -242,13 +239,16 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
 
         //----------------------------------------------------------
         //StartCoroutine(FindLevel());
+    }
 
+    public override void OnDisable()
+    {
+        base.OnDisable();
 
-        if (SliderBarList != null && GameManager.INSTANCE.SCENENUM == 1)
+        if (SliderBarList != null)
         {
             SliderBarList.Clear();
         }
-        
     }
 
 
@@ -287,16 +287,22 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
             wellCount = 10;
         }
 
-        //ȿ�� �ѱ�
-        if (!shineParticle.isPlaying && GameManager.INSTANCE.INVASIONALLOW)
+        if(GameManager.INSTANCE.SCENENUM==1&& sunshineObj==null)
         {
-            shineParticle.Play();
+            sunshineObj = Instantiate(Resources.Load<GameObject>("G_SunShine"));
+            sunshineObj.GetComponent<ParticleSystem>().Stop();
+        }
+
+        //ȿ�� �ѱ�
+        if (sunshineObj != null&& !sunshineObj.GetComponent<ParticleSystem>().isPlaying && GameManager.INSTANCE.INVASIONALLOW)
+        {
+            sunshineObj.GetComponent<ParticleSystem>().Play();
         }
 
         //ȿ�� ����
-        if (shineParticle.isPlaying && !GameManager.INSTANCE.INVASIONALLOW)
+        if (sunshineObj != null && sunshineObj.GetComponent<ParticleSystem>().isPlaying && !GameManager.INSTANCE.INVASIONALLOW)
         {
-            shineParticle.Stop();
+            sunshineObj.GetComponent<ParticleSystem>().Stop();
         }
     }
 
@@ -800,7 +806,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
             return;
         }
         onMenu = true;
-
+        BringObjectCount();
         StoreVegetablePage.GetComponent<Button>().interactable = false;
         BuildingScrollView.gameObject.SetActive(false);
         GroundScrollView.gameObject.SetActive(false);
@@ -830,7 +836,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     public void SelectWell()
     {
         if (wellCount <=0) return;
-        wellCount--;
+        //wellCount--;
         InstButtonTurnOff();
         curWell.text = "Well : " + wellCount.ToString();
 
@@ -885,7 +891,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     public void SelectApple()
     {
         if (appleSeedCount <= 0) return;
-        appleSeedCount--;
+        //appleSeedCount--;
         InstButtonTurnOff();
         curApple.text = "Apple : " + appleSeedCount.ToString();
 
@@ -904,7 +910,7 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
     public void SelectCabbage()
     {
         if (cabbageSeedCount <= 0) return;
-        cabbageSeedCount--;
+        //cabbageSeedCount--;
         InstButtonTurnOff();
 
         curCabbage.text = "Cabbage : " + cabbageSeedCount.ToString();

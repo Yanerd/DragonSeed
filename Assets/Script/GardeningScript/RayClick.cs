@@ -18,9 +18,6 @@ public class RayClick : MonoBehaviour
     [SerializeField] GameObject[] all_Alpha_Prefab;
     CursorChange myCursor;
 
-   
-
-
     private int mask; //cullingMask plag Save Value
     private int mask1;
     private bool wellClick;
@@ -32,6 +29,7 @@ public class RayClick : MonoBehaviour
         mask = Camera.main.cullingMask = (1 << 9);
         mask1= Camera.main.cullingMask = (1 << 7);
         ObjectPoolingManager.inst.inst_AlphaPrefab(all_Alpha_Prefab);
+
     }
 
     void Update()
@@ -202,7 +200,7 @@ public class RayClick : MonoBehaviour
                 if (hit.transform.tag=="well")
                 {
                     hit.transform.GetComponent<WellBar>().FillValue = hit.transform.GetComponent<WellBar>().wellBar.value;
-                    if (wellClick==false&& hit.transform.GetComponent<WellBar>().FillValue > 0)
+                    if (wellClick==false&& hit.transform.GetComponent<WellBar>().FillValue > 0.25f)
                     {
                         hit.transform.gameObject.GetComponent<WellBar>().DisapearWaterCount();
                         wellClick = true;
@@ -211,6 +209,7 @@ public class RayClick : MonoBehaviour
 
                         myCursor.WarterCursor();
                     }
+                
                 }
                 if (FirstRayPosition == Vector3.zero)
                 {
@@ -235,6 +234,9 @@ public class RayClick : MonoBehaviour
             wellClick = false;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
+            
+            DefenseUIManager.INSTANCE.WATERRAY = false;
+            ObjectPoolingManager.inst.ObjectDisappear();
 
             if (Physics.Raycast(ray, out hit, 1000,mask1))
             {
@@ -244,17 +246,11 @@ public class RayClick : MonoBehaviour
                     {
                         hit.transform.gameObject.GetComponent<Vegetable>().StartGrowth();
                     }
-                    DefenseUIManager.INSTANCE.WATERRAY = false;
-                    ObjectPoolingManager.inst.ObjectDisappear();
                 }
             }
-            else
-            {
-                DefenseUIManager.INSTANCE.WATERRAY = false;
-                ObjectPoolingManager.inst.ObjectDisappear();
-            }
+          
         }
     }
-   
+
 
 }
