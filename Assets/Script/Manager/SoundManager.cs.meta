@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Script/Manager/SoundManager.cs.meta
+guid: 44a29f384a4e74141855c2698db5e6ea
+========
+guid: aef78429aab6a594ead618d3754aa57e
+>>>>>>>> origin/CJY:Assets/Script/DragonScript/DeadDragonDestroy.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
