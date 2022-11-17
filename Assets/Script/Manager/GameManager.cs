@@ -32,6 +32,7 @@ public class GameManager : MonoSingleTon<GameManager>
     public bool ISDEFENSE { get; set; }
     public float GAMETIME { get; set; }
     public int STEALCOIN { get; set; }
+    public bool HouseBurn { get; set; }
     public bool ISTIMEOVER { get; set; }
     #endregion
 
@@ -92,6 +93,8 @@ public class GameManager : MonoSingleTon<GameManager>
         GameManager.INSTANCE.TimerClear();
 
         //
+        GameManager.INSTANCE.HouseBurn = false;
+
         GameEndCorrect = false;
     }
 

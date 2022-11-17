@@ -5,44 +5,51 @@ using Photon.Pun;
 
 public class AttackHouse : MonoBehaviourPun
 {
+    //house Hp
+    [SerializeField] float houseAttackCount = 5;
+    //BurnEffect
+    GameObject burnEffect;
+    //House origin Position
     Vector3 houseOriginPos;
-    bool shakeCheck;
-    Renderer Rr;
-    int houseAttackCount;
+    //House Renderer
+    MeshRenderer mRr;
+    //House color Change Value
+    Color fixedColor = new Color(1f, 1f, 1f);
+
 
     private void Awake()
     {
-        if(!photonView.IsMine)
-        {
-            houseOriginPos = this.gameObject.transform.position;
-            shakeCheck = false;
-            Rr = GetComponent<Renderer>();
-            houseAttackCount = 5;
-        }
+        houseOriginPos = this.gameObject.transform.position;
+        mRr = GetComponent<MeshRenderer>();
     }
 
-
-    private void OnCollisionEnter(Collision collision)
+    public void CallHouseTransferDamage()
     {
-        if (houseAttackCount == 0) return;
+        if (photonView.IsMine) return;
 
-        if(collision.collider.tag=="Weapon"&& !photonView.IsMine)
+        photonView.RPC("HouseTransferDamage", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void HouseTransferDamage()
+    {
+        if (houseAttackCount == 0)
         {
-            if(shakeCheck==false)
-            {
-                houseAttackCount--;
-                StartCoroutine(ObjectShake(0.5f,0.01f));
-                
-            }
+            GameManager.INSTANCE.HouseBurn = true;
+            PhotonNetwork.Instantiate("O_Burn", this.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+            return;
         }
 
-
+        houseAttackCount--;
+        //house shake
+        StartCoroutine(ObjectShake(0.5f, 0.01f));
+        //color change
+        StartCoroutine(ColorChange());
     }
 
     IEnumerator ObjectShake(float shakeTime, float shakeRange)
     {
         float timer = 0;
-        shakeCheck = true;
 
         while (timer <= shakeTime)
         {
@@ -54,6 +61,30 @@ public class AttackHouse : MonoBehaviourPun
         }
         this.gameObject.transform.localPosition = houseOriginPos;
     }
+
+    void ChangeColor()
+    {
+        mRr.material.color -= new Color(0.2f, 0.2f, 0.2f);
+    }
+
+    IEnumerator ColorChange()
+    {
+        fixedColor.r -= 0.2f;
+        fixedColor.g -= 0.2f;
+        fixedColor.b -= 0.2f;
+
+        float timer = 0f;
+
+        while (true)
+        {
+            timer += Time.deltaTime;
+            mRr.material.color = Color.Lerp(mRr.material.color, fixedColor, Time.deltaTime);
+
+            if (timer > 1f) yield break;
+            yield return null;
+        }
+    }
+
 
 
 }

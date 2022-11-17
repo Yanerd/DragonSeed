@@ -39,42 +39,39 @@ public class UserInfo : MonoBehaviourPunCallbacks
     }
     void Update()
     {
-        // ���潺���� �Ǿ��� ��
-        // �ڽ��� ���¸� �Ǵ��Ͽ� ���� ��� Ŭ���̾�Ʈ���� data�� �����Ѵ�.
-        if (GameManager.INSTANCE.SCENENUM == 2 && GameManager.INSTANCE.INVASIONALLOW) // ħ�Դ��Ҷ�
+        // transfer data
+        if (GameManager.INSTANCE.SCENENUM == 2 && GameManager.INSTANCE.INVASIONALLOW) // master
         {
-            // �����Լ�����
             photonView.RPC("SetMasterName", RpcTarget.All, Name);
             photonView.RPC("SetMasterSessionId", RpcTarget.All, SessionId);
             photonView.RPC("SetMaster_Id",RpcTarget.All,_Id);
         }
-        if (GameManager.INSTANCE.SCENENUM == 2 && GameManager.INSTANCE.WANTINVASION) //ħ���Ҷ�
+        if (GameManager.INSTANCE.SCENENUM == 2 && GameManager.INSTANCE.WANTINVASION) // other
         {
             photonView.RPC("SetOtherName", RpcTarget.All, Name);
             photonView.RPC("SetOtherSessionId", RpcTarget.All, SessionId);
             photonView.RPC("SetOther_Id", RpcTarget.All, _Id);
         }
 
-        //���� ���� ������ ��� ���� ����
-        //���� ������
-        if (OtherSessionId != null && MasterSessionId != null && GameManager.INSTANCE.SCENENUM == 2 && GameManager.INSTANCE.INVASIONALLOW && BettingToken) // �����͹�Ʋ������
+        // betting start
+        if (OtherSessionId != null && MasterSessionId != null && GameManager.INSTANCE.SCENENUM == 2 && BettingToken) // �����͹�Ʋ������
         {
             StartCoroutine(betting());
         }
 
-        //��������
-        if (GameManager.INSTANCE.ISDEAD && WinToken) // ħ���� �÷��̾ �׾��� ��
-        {
-            WinToken = false;
-            //master win
-            MetaTrendAPIHandler.INSTANCE.Betting_Zera_DeclareWinner(MasterBettingId, Master_Id);
-        }
-        else if (GameManager.INSTANCE.ISTIMEOVER && WinToken) // Ÿ�ӿ����� ȣ�������
-        {
-            WinToken = false;
-            //otherclient win
-            MetaTrendAPIHandler.INSTANCE.Betting_Zera_DeclareWinner(MasterBettingId, Other_Id);
-        }
+        ////��������
+        //if (GameManager.INSTANCE.ISDEAD && WinToken) // ħ���� �÷��̾ �׾��� ��
+        //{
+        //    WinToken = false;
+        //    //master win
+        //    MetaTrendAPIHandler.INSTANCE.Betting_Zera_DeclareWinner(MasterBettingId, Master_Id);
+        //}
+        //else if (GameManager.INSTANCE.ISTIMEOVER && WinToken) // Ÿ�ӿ����� ȣ�������
+        //{
+        //    WinToken = false;
+        //    //otherclient win
+        //    MetaTrendAPIHandler.INSTANCE.Betting_Zera_DeclareWinner(MasterBettingId, Other_Id);
+        //}
         
         
         ////// ������ ������������ ������ ��
@@ -92,11 +89,12 @@ public class UserInfo : MonoBehaviourPunCallbacks
 
         string[] array = { MasterSessionId, OtherSessionId };
 
-        yield return MetaTrendAPIHandler.INSTANCE.processRequestBetting_Zera(this.Master_Id,array);
+        yield return MetaTrendAPIHandler.INSTANCE.processRequestBetting_Zera(this._Id,array);
 
         BettingId = MetaTrendAPIHandler.INSTANCE.BETTINGID;
 
-        photonView.RPC("SetMasterBettingId", RpcTarget.All, BettingId);
+        if(GameManager.INSTANCE.INVASIONALLOW) photonView.RPC("SetMasterBettingId", RpcTarget.All, BettingId);
+        if(GameManager.INSTANCE.WANTINVASION) photonView.RPC("SetOtherBettingId", RpcTarget.All, BettingId);
     }
     // Name
     [PunRPC]

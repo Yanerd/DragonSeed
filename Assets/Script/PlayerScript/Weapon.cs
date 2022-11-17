@@ -29,7 +29,10 @@ public class Weapon : MonoBehaviour
             Invoke("TimeBack",0.1f);
             other.SendMessage("CallDragonTransferDamage", totalDamage, SendMessageOptions.DontRequireReceiver);
         }
-
+        if(other.gameObject.name== "B_House(Clone)")
+        {
+            other.SendMessage("CallHouseTransferDamage", SendMessageOptions.DontRequireReceiver);
+        }
     }
 
     private void TimeBack()
