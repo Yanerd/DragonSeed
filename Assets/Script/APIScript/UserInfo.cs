@@ -28,6 +28,7 @@ public class UserInfo : MonoSingleTon<UserInfo>
     bool BettingToken = true;
     bool WinToken = true;
     bool DisConnectToken = true;
+    bool isMaster = false;
 
     bool IsMaster = false;
 
@@ -174,5 +175,6 @@ public class UserInfo : MonoSingleTon<UserInfo>
         this.WinToken = true;
         this.BettingToken = true;
         this.DisConnectToken = true;
+        this.isMaster = false;
     }
 }

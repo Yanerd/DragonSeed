@@ -408,7 +408,7 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
         yield return www.SendWebRequest();
 
         Debug.Log(www.downloadHandler.text);
-        ResBettingDeclareWinner res = JsonUtility.FromJson<ResBettingDeclareWinner>(www.downloadHandler.text);
+        ResBettingDeclareWinner res = JsonConvert.DeserializeObject<ResBettingDeclareWinner>(www.downloadHandler.text);
         callback(res);
     }
 

@@ -448,9 +448,8 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
     {
         base.OnPlayerLeftRoom(otherPlayer);
 
-        if (GameManager.INSTANCE.GameEndCorrect)
+        if (GameManager.INSTANCE.GameEndCorrect==true)
             return;
-
         //scene changed
         PhotonNetwork.Disconnect();
 
@@ -464,6 +463,7 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
         instiateCoroutine = StartCoroutine(GoBackSceneInstantiate());
 
     }
+
     #endregion
 
 
@@ -507,7 +507,6 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
     IEnumerator GoBackSceneInstantiate()
     {
 
-        Debug.Log("씬 전환중");
         yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "2_GardenningScene");
 
         StopCoroutine(instiateCoroutine);
@@ -516,19 +515,16 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
     }
     IEnumerator playerInstantiate()
     {
-        Debug.Log("씬 전환중");
         yield return new WaitUntil(() => (SceneManager.GetActiveScene().name == "3_OffenceScene"));
 
         yield return StartCoroutine(CreateCam("O_CameraArm"));
 
         yield return StartCoroutine(CreateOffenseUI());
-        Debug.Log("플레이어 생성");
         PhotonNetwork.Instantiate("O_Farmer_Upgrade", new Vector3(0f, 1f, 0f), Quaternion.identity);
     }
    
     IEnumerator dragonInstantiate()
     {
-        Debug.Log("씬 전환중");
         
         yield return new WaitUntil(() => (SceneManager.GetActiveScene().name == "3_OffenceScene"));
 
@@ -536,7 +532,6 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
 
         yield return StartCoroutine(CreateDefenseUI());
 
-        Debug.Log("드래곤 생성");
        
         SaveLoadManager.INSTANCE.Load();
         //SendMessage("GroundSetting", SendMessageOptions.DontRequireReceiver);

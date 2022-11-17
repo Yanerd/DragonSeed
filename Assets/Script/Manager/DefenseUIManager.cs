@@ -225,7 +225,6 @@ public class DefenseUIManager : MonoSingleTon<DefenseUIManager>
 
         if (GameManager.INSTANCE.SCENENUM != 0)
         {
-            Debug.Log(this.gameObject.name);
             PhotonManager.INSTANCE.EndGame();
 
             SaveLoadManager.INSTANCE.Load();

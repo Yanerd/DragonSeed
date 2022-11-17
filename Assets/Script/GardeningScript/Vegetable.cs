@@ -157,8 +157,6 @@ public class Vegetable : MonoBehaviour
 
     void InstOffenseVegetable(float growthValue, int countValue)
     {
-        Debug.Log("¤¾¤·");
-        Debug.Log(growthValue.ToString());
 
         this.GrowthValue = growthValue;
         this.CountValue = countValue;

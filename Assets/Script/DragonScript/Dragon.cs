@@ -160,7 +160,7 @@ public class Dragon : MonoBehaviourPun
     }
     private void OnDestroy()
     {
-        GameManager.INSTANCE.dragons.Clear();
+        GameManager.INSTANCE.dragons.Remove(this.gameObject);
 
     }
 
@@ -183,6 +183,8 @@ public class Dragon : MonoBehaviourPun
     // HIT -> Æ÷Åæ µ¿±âÈ­
     public void CallDragonTransferDamage(float attackPower)
     {
+        if (photonView.IsMine) return;
+
         if (testMode)
         {
             DragonTransferDamage(attackPower);
@@ -393,15 +395,12 @@ public class Dragon : MonoBehaviourPun
         {
             case 0:
                 myAnimation.SetTrigger("Eat");
-                Debug.Log("¸Ô¾î!");
                 break;
             case 1:
                 myAnimation.SetTrigger("Dead");
-                Debug.Log("Á×¾î!");
                 break;
             case 2:
                 myAnimation.SetTrigger("Roar");
-                Debug.Log("Â¢¾î!");
                 break;
         }
         yield return new WaitForSeconds(4f);
@@ -660,6 +659,7 @@ public class Dragon : MonoBehaviourPun
             // µå·¡°ï real »èÁ¦
             yield return new WaitForSeconds(1f);
             Debug.Log("ÁÖ±Ý");
+            GameManager.INSTANCE.KILLCOUNT++;
             Destroy(this.gameObject);
             
         }

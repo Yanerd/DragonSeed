@@ -15,12 +15,13 @@ public class AttackHouse : MonoBehaviourPun
     MeshRenderer mRr;
     //House color Change Value
     Color fixedColor = new Color(1f, 1f, 1f);
-
+    bool destroyCheck;
 
     private void Awake()
     {
         houseOriginPos = this.gameObject.transform.position;
         mRr = GetComponent<MeshRenderer>();
+        destroyCheck = false;
     }
 
     public void CallHouseTransferDamage()
@@ -33,9 +34,14 @@ public class AttackHouse : MonoBehaviourPun
     [PunRPC]
     public void HouseTransferDamage()
     {
-        if (houseAttackCount == 0)
+        if (houseAttackCount == 0&& destroyCheck==false)
         {
             GameManager.INSTANCE.HouseBurn = true;
+
+
+            destroyCheck = true;
+            GameManager.INSTANCE.HOUSEDESTROYCOUNT++;
+
             PhotonNetwork.Instantiate("O_Burn", this.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
             return;
         }

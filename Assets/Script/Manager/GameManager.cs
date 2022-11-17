@@ -25,7 +25,7 @@ public class GameManager : MonoSingleTon<GameManager>
     public int TOTALDRAGONCOUNT { get; set; }
     public int TOTALSEEDCOUNT { get; set; }
     public int TOTALBUILDINGCOUNT { get; set; }
-    public int TOTALCOIN { get; set; }
+    public int TOTALCOIN { get; set;}
     public string GAMERESULT { get; set; }
     #endregion
 
@@ -38,7 +38,7 @@ public class GameManager : MonoSingleTon<GameManager>
     public bool ISTIMEOVER { get; set; }
     #endregion
 
-    //°ÔÀÓ Á¤»óÁ¾·á È®ÀÎ º¯¼ö
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public bool GameEndCorrect { get; set; }
 
     #region Dragon List
@@ -78,7 +78,6 @@ public class GameManager : MonoSingleTon<GameManager>
 
         //defense client value
         GameManager.INSTANCE.INVASIONALLOW = false;
-        GameManager.INSTANCE.TOTALDRAGONCOUNT = 0;
         GameManager.INSTANCE.TOTALSEEDCOUNT = 0;
         GameManager.INSTANCE.TOTALBUILDINGCOUNT = 0;
         GameManager.INSTANCE.TOTALCOIN = 0;
@@ -111,6 +110,7 @@ public class GameManager : MonoSingleTon<GameManager>
     public void TimerStart()
     {
         timerCoroutine = StartCoroutine(TimeCount());
+        GameManager.INSTANCE.TOTALDRAGONCOUNT = GameManager.INSTANCE.dragons.Count;
     }
     public void TimeOut()
     {
@@ -127,7 +127,7 @@ public class GameManager : MonoSingleTon<GameManager>
             //invader is win
             if (GameManager.INSTANCE.GAMETIME > 20f)//->game time limit
             {
-                CoinRavish();
+                CoinRavish();   
                 Time.timeScale = 0f;
                 GameManager.INSTANCE.ISTIMEOVER = true;
 
@@ -144,7 +144,7 @@ public class GameManager : MonoSingleTon<GameManager>
     public void CoinRavish()//coin ravish calculation
     {
         float maxcoin = DefenseUIManager.INSTANCE.Gold * 1f / 10f;
-        //gold´Â rpc·Î ¹ÞÀº masterÀÇ ÃÑ gold
+        //goldï¿½ï¿½ rpcï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ masterï¿½ï¿½ ï¿½ï¿½ gold
         float mincoin = 200f;
 
         float stealCoinKillScale = 0f;
@@ -156,7 +156,7 @@ public class GameManager : MonoSingleTon<GameManager>
         {
             float numerator = ((float)GameManager.INSTANCE.KILLCOUNT);
             float denominator = ((float)GameManager.INSTANCE.TOTALDRAGONCOUNT);
-            stealCoinKillScale = (numerator * maxcoin) / (denominator * 2);
+            stealCoinKillScale = (numerator * maxcoin) / (denominator * 2) ;
         }
 
         //SaboCoin scale calculation
@@ -168,7 +168,7 @@ public class GameManager : MonoSingleTon<GameManager>
 
         //kill coin calculation
         {
-            float numerator = ((float)DefenseUIManager.INSTANCE.Gold * stealCoinKillScale);
+            float numerator =   ((float)DefenseUIManager.INSTANCE.Gold * stealCoinKillScale);
             float denominator = (20f);
             killCoinPoint = numerator / denominator;
         }
@@ -183,6 +183,8 @@ public class GameManager : MonoSingleTon<GameManager>
         //real steal coin calculation
         GameManager.INSTANCE.STEALCOIN = (int)(killCoinPoint + saboCoinPoint);
 
+
+
         //min max limit
         if (GameManager.INSTANCE.STEALCOIN >= maxcoin)
         {
@@ -191,32 +193,39 @@ public class GameManager : MonoSingleTon<GameManager>
         else if (GameManager.INSTANCE.STEALCOIN <= mincoin)
         {
             GameManager.INSTANCE.STEALCOIN = (int)mincoin;
+
+            if (GameManager.INSTANCE.KILLCOUNT == 0 && GameManager.INSTANCE.HOUSEDESTROYCOUNT == 0)
+                GameManager.INSTANCE.STEALCOIN = 0;
         }
 
-        if (GameManager.INSTANCE.INVASIONALLOW)//ÇÃ·¹ÀÌ¾î°¡ ¸¶½ºÅÍÀÓ
-        {
-            photonView.RPC("SendRavishResult", RpcTarget.All, GameManager.INSTANCE.STEALCOIN);
-        }
+        photonView.RPC("SendRavishResult", RpcTarget.All, GameManager.INSTANCE.STEALCOIN);
     }
 
     [PunRPC]
     public void SendRavishResult(int value)
     {
-        if (GameManager.INSTANCE.INVASIONALLOW)
+
+        if (photonView.IsMine)
         {
-            DefenseUIManager.INSTANCE.Gold -= value;
-            if (DefenseUIManager.INSTANCE.Gold <= 0) DefenseUIManager.INSTANCE.Gold = 0;//exception
+            //DefenseUIManager.INSTANCE.Gold -= value;
+
+            SaveLoadManager.INSTANCE.DataSave(-1 * value);
         }
 
-        if (GameManager.INSTANCE.WANTINVASION)
-            DefenseUIManager.INSTANCE.Gold += value;
+        if (!photonView.IsMine)
+        {
+            //DefenseUIManager.INSTANCE.Gold += value;
+            SaveLoadManager.INSTANCE.DataSave(value);
+        }
+
+           
     }
 
     #region Dragon Dictionary
-    // Dictionary ·Î ¹Ù²Ù±â
+    // Dictionary ï¿½ï¿½ ï¿½Ù²Ù±ï¿½
     public Dictionary<string, List<GameObject>> dragonTable = new Dictionary<string, List<GameObject>>();
 
-    // µå·¡°ïÀÌ Ã³À½ ÃâÇöÇßÀ» ¶§ -> Awake
+    // ï¿½å·¡ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ -> Awake
     public void AllDragonCount(GameObject obj)
     {
         List<GameObject> list = null;
@@ -225,17 +234,17 @@ public class GameManager : MonoSingleTon<GameManager>
         bool listCheck = dragonTable.TryGetValue(prefabId, out list);
 
 
-        if (listCheck == false) // ÀÌ ÀÌ¸§ÀÇ ¸®½ºÆ®°¡ ¾øÀ» ¶§
+        if (listCheck == false) // ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
         {
-            list = new List<GameObject>(); // »õ·Î ¸®½ºÆ® »ý¼º -> ÇØ´çÇÏ´Â Å°°ªÀÇ ¸®½ºÆ®¸¦ ¸¸µé¾îÁÜ            
-            GameManager.INSTANCE.dragonTable.Add(prefabId, list); // list¸¦ dictionary ¾È¿¡ ³Ö±â
+            list = new List<GameObject>(); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ -> ï¿½Ø´ï¿½ï¿½Ï´ï¿½ Å°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½            
+            GameManager.INSTANCE.dragonTable.Add(prefabId, list); // listï¿½ï¿½ dictionary ï¿½È¿ï¿½ ï¿½Ö±ï¿½
 
         }
-        list.Add(obj); // dictionary ¾È¿¡ ÀÖ´Â list¿¡ prefabÀ» ³ÖÀ½
+        list.Add(obj); // dictionary ï¿½È¿ï¿½ ï¿½Ö´ï¿½ listï¿½ï¿½ prefabï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     }
 
-    // µå·¡°ïÀÌ ÆÇ¸Å°¡ µÇ¾úÀ» ¶§
+    // ï¿½å·¡ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¸Å°ï¿½ ï¿½Ç¾ï¿½ï¿½ï¿½ ï¿½ï¿½
     public void RemoveDragonCount(string name)
     {
 
@@ -250,11 +259,11 @@ public class GameManager : MonoSingleTon<GameManager>
             return;
         }
 
-        // ¸®½ºÆ®°¡ ÀÖÀ» ¶§ µå·¡°ï Áö¿ò
+        // ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½å·¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         list.RemoveAt(0);
     }
 
-    // µå·¡°ï Ä«¿îÆ® ¼¼´Â ÇÔ¼ö
+    // ï¿½å·¡ï¿½ï¿½ Ä«ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
     public int DragonCount(string name)
     {
         List<GameObject> list;

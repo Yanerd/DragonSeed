@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviourPun
     Animator playerAnimator = null;
     [SerializeField] GameObject weaponCollider = null;
     [SerializeField] Transform camTransfrom = null;
+    GameObject cam;
+
 
     //event components 
     public EventReciever playerEvent = null;
@@ -106,8 +108,7 @@ public class PlayerController : MonoBehaviourPun
             
 
             //visible value
-            lookForward = new Vector3(camTransfrom.forward.x, 0f, camTransfrom.forward.z).normalized;
-            lookRight = new Vector3(camTransfrom.right.x, 0f, camTransfrom.right.z).normalized;
+           
             moveDir = lookForward * axisZ + lookRight * axisX;
 
             //move position value
@@ -118,12 +119,15 @@ public class PlayerController : MonoBehaviourPun
 
             //start state
             ChangeState(STATE.IDLE);
+            cam = Instantiate(Resources.Load<GameObject>("O_CameraArm"),this.transform.position, Quaternion.identity);
+            camTransfrom = cam.transform;
+
+            lookForward = new Vector3(camTransfrom.forward.x, 0f, camTransfrom.forward.z).normalized;
+            lookRight = new Vector3(camTransfrom.right.x, 0f, camTransfrom.right.z).normalized;
             #endregion
         }
         else
         {
-            camTransfrom = GameObject.Find("O_CameraArm").GetComponent<Transform>();
-            camTransfrom.gameObject.SetActive(false);
             hpSlider.gameObject.SetActive(false);
             hpFollowSlider.gameObject.SetActive(false);
         }
@@ -200,6 +204,7 @@ public class PlayerController : MonoBehaviourPun
 
     private void CamTransFormControll()//camera transform controll
     {
+        camTransfrom.position = this.gameObject.transform.position;
         camTransfrom.rotation = Quaternion.Euler(-mouseY, mouseX, 0);
     }
     #endregion
@@ -437,7 +442,6 @@ public class PlayerController : MonoBehaviourPun
         }
         else
         {
-            Debug.Log("������ ����");
             photonView.RPC("PlayerGetDamage", RpcTarget.Others, damage);
         }
     }
@@ -452,7 +456,6 @@ public class PlayerController : MonoBehaviourPun
 
         if (playerCurHp <= 0f)
         {
-            Debug.Log("�÷��̾� ����");
             playerCurHp = 0f;
             isDead = true;
             ChangeState(STATE.DIE);

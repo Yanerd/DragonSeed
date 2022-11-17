@@ -28,6 +28,8 @@ public class Data
     public string wellCount;
     public string groundState;
     public string gold;
+
+    public int resultGold;
 }
 
 public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
@@ -168,6 +170,17 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
         }
     }
 
+    Data savegold = new Data();
+    public Data DataSave(int gold )
+    {
+        
+
+        savegold.resultGold = gold;
+       
+        return savegold;
+    }
+
+
     public void Load()
     {
         dragons.Clear();
@@ -199,7 +212,10 @@ public class SaveLoadManager : MonoSingleTon<SaveLoadManager>
         HouseCount         = int.Parse(data2.houseCount        == "" ? "1" : data2.houseCount);
         WellCount          = int.Parse(data2.wellCount         == "" ? "1" : data2.wellCount);
         convertGroundState = int.Parse(data2.groundState       == "" ? "0" : data2.groundState);
-        Gold               = int.Parse(data2.gold == "" ? "500" : data2.gold);
+
+        Gold = int.Parse(data2.gold == "" ? "500" : data2.gold)+ savegold.resultGold;
+        savegold.resultGold = 0;
+        if (Gold < 0) Gold = 0;//exception
 
 
         DefenseUIManager.INSTANCE.potatoSeedCount   = potatoSeedCount;

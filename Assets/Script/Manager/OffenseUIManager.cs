@@ -43,20 +43,19 @@ public class OffenseUIManager : MonoSingleTon<OffenseUIManager>
     //OffenseEndUI
     GameObject offenseEndUI = null;
 
-    // °ÔÀÓ¸Å´ÏÀú¿¡ ÀÖ´Â º¯¼ö »ç¿ë, °è»êÇØ¼­ ÅØ½ºÆ®·Î ¶ç¿ì±â
+    // ï¿½ï¿½ï¿½Ó¸Å´ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½Ø½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     int DragonKilledCountNum = 0;
     int PlantKilledCountNum = 0;
     int BuildingDestroyCountNum = 0;
 
-    // ÆÄ±«ÇÑ ¿ÀºêÁ§Æ® ÅØ½ºÆ®·Î ¹Þ¾Æ¿À±â
+    // ï¿½Ä±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ø½ï¿½Æ®ï¿½ï¿½ ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½
     TextMeshProUGUI DragonKilledCount;
-    TextMeshProUGUI PlantKilledCount;
+    TextMeshProUGUI GetZeraReward;
     TextMeshProUGUI BuildingDestroyCount;
-    // ÃÑ Á¡¼ö °è»ê
-    TextMeshProUGUI TotalScore;
+    // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
     TextMeshProUGUI GetCoin;
-    // ·©Å©
-    TextMeshProUGUI RANK;
+    // ï¿½ï¿½ï¿½
+    TextMeshProUGUI Result;
 
     //exception coroutine
     Coroutine exceptionCoroutine = null;
@@ -114,11 +113,10 @@ public class OffenseUIManager : MonoSingleTon<OffenseUIManager>
         offenseEndUI = GameObject.Find("OffenseEndUI");
 
         DragonKilledCount = GameObject.Find("DragonsKilled_number").GetComponent<TextMeshProUGUI>();
-        PlantKilledCount = GameObject.Find("PlantKilled_number").GetComponent<TextMeshProUGUI>();
+        GetZeraReward = GameObject.Find("GetZera_number").GetComponent<TextMeshProUGUI>();
         BuildingDestroyCount = GameObject.Find("DestroyBuilding_number").GetComponent<TextMeshProUGUI>();
-        TotalScore = GameObject.Find("TotalScore_number").GetComponent<TextMeshProUGUI>();
         GetCoin = GameObject.Find("GetCoins_number").GetComponent<TextMeshProUGUI>();
-        RANK = GameObject.Find("Rank").GetComponent<TextMeshProUGUI>();
+        Result = GameObject.Find("Result").GetComponent<TextMeshProUGUI>();
     }
 
     private void Start()
@@ -131,10 +129,10 @@ public class OffenseUIManager : MonoSingleTon<OffenseUIManager>
         if (player != null)
             //player.playerEvent.callBackPlayerHPChangeEvent += OnChangedHp;
 
-        Debug.Log("µå·¡°ï Ã£¾Æ");
-        Debug.Log("µå·¡°ï Ã£¾Æ");
-        Debug.Log("µå·¡°ï Ã£¾Æ");
-        Debug.Log("µå·¡°ï Ã£¾Æ");
+        Debug.Log("ï¿½å·¡ï¿½ï¿½ Ã£ï¿½ï¿½");
+        Debug.Log("ï¿½å·¡ï¿½ï¿½ Ã£ï¿½ï¿½");
+        Debug.Log("ï¿½å·¡ï¿½ï¿½ Ã£ï¿½ï¿½");
+        Debug.Log("ï¿½å·¡ï¿½ï¿½ Ã£ï¿½ï¿½");
 
         Invoke("FindDragon", 2f);
 
@@ -240,7 +238,7 @@ public class OffenseUIManager : MonoSingleTon<OffenseUIManager>
     //oversee function
     private void OnChangeDragonHP(float curHp, float maxHp)
     {
-        Debug.Log("Ã¼·Â¹Ù ³ª¿Í");
+        Debug.Log("Ã¼ï¿½Â¹ï¿½ ï¿½ï¿½ï¿½ï¿½");
         dragonHpGroupObj.SetActive(true);
         dragonHpSlider.value = curHp / maxHp;
         StartCoroutine(DragonFollowSlider());
@@ -295,29 +293,34 @@ public class OffenseUIManager : MonoSingleTon<OffenseUIManager>
 
         if (GameManager.INSTANCE.ISDEAD|| GameManager.INSTANCE.ISTIMEOVER)
         {
-            // ¸¶¿ì½º Ä¿¼­ È°¼ºÈ­
+            // ï¿½ï¿½ï¿½ì½º Ä¿ï¿½ï¿½ È°ï¿½ï¿½È­
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
 
             //calculation
             GameManager.INSTANCE.CoinRavish();
 
-            // °ÔÀÓ ¿À¹ö Ã¢ ¶ç¿ì±â
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¢ ï¿½ï¿½ï¿½ï¿½
             offenseEndUI.SetActive(true);
 
 
-            // µå·¡°ï ÀâÀº ¼ö Ã¼Å© -> µå·¡°ïÀÌ Á×À»¶§¸¶´Ù count ·Î Ã¼Å©
+            // ï¿½å·¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Ã¼Å© -> ï¿½å·¡ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ count ï¿½ï¿½ Ã¼Å©
             DragonKilledCount.text = "" + GameManager.INSTANCE.KILLCOUNT;//"KilledDragons_number" + 
-            // ½Ä¹° ÀâÀº ¼ö Ã¼Å© -> ½Ä¹°ÀÌ Á×À»¶§¸¶´Ù Ã¼Å©
-            // Áý -> ¾ø¾îÁú¶§¸¶´Ù Ã¼Å©
+            // ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¼Å©
             BuildingDestroyCount.text = "" + GameManager.INSTANCE.HOUSEDESTROYCOUNT;//"DestroyBuilding_number" +
+            GetZeraReward.text = "" + GameManager.INSTANCE.ZERAREWARD;
+            GetCoin.text = "" + GameManager.INSTANCE.STEALCOIN;
 
-            TotalScore.text = "" + GameManager.INSTANCE.TOTALCOIN;
-            GetCoin.text = "" + GameManager.INSTANCE.TOTALCOIN;
+            if(GameManager.INSTANCE.ISDEAD)
+            {
+                Result.text = "Lose";
+            }
+            else
+            {
+                Result.text = "Win";
+            }
 
-
-
-            // ³ªÁß¿¡ ÂøÂø ÇÑ ÁÙ¾¿ Á¡¼ö ¶ß´Â È¿°ú ³Ö±â
+           
 
         }
 
@@ -326,7 +329,7 @@ public class OffenseUIManager : MonoSingleTon<OffenseUIManager>
 
     Coroutine instiateCoroutine;
 
-    // ¹öÆ° ´©¸¦¶§´Â ¸¶¿ì½º Ä¿¼­ È°¼ºÈ­ ÇÊ¿ä
+    // ï¿½ï¿½Æ° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ì½º Ä¿ï¿½ï¿½ È°ï¿½ï¿½È­ ï¿½Ê¿ï¿½
     public void OnBackButton()
     {
         Time.timeScale = 1f;
@@ -347,11 +350,12 @@ public class OffenseUIManager : MonoSingleTon<OffenseUIManager>
         instiateCoroutine = StartCoroutine(GoBackSceneInstantiate());
     }
 
-    [PunRPC]
+    
     public void SendGameEnd()
     {
         photonView.RPC("GetGameEnd", RpcTarget.All, true);
     }
+    [PunRPC]
     public void GetGameEnd(bool flag)
     {
         GameManager.INSTANCE.GameEndCorrect = flag;
@@ -360,7 +364,7 @@ public class OffenseUIManager : MonoSingleTon<OffenseUIManager>
 
     IEnumerator GoBackSceneInstantiate()
     {
-        Debug.Log("¾À ÀüÈ¯Áß");
+        Debug.Log("ï¿½ï¿½ ï¿½ï¿½È¯ï¿½ï¿½");
 
         yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "2_GardenningScene");
         StopCoroutine(instiateCoroutine);

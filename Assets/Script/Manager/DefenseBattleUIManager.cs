@@ -16,6 +16,14 @@ public class DefenseBattleUIManager : MonoBehaviourPun
     //DefenseEndUI
     [SerializeField] GameObject defenseEndUI = null;
 
+    [SerializeField] TextMeshProUGUI KilledDragon = null;
+    [SerializeField] TextMeshProUGUI DestroyHouse = null;
+    [SerializeField] TextMeshProUGUI GetZera = null;
+    [SerializeField] TextMeshProUGUI GetCoin = null;
+    [SerializeField] TextMeshProUGUI  gameResult= null;
+
+
+
     // Defense User
     #region Defense User
     [Header("[Defense User Stats]")]
@@ -71,7 +79,7 @@ public class DefenseBattleUIManager : MonoBehaviourPun
         if (GameManager.INSTANCE.ISDEAD || GameManager.INSTANCE.ISTIMEOVER)
         {
             GameManager.INSTANCE.TimeOut();
-            defenseEndUI.SetActive(true);
+            CallEndUi();
         }
 
         // �÷��� Ÿ�� �ؽ�Ʈ�� �޾ƿ���
@@ -83,6 +91,28 @@ public class DefenseBattleUIManager : MonoBehaviourPun
         }
        
     }
+
+
+
+    void CallEndUi()
+    {
+        defenseEndUI.SetActive(true);
+        KilledDragon.text = "" + GameManager.INSTANCE.KILLCOUNT;
+        DestroyHouse.text = "" + GameManager.INSTANCE.HOUSEDESTROYCOUNT;
+        GetZera.text = "";
+        GetCoin.text = "" + -1*GameManager.INSTANCE.STEALCOIN;
+        if(GameManager.INSTANCE.ISDEAD==true)
+        {
+            gameResult.text = "Win";
+        }
+        else
+        {
+            gameResult.text = "Lose";
+        }
+
+    }
+
+
 
     #region SkillCheck
     void SkillCheck()
@@ -201,11 +231,13 @@ public class DefenseBattleUIManager : MonoBehaviourPun
     }
 
 
-    [PunRPC]
+    
     public void SendGameEnd()
     {
         photonView.RPC("GetGameEnd", RpcTarget.All, true);
     }
+
+    [PunRPC]
     public void GetGameEnd(bool flag)
     {
         GameManager.INSTANCE.GameEndCorrect = flag;
