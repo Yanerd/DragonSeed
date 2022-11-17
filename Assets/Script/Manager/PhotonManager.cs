@@ -230,7 +230,6 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
             searchRoomButton.interactable = false;
 
             //production
-            StartCoroutine(ClosUpCamera());
             StartCoroutine(Uptrans(searchRoomPage));
 
             //function
@@ -242,7 +241,6 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
             invasionPermitButton.interactable = true;
 
             //production
-            StartCoroutine(FadeOutCamera());
             StartCoroutine(Downtrans(searchRoomPage));
 
             //function
@@ -457,6 +455,8 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
         PhotonNetwork.Disconnect();
 
         GameManager.INSTANCE.SCENENUM = 1;
+
+        UserInfo.INSTANCE.SettingClear();
         PhotonNetwork.LoadLevel("2_GardenningScene");
 
         GameManager.INSTANCE.Initializing();
@@ -504,47 +504,6 @@ public class PhotonManager : MonoSingleTon<PhotonManager>
 
     #endregion
 
-    #region Change CameraView Coroutine
-
-    Vector3 beforePos = Vector3.zero;
-
-    IEnumerator ClosUpCamera()
-    {
-        beforePos = Camera.main.transform.position;
-        Camera.main.transform.position = new Vector3(-1.25f, 4.5f, -1.25f);
-        while (true)
-        {
-            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(-2.5f, 2.9f, -5.1f), Time.deltaTime * 2f);
-
-            if (Camera.main.transform.position.z <= -5.08f)
-            {
-                searchRoomButton.interactable = true;
-                yield break;
-            }
-
-            yield return null;
-        }
-    }
-    //new Vector3(-2f,4.5f,-1.8f)
-    IEnumerator FadeOutCamera()
-    {
-        Debug.Log(beforePos.z);
-        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, beforePos, Time.deltaTime * 2f);
-
-        while (true)
-        {
-
-            if (Camera.main.transform.position.z >= beforePos.z-0.02f)
-            {
-                searchRoomButton.interactable = true;
-                Camera.main.transform.position = beforePos;
-                yield break;
-            }
-            yield return null;
-        }
-    }
-
-    #endregion
     IEnumerator GoBackSceneInstantiate()
     {
 

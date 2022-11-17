@@ -5,28 +5,31 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class UserInfo : MonoBehaviourPunCallbacks
+public class UserInfo : MonoSingleTon<UserInfo>
 {
     [field: SerializeField] public string Name { get; set; }
     [field: SerializeField] public string WalletAdress { get; set; }
     [field: SerializeField] public int Zera { get; set; }
     [field: SerializeField] public string SessionId { get; set; }
     [field: SerializeField] public string _Id { get; set; }
+    [field: SerializeField] public string Player_ID { get; set; }
     [field: SerializeField] public string BettingId { get; set; }
     //====================================================================
     [field: SerializeField] public string MasterName { get; set; }
+    [field: SerializeField] public string MasterPlayer_ID { get; set; }
     [field: SerializeField] public string MasterSessionId { get; set; }
-    [field: SerializeField] public string Master_Id { get; set; }
     [field: SerializeField] public string MasterBettingId { get; set; }
     //====================================================================
     [field: SerializeField] public string OtherName { get; set; }
+    [field: SerializeField] public string OtherPlayer_ID { get; set; }
     [field: SerializeField] public string OtherSessionId { get; set; }
-    [field: SerializeField] public string Other_Id { get; set; }
     [field: SerializeField] public string OtherBettingId { get; set; }
 
     bool BettingToken = true;
     bool WinToken = true;
     bool DisConnectToken = true;
+
+    bool IsMaster = false;
 
     private void Awake()
     {
@@ -39,18 +42,21 @@ public class UserInfo : MonoBehaviourPunCallbacks
     }
     void Update()
     {
+        UserInfoUpdate();
+
         // transfer data
         if (GameManager.INSTANCE.SCENENUM == 2 && GameManager.INSTANCE.INVASIONALLOW) // master
         {
+            IsMaster = true;
             photonView.RPC("SetMasterName", RpcTarget.All, Name);
+            photonView.RPC("SetMasterPlayer_Id", RpcTarget.All, Player_ID);
             photonView.RPC("SetMasterSessionId", RpcTarget.All, SessionId);
-            photonView.RPC("SetMaster_Id",RpcTarget.All,_Id);
         }
         if (GameManager.INSTANCE.SCENENUM == 2 && GameManager.INSTANCE.WANTINVASION) // other
         {
             photonView.RPC("SetOtherName", RpcTarget.All, Name);
+            photonView.RPC("SetOtherPlayer_Id", RpcTarget.All, Player_ID);
             photonView.RPC("SetOtherSessionId", RpcTarget.All, SessionId);
-            photonView.RPC("SetOther_Id", RpcTarget.All, _Id);
         }
 
         // betting start
@@ -59,28 +65,26 @@ public class UserInfo : MonoBehaviourPunCallbacks
             StartCoroutine(betting());
         }
 
-        ////��������
-        //if (GameManager.INSTANCE.ISDEAD && WinToken) // ħ���� �÷��̾ �׾��� ��
-        //{
-        //    WinToken = false;
-        //    //master win
-        //    MetaTrendAPIHandler.INSTANCE.Betting_Zera_DeclareWinner(MasterBettingId, Master_Id);
-        //}
-        //else if (GameManager.INSTANCE.ISTIMEOVER && WinToken) // Ÿ�ӿ����� ȣ�������
-        //{
-        //    WinToken = false;
-        //    //otherclient win
-        //    MetaTrendAPIHandler.INSTANCE.Betting_Zera_DeclareWinner(MasterBettingId, Other_Id);
-        //}
+        if (GameManager.INSTANCE.SCENENUM == 2 && !GameManager.INSTANCE.GameEndCorrect && PhotonNetwork.CurrentRoom.PlayerCount == 1 && DisConnectToken)
+        {
+            DisConnectToken = false;
+            MetaTrendAPIHandler.INSTANCE.Betting_Zera_Disconnect(MasterBettingId);
+        }
+
+        if (GameManager.INSTANCE.ISDEAD && WinToken)
+        {
+            WinToken = false;
+            //master win
+            MetaTrendAPIHandler.INSTANCE.Betting_Zera_DeclareWinner(MasterBettingId, MasterPlayer_ID);
+        }
+
+        else if (GameManager.INSTANCE.ISTIMEOVER && WinToken) // Ÿ�ӿ����� ȣ�������
+        {
+            WinToken = false;
+            //otherclient win
+            MetaTrendAPIHandler.INSTANCE.Betting_Zera_DeclareWinner(OtherBettingId, OtherPlayer_ID);
+        }
         
-        
-        ////// ������ ������������ ������ ��
-        //if (GameManager.INSTANCE.SCENENUM == 2 &&!GameManager.INSTANCE.GameEndCorrect && DisConnectToken)
-        //{
-        //    DisConnectToken = false;
-        //    // ���ñݾ׹�ȯ - �����ߴ� Zera�� ���ڿ��� �ǵ�����                     
-        //    MetaTrendAPIHandler.INSTANCE.Betting_Zera_Disconnect(MasterBettingId);
-        //}
     }
 
     IEnumerator betting()
@@ -89,13 +93,14 @@ public class UserInfo : MonoBehaviourPunCallbacks
 
         string[] array = { MasterSessionId, OtherSessionId };
 
-        yield return MetaTrendAPIHandler.INSTANCE.processRequestBetting_Zera(this._Id,array);
+        yield return MetaTrendAPIHandler.INSTANCE.processRequestBetting_Zera(_Id,array);
 
         BettingId = MetaTrendAPIHandler.INSTANCE.BETTINGID;
 
         if(GameManager.INSTANCE.INVASIONALLOW) photonView.RPC("SetMasterBettingId", RpcTarget.All, BettingId);
         if(GameManager.INSTANCE.WANTINVASION) photonView.RPC("SetOtherBettingId", RpcTarget.All, BettingId);
     }
+
     // Name
     [PunRPC]
     public void SetMasterName(string name)
@@ -107,6 +112,16 @@ public class UserInfo : MonoBehaviourPunCallbacks
     {
         OtherName = name;
     }
+    [PunRPC]
+    public void SetMasterPlayer_Id(string player_Id)
+    {
+        MasterPlayer_ID = player_Id;
+    }
+    [PunRPC]
+    public void SetOtherPlayer_Id(string player_Id)
+    {
+        OtherPlayer_ID = player_Id;
+    }
     // SessionId
     [PunRPC]
     public void SetMasterSessionId(string sessionId)
@@ -117,16 +132,6 @@ public class UserInfo : MonoBehaviourPunCallbacks
     public void SetOtherSessionId(string sessionId)
     {
         OtherSessionId = sessionId;
-    }
-    [PunRPC]
-    public void SetMaster_Id(string _Id)
-    {
-        Master_Id = _Id;
-    }
-    [PunRPC]
-    public void SetOther_Id(string _Id)
-    {
-        Other_Id = _Id;
     }
     // BettingId
     [PunRPC]
@@ -143,22 +148,27 @@ public class UserInfo : MonoBehaviourPunCallbacks
     void UserInfoUpdate()
     {
         Name = MetaTrendAPIHandler.INSTANCE.USERNAME;
+        Player_ID = MetaTrendAPIHandler.INSTANCE.Player_ID;
         SessionId = MetaTrendAPIHandler.INSTANCE.SESSIONID;
         Zera = MetaTrendAPIHandler.INSTANCE.ZERA;
         WalletAdress = MetaTrendAPIHandler.INSTANCE.WALLETADRESS;
         _Id = MetaTrendAPIHandler.INSTANCE._ID;
     }
 
-    void SettingClear()
+    public void SettingClear()
     {
+        IsMaster = false;
+
+        this.BettingId = null;
+
         this.MasterName = null;
+        this.MasterPlayer_ID = null;
         this.MasterSessionId = null;
-        this.Master_Id = null;
         this.MasterBettingId = null;
 
         this.OtherName = null;
+        this.OtherPlayer_ID = null;
         this.OtherSessionId = null;
-        this.Other_Id = null;
         this.OtherBettingId = null;
 
         this.WinToken = true;

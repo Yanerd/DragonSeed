@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class CameraMoveScroll : MonoBehaviour
 {
+    [SerializeField] GameObject camMainPoint = null;
+    [SerializeField] GameObject camCloseUpPoint = null;
+
     Transform transform = null;
 
     private void Awake()
@@ -12,7 +15,17 @@ public class CameraMoveScroll : MonoBehaviour
     
     public void Update()
     {
-        Move();
+        if (GameManager.INSTANCE.WANTINVASION)
+        {
+            camCloseUpPoint.SetActive(true);
+        }
+        else
+        {
+            if(camCloseUpPoint.activeSelf)
+                camCloseUpPoint.SetActive(false);
+
+            Move();
+        }
     }
 
     public void Move()

@@ -309,9 +309,8 @@ public class OffenseUIManager : MonoSingleTon<OffenseUIManager>
             // 드래곤 잡은 수 체크 -> 드래곤이 죽을때마다 count 로 체크
             DragonKilledCount.text = "" + GameManager.INSTANCE.KILLCOUNT;//"KilledDragons_number" + 
             // 식물 잡은 수 체크 -> 식물이 죽을때마다 체크
-            PlantKilledCount.text = "" + GameManager.INSTANCE.DESTROYPLANTCOUNT;//"StealSeeds_number" + 
             // 집 -> 없어질때마다 체크
-            BuildingDestroyCount.text = "" + GameManager.INSTANCE.DESTROYBUILDINGCOUNT;//"DestroyBuilding_number" +
+            BuildingDestroyCount.text = "" + GameManager.INSTANCE.HOUSEDESTROYCOUNT;//"DestroyBuilding_number" +
 
             TotalScore.text = "" + GameManager.INSTANCE.TOTALCOIN;
             GetCoin.text = "" + GameManager.INSTANCE.TOTALCOIN;
@@ -333,11 +332,15 @@ public class OffenseUIManager : MonoSingleTon<OffenseUIManager>
         Time.timeScale = 1f;
 
         GameManager.INSTANCE.SCENENUM = 1;
+        UserInfo.INSTANCE.SettingClear();
+
         SendGameEnd();
 
-        SceneManager.LoadScene("2_GardenningScene");
+        MetaTrendAPIHandler.INSTANCE.GetAllData();
 
         PhotonNetwork.Disconnect();
+
+        SceneManager.LoadScene("2_GardenningScene");
 
         GameManager.INSTANCE.Initializing();
 

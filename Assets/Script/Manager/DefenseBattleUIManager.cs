@@ -186,7 +186,10 @@ public class DefenseBattleUIManager : MonoBehaviourPun
         Time.timeScale = 1f;
 
         GameManager.INSTANCE.SCENENUM = 1;
+        UserInfo.INSTANCE.SettingClear();
         SendGameEnd();
+
+        MetaTrendAPIHandler.INSTANCE.GetAllData();
 
         PhotonNetwork.Disconnect();
 

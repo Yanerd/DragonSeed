@@ -74,6 +74,9 @@ MonoBehaviour:
   - SetOther_Id
   - ShakeHouse
   - HouseTransferDamage
+  - SendRavishResult
+  - SetMasterPlayer_Id
+  - SetOtherPlayer_Id
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

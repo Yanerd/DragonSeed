@@ -12,6 +12,7 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
     public string SESSIONID { get; set; }
     public string WALLETADRESS { get; set; }
     public int ZERA { get; set; }
+    public string Player_ID { get; set; }
     public string _ID { get; set; }
     public string BETTINGID { get; set; }
 
@@ -26,19 +27,20 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
     [SerializeField] string FullAppsProductionURL = "https://odin-api.browseosiris.com";
     [SerializeField] string FullAppsStagingURL = "https://odin-api-sat.browseosiris.com";
 
-    //
-
-
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
+        GetAllData();
+    }
+
+    public void GetAllData()
+    {
         GetUserProfile();
         GetSessionID();
         Invoke("ZeraBalance", 1f);
         Invoke("Settings", 1f);
     }
 
-    // ���� ���ߴܰ迡 ���� ����ϴ� BaseURL�� �޶�����.
     string getBaseURL()
     {
         return FullAppsStagingURL;
@@ -48,13 +50,7 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
     Res_GetSessionID resGetSessionID = null;
     Res_Settings resSettigns = null;
 
-
-
-
-
     //-----------------------------------------------------------------------------------------------------
-    //
-    // ���� ����
     public void GetUserProfile()
     {
         StartCoroutine(processRequestGetUserInfo());
@@ -69,6 +65,8 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
             {
                 Debug.Log("## " + response.ToString());
                 resGetUserProfile = response;
+
+                Player_ID = resGetUserProfile.userProfile._id;
             }
         });
     }
@@ -92,7 +90,6 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
         });
     }
     //-----------------------------------------------------------------------------------------------------
-    // ���ð��� ���� ������ ������
     public void Settings()
     {
         StartCoroutine(processRequestSettings());
@@ -112,8 +109,7 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
     }
     //-----------------------------------------------------------------------------------------------------
 
-    //-----------------------------------------------------------------------------------------------------
-    // Zera �ܰ� Ȯ��
+    #region request coin balance
     public void ZeraBalance()
     {
         if (USERNAME != null)
@@ -168,11 +164,9 @@ public class MetaTrendAPIHandler : MonoSingleTon<MetaTrendAPIHandler>
         });
     }
 
-
+    #endregion
 
     //-----------------------------------------------------------------------------------------------------
-    //
-    // ZERA ����
     public void Betting_Zera(string _Id, string[] sessionIdArray)
     {
         StartCoroutine(processRequestBetting_Zera(_Id, sessionIdArray));

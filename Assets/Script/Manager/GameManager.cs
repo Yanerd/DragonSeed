@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class GameManager : MonoSingleTon<GameManager>
 {
@@ -10,12 +11,12 @@ public class GameManager : MonoSingleTon<GameManager>
     //player state value
     public bool ISLOCKON { get; set; }
     public bool ISDEAD { get; set; }
-    
+
     //player invasion value
     public bool WANTINVASION { get; set; }
     public int KILLCOUNT { get; set; }
-    public int DESTROYPLANTCOUNT { get; set; }
-    public int DESTROYBUILDINGCOUNT { get; set; }
+    public int HOUSEDESTROYCOUNT { get; set; }
+    public float ZERAREWARD { get; set; }
     #endregion
 
     #region defense client value
@@ -24,7 +25,8 @@ public class GameManager : MonoSingleTon<GameManager>
     public int TOTALDRAGONCOUNT { get; set; }
     public int TOTALSEEDCOUNT { get; set; }
     public int TOTALBUILDINGCOUNT { get; set; }
-    public int TOTALCOIN { get; set;}
+    public int TOTALCOIN { get; set; }
+    public string GAMERESULT { get; set; }
     #endregion
 
     #region Invasion Game Controll Value
@@ -55,7 +57,7 @@ public class GameManager : MonoSingleTon<GameManager>
 
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);    
+        DontDestroyOnLoad(this.gameObject);
     }
 
     void Start()
@@ -72,8 +74,7 @@ public class GameManager : MonoSingleTon<GameManager>
         //invader client value
         GameManager.INSTANCE.WANTINVASION = false;
         GameManager.INSTANCE.KILLCOUNT = 0;
-        GameManager.INSTANCE.DESTROYPLANTCOUNT = 0;
-        GameManager.INSTANCE.DESTROYBUILDINGCOUNT = 0;
+        GameManager.INSTANCE.HOUSEDESTROYCOUNT = 0;
 
         //defense client value
         GameManager.INSTANCE.INVASIONALLOW = false;
@@ -94,7 +95,7 @@ public class GameManager : MonoSingleTon<GameManager>
 
         //
         GameManager.INSTANCE.HouseBurn = false;
-
+        GameManager.INSTANCE.ZERAREWARD = 0;
         GameEndCorrect = false;
     }
 
@@ -113,6 +114,7 @@ public class GameManager : MonoSingleTon<GameManager>
     }
     public void TimeOut()
     {
+
         StopCoroutine(timerCoroutine);
     }
 
@@ -123,7 +125,7 @@ public class GameManager : MonoSingleTon<GameManager>
             GameManager.INSTANCE.GAMETIME += Time.deltaTime;
 
             //invader is win
-            if (GameManager.INSTANCE.GAMETIME > 60f)//->game time limit
+            if (GameManager.INSTANCE.GAMETIME > 20f)//->game time limit
             {
                 CoinRavish();
                 Time.timeScale = 0f;
@@ -141,6 +143,10 @@ public class GameManager : MonoSingleTon<GameManager>
 
     public void CoinRavish()//coin ravish calculation
     {
+        float maxcoin = DefenseUIManager.INSTANCE.Gold * 1f / 10f;
+        //gold는 rpc로 받은 master의 총 gold
+        float mincoin = 200f;
+
         float stealCoinKillScale = 0f;
         float stealCoinSaboScale = 0f;
         float killCoinPoint = 0f;
@@ -148,34 +154,62 @@ public class GameManager : MonoSingleTon<GameManager>
 
         //KillCoin scale calculation
         {
-            float numerator =   ((float)GameManager.INSTANCE.KILLCOUNT + (float)GameManager.INSTANCE.DESTROYPLANTCOUNT);
-            float denominator = ((float)GameManager.INSTANCE.TOTALDRAGONCOUNT + (float)GameManager.INSTANCE.TOTALSEEDCOUNT);
-            stealCoinKillScale = numerator / denominator;
+            float numerator = ((float)GameManager.INSTANCE.KILLCOUNT);
+            float denominator = ((float)GameManager.INSTANCE.TOTALDRAGONCOUNT);
+            stealCoinKillScale = (numerator * maxcoin) / (denominator * 2);
         }
 
         //SaboCoin scale calculation
         {
-            float numerator =   ((float)GameManager.INSTANCE.DESTROYBUILDINGCOUNT);
-            float denominator = ((float)GameManager.INSTANCE.TOTALBUILDINGCOUNT);
-            stealCoinSaboScale = numerator / denominator;
+            float numerator = ((float)GameManager.INSTANCE.HOUSEDESTROYCOUNT);
+            float denominator = ((float)GameManager.INSTANCE.TOTALDRAGONCOUNT);
+            stealCoinSaboScale = (numerator * maxcoin) / (denominator * 2);
         }
 
         //kill coin calculation
         {
-            float numerator =   ((float)GameManager.INSTANCE.TOTALCOIN * stealCoinKillScale);
+            float numerator = ((float)DefenseUIManager.INSTANCE.Gold * stealCoinKillScale);
             float denominator = (20f);
-            killCoinPoint =  numerator / denominator;
+            killCoinPoint = numerator / denominator;
         }
 
         //sabo coin calculation
         {
-            float numerator = ((float)GameManager.INSTANCE.TOTALCOIN * stealCoinSaboScale);
+            float numerator = ((float)DefenseUIManager.INSTANCE.Gold * stealCoinSaboScale);
             float denominator = (20f);
             saboCoinPoint = numerator / denominator;
         }
 
         //real steal coin calculation
         GameManager.INSTANCE.STEALCOIN = (int)(killCoinPoint + saboCoinPoint);
+
+        //min max limit
+        if (GameManager.INSTANCE.STEALCOIN >= maxcoin)
+        {
+            GameManager.INSTANCE.STEALCOIN = (int)maxcoin;
+        }
+        else if (GameManager.INSTANCE.STEALCOIN <= mincoin)
+        {
+            GameManager.INSTANCE.STEALCOIN = (int)mincoin;
+        }
+
+        if (GameManager.INSTANCE.INVASIONALLOW)//플레이어가 마스터임
+        {
+            photonView.RPC("SendRavishResult", RpcTarget.All, GameManager.INSTANCE.STEALCOIN);
+        }
+    }
+
+    [PunRPC]
+    public void SendRavishResult(int value)
+    {
+        if (GameManager.INSTANCE.INVASIONALLOW)
+        {
+            DefenseUIManager.INSTANCE.Gold -= value;
+            if (DefenseUIManager.INSTANCE.Gold <= 0) DefenseUIManager.INSTANCE.Gold = 0;//exception
+        }
+
+        if (GameManager.INSTANCE.WANTINVASION)
+            DefenseUIManager.INSTANCE.Gold += value;
     }
 
     #region Dragon Dictionary
