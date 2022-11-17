@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f3758f8f58fdef43803eb9be1df0608, type: 3}
+  m_Name: PhotonServerSettings
+  m_EditorClassIdentifier: 
+  AppSettings:
+    AppIdRealtime: 85991804-4102-4ef5-be3b-16b415348936
+    AppIdFusion: 
+    AppIdChat: 
+    AppIdVoice: 
+    AppVersion: 
+    UseNameServer: 1
+    FixedRegion: 
+    Server: 
+    Port: 0
+    ProxyServer: 
+    Protocol: 0
+    EnableProtocolFallback: 1
+    AuthMode: 0
+    EnableLobbyStatistics: 0
+    NetworkLogging: 1
+  DevRegion: kr
+  PunLogging: 0
+  EnableSupportLogger: 0
+  RunInBackground: 1
+  StartInOfflineMode: 0
+  RpcList:
+  - ClickRpc
+  - DestroyRpc
+  - DestroySpaceship
+  - Fire
+  - RespawnSpaceship
+  - GroundInit
+  - Init
+  - PhotonInstGround
+  - VegetableInit
+  - WellInit
+  - DragonTransferDamage
+  - PlayerTransferDamage
+  - SendGameEnd
+  - GroundInst
+  - GroundSatting
+  - OffWeaponCollider
+  - OnAttackEnd
+  - OnAttackStart
+  - OnWeaponCollider
+  - DragonData
+  - DragonList
+  - TransferMasterBettingId
+  - TransferMasterName
+  - TransferMasterWalletAdress
+  - TransferMasterZera
+  - TransferOtherBettingId
+  - TransferOtherName
+  - TransferOtherWalletAdress
+  - TransferOtherZera
+  - PlayerGetDamage
+  - SetMasterBettingId
+  - SetMasterName
+  - SetMasterSessionId
+  - SetOtherBettingId
+  - SetOtherName
+  - SetOtherSessionId
+  - SetMaster_Id
+  - SetOther_Id
+  - ShakeHouse
+  - HouseTransferDamage
+  - SendRavishResult
+  - SetMasterPlayer_Id
+  - SetOtherPlayer_Id
+  - IsPlayerGone
+  - GetGameEnd
+  DisableAutoOpenWizard: 1
+  ShowSettings: 1
+  DevRegionSetOnce: 1
